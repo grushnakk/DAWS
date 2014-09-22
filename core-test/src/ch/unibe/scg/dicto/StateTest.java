@@ -42,4 +42,9 @@ public class StateTest {
 		State result = startState.consume(0, tokens);
 		assertTrue(result.isEndState());
 	}
+	
+	@Test (expected=UnexpectedTokenException.class)
+	public void testInvalid() throws UnexpectedTokenException {
+		startState.consume(1, tokens);
+	}
 }
