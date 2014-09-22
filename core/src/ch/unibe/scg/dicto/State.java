@@ -29,6 +29,8 @@ public class State {
 	}
 	
 	public State consume(int currentIndex, List<Token> tokens) throws UnexpectedTokenException {
+		if(tokens.size() <= currentIndex)
+			return this;
 		Token currentToken = tokens.get(currentIndex);
 		if(!successors.containsKey(currentToken.getTokenType())) {
 			throw new UnexpectedTokenException();
