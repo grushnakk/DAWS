@@ -1,7 +1,6 @@
 package ch.unibe.scg.dicto;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -85,7 +84,7 @@ public class Tokenizer extends CompositeParser {
 	}
 
 	protected void initializeTokenType(final TokenType tokenType) {
-		def(tokenType.getName(), tokenType.getParser().trim().flatten());
+		def(tokenType.getName(), tokenType.getParser().flatten().trim());
 		action(tokenType.getName(), new Function<String, Token>() {
 
 			@Override
