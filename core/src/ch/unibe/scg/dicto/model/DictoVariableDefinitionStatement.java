@@ -12,6 +12,10 @@ import org.petitparser.parser.Parser;
 import com.google.common.collect.ImmutableMap;
 
 import ch.unibe.scg.dicto.TokenType;
+import ch.unibe.scg.dicto.states.KeywordState;
+import ch.unibe.scg.dicto.states.NewVariableIDState;
+import ch.unibe.scg.dicto.states.NewVariableTypeState;
+import ch.unibe.scg.dicto.states.State;
 
 public class DictoVariableDefinitionStatement {
 	
@@ -29,7 +33,7 @@ public class DictoVariableDefinitionStatement {
 
 	public Iterator<TokenType> tokenTypes(DictoVariableType type) {
 		Set<TokenType> tokenTypes = new HashSet<>();
-		//TODO magic value
+		//FIXME magic value
 		tokenTypes.add(new TokenType("VARIABLE_TYPE(" + type.getName() + ")", Parsers.string(type.getName())));
 		Iterator<DictoVariableArgument> arguments = type.arguments();
 		while(arguments.hasNext()) {
@@ -53,6 +57,27 @@ public class DictoVariableDefinitionStatement {
 		        .seq(character.star())
 		        .seq(Chars.character('"'))));
 		return tokenTypes.iterator();
+	}
+	
+	public State getVariableDefinitionState(DictoConfiguration config) {
+		Set<String> types = extractTypes(config);
+		State with = new KeywordState(new TokenType("KEYWORD_WITH"), null);
+		State type = new NewVariableTypeState(with, types);
+		State colon = new KeywordState(new TokenType("KEYWORD_COLOn"), type);
+		State identifer = new NewVariableIDState(colon);
+		return identifer;
+	}
+	
+	protected Set<String> extractTypes(DictoConfiguration config) {
+		HashSet<String> types = new HashSet<String>(); //FIXME treeset prolly more efficient
+		Iterator<DictoAdapter> adapters = config.adapters();
+		while(adapters.hasNext()) {
+			Iterator<DictoVariableType> variableTypes = adapters.next().variableTypes();
+			while(variableTypes.hasNext()) {
+				types.add(variableTypes.next().getName());
+			}
+		}
+		return types;
 	}
 	
 }

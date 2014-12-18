@@ -12,12 +12,13 @@ public abstract class TokenTypeState extends AbstractState {
 	
 	protected final TokenType tokenType;
 	
-	public TokenTypeState(TokenType tokenType) {
+	public TokenTypeState(TokenType tokenType, State next) {
+		super(next);
 		this.tokenType = tokenType;
 	}
 	
 	@Override
-	protected boolean matches(Token token) {
+	protected boolean matches(Token token, StateMachine stateMachine) {
 		return this.tokenType.equals(token.getType());
 	}
 }

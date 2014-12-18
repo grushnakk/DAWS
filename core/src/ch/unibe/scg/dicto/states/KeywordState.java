@@ -4,21 +4,18 @@ import ch.unibe.scg.dicto.Token;
 import ch.unibe.scg.dicto.TokenType;
 
 public class KeywordState extends TokenTypeState {
-	
-	protected final State next;
 
 	public KeywordState(TokenType tokenType, State next) {
-		super(tokenType);
-		this.next = next;
+		super(tokenType, next);
 	}
 
 	@Override
-	protected State success(Token token) {
+	protected State success(Token token, StateMachine stateMachine) {
 		return next;
 	}
 
 	@Override
-	protected void failure(Token token) {
+	protected void failure(Token token, StateMachine stateMachine) {
 	}
 
 }
