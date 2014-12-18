@@ -79,7 +79,7 @@ public class Tokenizer extends CompositeParser {
 	public List<Token> tokenize(String input) {
 		Result result = parse(new Context(input));
 		if(result.isFailure())
-			throw new TokenizerException("something went wrong"); //TODO the exception message :/
+			throw new TokenizerException("something went wrong"); //FIXME the exception message :/
 		return result.<List<Token>>get();
 	}
 

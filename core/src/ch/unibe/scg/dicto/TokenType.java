@@ -12,6 +12,15 @@ public class TokenType {
 		this.name = name;
 		this.parser = parser;
 	}
+
+	/**
+	 * creates a TokenType without parser. It should be used for Type checking.
+	 * @param name
+	 */
+	public TokenType(String name) {
+		this.name = name;
+		this.parser = null;
+	}
 	
 	public String getName() {
 		return name;
