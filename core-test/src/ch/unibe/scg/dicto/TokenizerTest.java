@@ -1,18 +1,19 @@
 package ch.unibe.scg.dicto;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 import ch.unibe.scg.dicto.model.DictoAdapter;
 import ch.unibe.scg.dicto.model.DictoConfiguration;
+import ch.unibe.scg.dicto.model.DictoVariableArgument;
 import ch.unibe.scg.dicto.model.DictoVariableDefinitionStatement;
 import ch.unibe.scg.dicto.model.DictoVariableType;
-import ch.unibe.scg.dicto.model.DictoVariableArgument;
 
 public class TokenizerTest {
 
