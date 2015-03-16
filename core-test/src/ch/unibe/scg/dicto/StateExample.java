@@ -1,4 +1,4 @@
-package ch.unie.scg.dicto;
+package ch.unibe.scg.dicto;
 
 public class StateExample {
 
