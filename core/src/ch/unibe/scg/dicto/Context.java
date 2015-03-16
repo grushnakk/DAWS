@@ -20,6 +20,10 @@ public class Context {
 		return content.charAt(index);
 	}
 	
+	public char charAt(int offset) {
+		return content.charAt(index + offset);
+	}
+	
 	public int size() {
 		return content.length();
 	}
@@ -49,4 +53,6 @@ public class Context {
 	public void incrementIndex() {
 		index++;
 	}
+	
+	
 }

@@ -1,6 +1,6 @@
 package ch.unibe.scg.dicto;
 
-public class StateMachine {
+public class StateMachine implements Runnable {
 
 	private State current;
 	private final Context context;
@@ -22,5 +22,14 @@ public class StateMachine {
 	
 	public Environment getEnvironment() {
 		return environment;
+	}
+	
+	public State getCurrentState() {
+		return current;
+	}
+	
+	public void run() {
+		while(context.sizeLeft() >= 0)
+			current.process(this);
 	}
 }
