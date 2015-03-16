@@ -15,7 +15,7 @@ public class RepeatAcceptor extends Acceptor {
 	public int accept(Context context, int offset) {
 		int length = 0;
 		int result = FAILURE;
-		while(context.size() > 0 && (result = baseAcceptor.accept(context, length)) != FAILURE)
+		while(context.size() > length && (result = baseAcceptor.accept(context, offset + length)) != FAILURE)
 			length += result;
 		return length;
 	}

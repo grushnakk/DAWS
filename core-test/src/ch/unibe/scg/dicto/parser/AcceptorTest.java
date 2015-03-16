@@ -96,4 +96,12 @@ public class AcceptorTest {
 		int expected = 2;
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void repeatcba() {
+		Context context = new Context("cba");
+		int actual = repeatAcc.accept(context, 0);
+		int expected = 3;
+		assertEquals(expected, actual);
+	}
 }
