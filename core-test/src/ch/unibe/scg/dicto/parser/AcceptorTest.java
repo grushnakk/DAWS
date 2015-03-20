@@ -7,17 +7,19 @@ import org.junit.Test;
 
 import ch.unibe.scg.dicto.Context;
 import ch.unibe.scg.dicto.parser.Acceptor;
+import ch.unibe.scg.dicto.parser.Result.State;
 
 public class AcceptorTest {
 
-	private Acceptor acceptor;
+	private Acceptor complexAcc;
 	private Acceptor abcRange;
 	private Acceptor strAcc;
 	private Acceptor repeatAcc;
 	
 	@Before
 	public void setUp() {
-		acceptor = new ChainAcceptor(new RepeatAcceptor(new RangeAcceptor("abcdefghijklmnopqrstuvwxyz")), 
+		complexAcc = new ChainAcceptor(
+				new RepeatAcceptor(new RangeAcceptor("abc")), 
 				new OptionalAcceptor(new RepeatAcceptor(new RangeAcceptor(" \t\r\n"))), 
 				new StringAcceptor(":"));
 		abcRange = new RangeAcceptor("abc");
@@ -27,81 +29,121 @@ public class AcceptorTest {
 	
 	@Test
 	public void full() {
-		String input = "hello :";
-		int actual = acceptor.accept(new Context(input), 0);
-		int expected = 7;
+		String input = "abcca :";
+		Result actual = complexAcc.accept(new Context(input));
+		Result expected = new Result(0, 7, State.SUCCESS);
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void rangeA() {
 		Context context = new Context("a");
-		int actual = abcRange.accept(context, 0);
-		int expected = 1;
+		Result actual = abcRange.accept(context);
+		Result expected = new Result(0, 1, State.SUCCESS);
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void rangeC() {
 		Context context = new Context("c");
-		int actual = abcRange.accept(context, 0);
-		int expected = 1;
+		Result actual = abcRange.accept(context);
+		Result expected = new Result(0, 1, State.SUCCESS);
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void rangeD() {
 		Context context = new Context("d");
-		int actual = abcRange.accept(context, 0);
-		int expected = -1;
+		Result actual = abcRange.accept(context);
+		Result expected = new Result(0, 0, State.FAILURE);
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void rangeAA() {
 		Context context = new Context("aa");
-		int actual = abcRange.accept(context, 1);
-		int expected = 1;
+		Result actual = abcRange.accept(context, new Result(0, 1, State.SUCCESS));
+		Result expected = new Result(0, 2, State.SUCCESS);
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void stringHello() {
 		Context context = new Context("hello");
-		int actual = strAcc.accept(context, 0);
-		int expected = 5;
+		Result actual = strAcc.accept(context);
+		Result expected = new Result(0, 5, State.SUCCESS);
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void stringHell() {
 		Context context = new Context("hell");
-		int actual = strAcc.accept(context, 0);
-		int expected = 4;
+		Result actual = strAcc.accept(context);
+		Result expected = new Result(0, 4, State.INCOMPLETE);
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void stringBello() {
 		Context context = new Context("bello");
-		int actual = strAcc.accept(context, 0);
-		int expected = -1;
+		Result actual = strAcc.accept(context);
+		Result expected = new Result(0, 0, State.FAILURE);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void stringbbbHello() {
+		Context context = new Context("bbbhello");
+		Result actual = strAcc.accept(context, new Result(0, 3, State.SUCCESS));
+		Result expected = new Result(0, 8, State.SUCCESS);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void stringbbbHell() {
+		Context context = new Context("bbbhell");
+		Result actual = strAcc.accept(context, new Result(0, 3, State.SUCCESS));
+		Result expected = new Result(0, 7, State.INCOMPLETE);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void stringbbbBello() {
+		Context context = new Context("bbbBello");
+		Result actual = strAcc.accept(context, new Result(0, 3, State.SUCCESS));
+		Result expected = new Result(0, 3, State.FAILURE);
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void repeatcb() {
 		Context context = new Context("cb");
-		int actual = repeatAcc.accept(context, 0);
-		int expected = 2;
+		Result actual = repeatAcc.accept(context);
+		Result expected = new Result(0, 2, State.SUCCESS);
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void repeatcba() {
 		Context context = new Context("cba");
-		int actual = repeatAcc.accept(context, 0);
-		int expected = 3;
+		Result actual = repeatAcc.accept(context);
+		Result expected = new Result(0, 3, State.SUCCESS);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void repeatcbad() {
+		Context context = new Context("cbad");
+		Result actual = repeatAcc.accept(context);
+		Result expected = new Result(0, 3, State.SUCCESS);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void repeatd() {
+		Context context = new Context("d");
+		Result actual = repeatAcc.accept(context);
+		Result expected = new Result(0, 0, State.FAILURE);
 		assertEquals(expected, actual);
 	}
 }

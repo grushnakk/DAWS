@@ -1,6 +1,7 @@
 package ch.unibe.scg.dicto.parser;
 
 import ch.unibe.scg.dicto.Context;
+import ch.unibe.scg.dicto.parser.Result.State;
 
 public class RangeAcceptor extends Acceptor {
 
@@ -11,13 +12,16 @@ public class RangeAcceptor extends Acceptor {
 	}
 	
 	@Override
-	public int accept(Context context, int offset) {
-		char c = context.charAt(offset);
+	public Result accept(Context context, Result result) {
+		char c = context.charAt(result.end);
 		for(int i = 0; i < range.length(); i++) {
-			if(range.charAt(i) == c)
-				return 1;
+			if(range.charAt(i) == c) {
+				result.end++;
+				return result;
+			}
 		}
-		return FAILURE;
+		result.state = State.FAILURE;
+		return result;
 	}
 
 }

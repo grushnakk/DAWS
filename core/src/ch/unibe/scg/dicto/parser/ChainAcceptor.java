@@ -23,15 +23,14 @@ public class ChainAcceptor extends Acceptor {
 	}
 
 	@Override
-	public int accept(Context context, final int offset) {
-		int length = 0;
+	public Result accept(Context context, Result result) {
 		for(Acceptor acceptor : acceptors) {
-			int result = acceptor.accept(context, offset + length);
-			if(result == FAILURE)
-				return FAILURE;
-			length += result;
+			acceptor.accept(context, result);
+			System.out.println(result);
+			if(!result.isSuccess())
+				return result;
 		}
-		return length;
+		return result;
 	}
 
 }

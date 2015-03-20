@@ -1,14 +1,13 @@
 package ch.unibe.scg.dicto.parser;
 
 import ch.unibe.scg.dicto.Context;
+import ch.unibe.scg.dicto.parser.Result.State;
 
 public abstract class Acceptor {
 
-	public static final int FAILURE = -1;
-
-	public abstract int accept(Context context, int offset);
+	public abstract Result accept(Context context, Result result);
 	
-	public int accept(Context context) {
-		return accept(context, 0);
+	public Result accept(Context context) {
+		return accept(context, new Result(context.getCurrentIndex(), context.getCurrentIndex(), State.SUCCESS));
 	}
 }
