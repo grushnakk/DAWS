@@ -16,7 +16,7 @@ public class RepeatAcceptor extends Acceptor {
 		if(result.isFailure()) return result;
 		AcceptorResult copy = null;
 		AcceptorResult save = new AcceptorResult(result);
-		boolean accOnce = false; //XXX is this ugly
+		boolean accOnce = false; //XXX is this ugly?
 		do {
 			copy = new AcceptorResult(save);
 			baseAcceptor.accept(context, copy);

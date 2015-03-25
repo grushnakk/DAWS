@@ -2,20 +2,20 @@ package ch.unibe.scg.dicto.states;
 
 import ch.unibe.scg.dicto.parser.Context;
 
-public class StateMachine implements Runnable {
+public class StateMachine {
 
-	private State current;
+	private State active;
 	private final Context context;
 	private final Environment environment;
 	
 	public StateMachine(State start, Context context, Environment environment) {
-		this.current = start;
+		this.active = start;
 		this.context = context;
 		this.environment = environment;
 	}
 	
-	public void setState(State state) {
-		this.current = state;
+	public void setActiveState(State state) {
+		this.active = state;
 	}
 	
 	public Context getContext() {
@@ -26,12 +26,15 @@ public class StateMachine implements Runnable {
 		return environment;
 	}
 	
-	public State getCurrentState() {
-		return current;
+	public State getActiveState() {
+		return active;
 	}
 	
-	public void run() {
-		while(context.sizeLeft() >= 0)
-			current.process(environment, context);
+	public StateResult run() { //TODO better name
+		StateResult result = null;
+		do {
+			result = active.process(context, environment);
+		} while(result.isNext());
+		return result;
 	}
 }

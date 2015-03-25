@@ -1,31 +1,30 @@
 package ch.unibe.scg.dicto.states;
 
-public class StateResult {
+import java.util.List;
+
+public abstract class StateResult {
 
 	public static enum Type {
-		INCOMPLETE, FAILURE, SUCCESS;
+		SUCCESS, NEXT, ERROR;
 	}
 	
-	public State nextState;
-	public Type type;
-	public String errorMessage;
+	public abstract Type getType();
 	
-	public static StateResult success(State nextState) {
-		StateResult result = new StateResult();
-		result.type = Type.SUCCESS;
-		result.nextState = nextState;
-		return result;
+	public abstract State getNextState();
+	
+	public abstract List<String> getSuggestions();
+	
+	public abstract String getErrorMessage();
+	
+	public boolean isError() {
+		return getType() == Type.ERROR;
 	}
 	
-	public static StateResult failure() {
-		StateResult result = new StateResult();
-		result.type = Type.FAILURE;
-		return result;
+	public boolean isNext() {
+		return getType() == Type.NEXT;
 	}
 	
-	public static StateResult incomplete() {
-		StateResult result = new StateResult();
-		result.type = Type.INCOMPLETE;
-		return result;
+	public boolean isSuccess() {
+		return getType() == Type.SUCCESS;
 	}
 }

@@ -6,31 +6,45 @@ import java.util.List;
 import ch.unibe.scg.dicto.parser.AcceptorResult;
 import ch.unibe.scg.dicto.parser.Context;
 
+// the last success binds
 public class State {
+
+	private final List<Path> paths;
 	
-	public List<Path> paths;
-	
-	public State(Path... paths) {
-		this.paths = new ArrayList<>();
-		for(Path a : paths)
-			this.paths.add(a);
+	public State(List<Path> paths) {
+		this.paths = new ArrayList<>(paths);
 	}
 	
-	public StateResult process(Environment env, Context context) {
-		AcceptorResult res = null;
+	public StateResult process(Context context, Environment env) { //TODO better name
+		StateResult lastSuccess = null;
+		AcceptorResult lastSuccessAcceptor = null;
+		AcceptorResult acceptorResult = null;
 		for(Path path : paths) {
-			res = path.accept(context);
-			switch(res.state) {
+			acceptorResult = path.accept(context);
+			switch(acceptorResult.state) {
 			case FAILURE:
 				break;
 			case INCOMPLETE:
-				context.incrementIndex(res.size());
-				return StateResult.incomplete();
+				context.apply(acceptorResult);
+				return success(env);
 			case SUCCESS:
-				context.incrementIndex(res.size());
-				return path.onSuccess(env, res);
+				lastSuccess = path.onSuccess(env, acceptorResult);
+				lastSuccessAcceptor = acceptorResult;
+				break;
 			}
 		}
-		return StateResult.failure();
+		if(lastSuccess != null) {
+			context.apply(lastSuccessAcceptor);
+			return lastSuccess;
+		}
+		return error(context);
+	}
+	
+	private StateResult success(Environment env) {
+		throw new UnsupportedOperationException("not supported yet."); //TODO implement
+	}
+	
+	private StateResult error(Context context) {
+		throw new UnsupportedOperationException("not supported yet."); //TODO implement
 	}
 }

@@ -54,5 +54,7 @@ public class Context {
 		index++;
 	}
 	
-	
+	public void apply(AcceptorResult result) {
+		incrementIndex(result.size());
+	}
 }
