@@ -30,6 +30,6 @@ public class StateMachine implements Runnable {
 	
 	public void run() {
 		while(context.sizeLeft() >= 0)
-			current.process(this);
+			current.process(environment, context);
 	}
 }

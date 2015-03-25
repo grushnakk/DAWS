@@ -15,8 +15,7 @@ public class State {
 			this.paths.add(a);
 	}
 	
-	public void process(StateMachine stateMachine) {
-		Context context = stateMachine.getContext();
+	public StateResult process(Environment env, Context context) {
 		AcceptorResult res = null;
 		for(Path path : paths) {
 			res = path.accept(context);
@@ -25,14 +24,12 @@ public class State {
 				break;
 			case INCOMPLETE:
 				context.incrementIndex(res.size());
-				return;
+				return StateResult.incomplete();
 			case SUCCESS:
 				context.incrementIndex(res.size());
-				path.onSuccess(stateMachine, res);
-				break;
-			default:
-				break;
+				return path.onSuccess(env, res);
 			}
 		}
+		return StateResult.failure();
 	}
 }
