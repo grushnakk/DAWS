@@ -8,7 +8,7 @@ public class State {
 	public List<StateAction> actions;
 	
 	public State(StateAction... actions) {
-		this.actions = new ArrayList();
+		this.actions = new ArrayList<>();
 		for(StateAction a : actions)
 			this.actions.add(a);
 	}
