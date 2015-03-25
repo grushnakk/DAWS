@@ -4,10 +4,10 @@ import java.util.List;
 
 public class Next extends StateResult {
 
-	private final State nextState;
+	private final int nextStateID;
 	
-	public Next(State nextState) {
-		this.nextState = nextState;
+	public Next(int nextStateID) {
+		this.nextStateID = nextStateID;
 	}
 	
 	@Override
@@ -16,8 +16,8 @@ public class Next extends StateResult {
 	}
 
 	@Override
-	public State getNextState() {
-		return nextState;
+	public int getNextStateID() {
+		return nextStateID;
 	}
 
 	@Override

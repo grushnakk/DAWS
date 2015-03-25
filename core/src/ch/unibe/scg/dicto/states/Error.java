@@ -16,7 +16,7 @@ public class Error extends StateResult {
 	}
 
 	@Override
-	public State getNextState() {
+	public int getNextStateID() {
 		throw new UnsupportedOperationException("getNextState is not supported by Type Error");
 	}
 

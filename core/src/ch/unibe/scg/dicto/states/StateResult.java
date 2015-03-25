@@ -10,7 +10,7 @@ public abstract class StateResult {
 	
 	public abstract Type getType();
 	
-	public abstract State getNextState();
+	public abstract int getNextStateID();
 	
 	public abstract List<String> getSuggestions();
 	
