@@ -15,6 +15,13 @@ public class State {
 		this.paths = new ArrayList<>(paths);
 	}
 	
+	public State(Path... paths) {
+		this.paths = new ArrayList<>();
+		for(Path path : paths) {
+			this.paths.add(path);
+		}
+	}
+	
 	public StateResult process(Context context, Environment env) { //TODO better name
 		StateResult lastSuccess = null;
 		AcceptorResult lastSuccessAcceptor = null;
