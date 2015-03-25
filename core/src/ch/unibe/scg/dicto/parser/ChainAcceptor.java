@@ -26,7 +26,6 @@ public class ChainAcceptor extends Acceptor {
 	public Result accept(Context context, Result result) {
 		for(Acceptor acceptor : acceptors) {
 			acceptor.accept(context, result);
-			System.out.println(result);
 			if(!result.isSuccess())
 				return result;
 		}

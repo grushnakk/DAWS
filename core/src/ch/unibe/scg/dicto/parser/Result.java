@@ -1,5 +1,7 @@
 package ch.unibe.scg.dicto.parser;
 
+import java.util.HashMap;
+
 public class Result {
 	
 	public static enum State {
@@ -7,12 +9,14 @@ public class Result {
 	}
 
 	public State state;
+	private HashMap<String, String> regions;
 	public int begin, end;
 	
 	public Result(int begin, int end, State state) {
 		this.state = state;
 		this.begin = begin;
 		this.end = end;
+		this.regions = new HashMap<String, String>();
 	}
 	
 
@@ -20,16 +24,17 @@ public class Result {
 		set(result);
 	}
 	
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + begin;
 		result = prime * result + end;
+		result = prime * result + ((regions == null) ? 0 : regions.hashCode());
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -44,11 +49,17 @@ public class Result {
 			return false;
 		if (end != other.end)
 			return false;
+		if (regions == null) {
+			if (other.regions != null)
+				return false;
+		} else if (!regions.equals(other.regions))
+			return false;
 		if (state != other.state)
 			return false;
 		return true;
 	}
-	
+
+
 	public boolean isFailure() {
 		return state == State.FAILURE;
 	}
@@ -65,15 +76,26 @@ public class Result {
 		return end - begin;
 	}
 
+	
 	@Override
 	public String toString() {
-		return "Result [state=" + state + ", begin=" + begin + ", end=" + end
-				+ "]";
+		return "Result [state=" + state + ", regions=" + regions + ", begin="
+				+ begin + ", end=" + end + "]";
 	}
-	
+
+
 	public void set(Result result) {
 		begin = result.begin;
 		end = result.end;
 		state = result.state;
+		regions = new HashMap<String, String>(result.regions);
+	}
+	
+	public void addRegion(String key, String value) {
+		regions.put(key, value);
+	}
+	
+	public String getRegion(String key) {
+		return regions.get(key);
 	}
 }

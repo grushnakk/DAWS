@@ -15,11 +15,16 @@ public class AcceptorTest {
 	private Acceptor abcRange;
 	private Acceptor strAcc;
 	private Acceptor repeatAcc;
+	private Acceptor regionAcc;
 	
 	@Before
 	public void setUp() {
 		complexAcc = new ChainAcceptor(
 				new RepeatAcceptor(new RangeAcceptor("abc")), 
+				new OptionalAcceptor(new RepeatAcceptor(new RangeAcceptor(" \t\r\n"))), 
+				new StringAcceptor(":"));
+		regionAcc = new ChainAcceptor(
+				new RegionAcceptor("VAR_NAME", new RepeatAcceptor(new RangeAcceptor("abc"))), 
 				new OptionalAcceptor(new RepeatAcceptor(new RangeAcceptor(" \t\r\n"))), 
 				new StringAcceptor(":"));
 		abcRange = new RangeAcceptor("abc");
@@ -33,6 +38,18 @@ public class AcceptorTest {
 		Result actual = complexAcc.accept(new Context(input));
 		Result expected = new Result(0, 7, State.SUCCESS);
 		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void region() {
+		String input = "abcca :";
+		Result actualResult = regionAcc.accept(new Context(input));
+		String actual = actualResult.getRegion("VAR_NAME");
+		String expected = "abcca";
+		assertEquals(expected, actual);
+		Result expectedResult = new Result(0, 7, State.SUCCESS);
+		expectedResult.addRegion("VAR_NAME", "abcca");
+		assertEquals(expectedResult, actualResult);
 	}
 	
 	@Test
