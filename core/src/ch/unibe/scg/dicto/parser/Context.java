@@ -1,4 +1,4 @@
-package ch.unibe.scg.dicto;
+package ch.unibe.scg.dicto.parser;
 
 
 /**

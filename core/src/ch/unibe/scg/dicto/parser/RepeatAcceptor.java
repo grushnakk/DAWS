@@ -1,7 +1,6 @@
 package ch.unibe.scg.dicto.parser;
 
 
-import ch.unibe.scg.dicto.Context;
 import ch.unibe.scg.dicto.parser.AcceptorResult.State;
 
 public class RepeatAcceptor extends Acceptor {

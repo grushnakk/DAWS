@@ -1,6 +1,5 @@
 package ch.unibe.scg.dicto.parser;
 
-import ch.unibe.scg.dicto.Context;
 
 public class RegionAcceptor extends Acceptor {
 

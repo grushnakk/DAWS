@@ -1,4 +1,4 @@
-package ch.unibe.scg.dicto;
+package ch.unibe.scg.dicto.states;
 
 public class StateResult {
 

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ch.unibe.scg.dicto.Context;
-
 
 public class ChainAcceptor extends Acceptor {
 	

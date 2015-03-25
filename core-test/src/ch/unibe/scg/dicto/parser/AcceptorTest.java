@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.unibe.scg.dicto.Context;
 import ch.unibe.scg.dicto.parser.Acceptor;
 import ch.unibe.scg.dicto.parser.AcceptorResult.State;
 

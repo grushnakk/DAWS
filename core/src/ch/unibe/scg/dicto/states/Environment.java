@@ -1,4 +1,4 @@
-package ch.unibe.scg.dicto;
+package ch.unibe.scg.dicto.states;
 
 import java.util.Collections;
 import java.util.List;
