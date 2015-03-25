@@ -7,7 +7,7 @@ import ch.unibe.scg.dicto.parser.Context;
 
 public class StateMachine {
 
-	private State active;
+	private int activeStateID;
 	private Map<Integer, State> stateMap;
 	private final Context context;
 	private final Environment environment;
@@ -16,15 +16,15 @@ public class StateMachine {
 		this.stateMap = new HashMap<Integer, State>(stateMap);
 		this.context = context;
 		this.environment = environment;
-		setStateToActive(activeStateID);
+		this.activeStateID = activeStateID;
 	}
 	
 	public StateMachine(Context context, Environment environment, int activeStateID) {
 		this(context, environment, activeStateID, new HashMap<Integer, State>());
 	}
 	
-	public void setStateToActive(int stateID) { //TODO long name
-		this.active = stateMap.get(stateID);
+	public void setActiveStateID (int stateID) {
+		this.activeStateID = stateID;
 	}
 	
 	public void addState(int stateID, State state) {
@@ -35,6 +35,10 @@ public class StateMachine {
 		return stateMap.containsKey(stateID);
 	}
 	
+	public State resolveStateID(int stateID) {
+		return stateMap.get(stateID);
+	}
+	
 	public Context getContext() {
 		return context;
 	}
@@ -43,14 +47,14 @@ public class StateMachine {
 		return environment;
 	}
 	
-	public State getActiveState() {
-		return active;
+	public int getActiveStateID() {
+		return activeStateID;
 	}
 	
 	public StateResult run() { //TODO better name
 		StateResult result = null;
 		do {
-			result = active.process(context, environment);
+			result = resolveStateID(activeStateID).process(context, environment);
 		} while(result.isNext());
 		return result;
 	}
