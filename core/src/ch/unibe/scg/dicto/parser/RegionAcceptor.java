@@ -13,7 +13,7 @@ public class RegionAcceptor extends Acceptor {
 	}
 	
 	@Override
-	public Result accept(Context context, Result result) {
+	public AcceptorResult accept(Context context, AcceptorResult result) {
 		if(result.isFailure()) return result;
 		int temp = result.end;
 		baseAcceptor.accept(context, result);

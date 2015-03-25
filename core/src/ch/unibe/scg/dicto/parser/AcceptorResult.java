@@ -2,7 +2,7 @@ package ch.unibe.scg.dicto.parser;
 
 import java.util.HashMap;
 
-public class Result {
+public class AcceptorResult {
 	
 	public static enum State {
 		FAILURE, SUCCESS, INCOMPLETE;
@@ -12,7 +12,7 @@ public class Result {
 	private HashMap<String, String> regions;
 	public int begin, end;
 	
-	public Result(int begin, int end, State state) {
+	public AcceptorResult(int begin, int end, State state) {
 		this.state = state;
 		this.begin = begin;
 		this.end = end;
@@ -20,7 +20,7 @@ public class Result {
 	}
 	
 
-	public Result(Result result) {
+	public AcceptorResult(AcceptorResult result) {
 		set(result);
 	}
 	
@@ -44,7 +44,7 @@ public class Result {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Result other = (Result) obj;
+		AcceptorResult other = (AcceptorResult) obj;
 		if (begin != other.begin)
 			return false;
 		if (end != other.end)
@@ -84,7 +84,7 @@ public class Result {
 	}
 
 
-	public void set(Result result) {
+	public void set(AcceptorResult result) {
 		begin = result.begin;
 		end = result.end;
 		state = result.state;

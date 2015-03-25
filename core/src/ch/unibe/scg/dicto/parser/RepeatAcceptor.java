@@ -2,7 +2,7 @@ package ch.unibe.scg.dicto.parser;
 
 
 import ch.unibe.scg.dicto.Context;
-import ch.unibe.scg.dicto.parser.Result.State;
+import ch.unibe.scg.dicto.parser.AcceptorResult.State;
 
 public class RepeatAcceptor extends Acceptor {
 
@@ -13,13 +13,13 @@ public class RepeatAcceptor extends Acceptor {
 	}
 	
 	@Override
-	public Result accept(Context context, final Result result) {
+	public AcceptorResult accept(Context context, final AcceptorResult result) {
 		if(result.isFailure()) return result;
-		Result copy = null;
-		Result save = new Result(result);
+		AcceptorResult copy = null;
+		AcceptorResult save = new AcceptorResult(result);
 		boolean accOnce = false; //XXX is this ugly
 		do {
-			copy = new Result(save);
+			copy = new AcceptorResult(save);
 			baseAcceptor.accept(context, copy);
 			if(!copy.isFailure()) {
 				save = copy;
@@ -30,5 +30,10 @@ public class RepeatAcceptor extends Acceptor {
 		if(!accOnce)
 			result.state = State.FAILURE;
 		return result;
+	}
+	
+	@Override
+	public Acceptor repeat() {
+		return this;
 	}
 }

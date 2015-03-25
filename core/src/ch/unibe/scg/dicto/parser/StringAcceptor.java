@@ -1,7 +1,7 @@
 package ch.unibe.scg.dicto.parser;
 
 import ch.unibe.scg.dicto.Context;
-import ch.unibe.scg.dicto.parser.Result.State;
+import ch.unibe.scg.dicto.parser.AcceptorResult.State;
 
 public class StringAcceptor extends Acceptor {
 
@@ -12,7 +12,7 @@ public class StringAcceptor extends Acceptor {
 	}
 	
 	@Override
-	public Result accept(Context context, Result result) {
+	public AcceptorResult accept(Context context, AcceptorResult result) {
 		if(result.state == State.FAILURE) return result;
 		int length = Math.min(context.size() - result.end, match.length());
 		String actual = context.substring(result.end, result.end + length);

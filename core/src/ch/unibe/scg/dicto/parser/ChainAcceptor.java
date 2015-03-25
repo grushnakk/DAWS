@@ -23,7 +23,7 @@ public class ChainAcceptor extends Acceptor {
 	}
 
 	@Override
-	public Result accept(Context context, Result result) {
+	public AcceptorResult accept(Context context, AcceptorResult result) {
 		for(Acceptor acceptor : acceptors) {
 			acceptor.accept(context, result);
 			if(!result.isSuccess())
@@ -32,4 +32,10 @@ public class ChainAcceptor extends Acceptor {
 		return result;
 	}
 
+	@Override
+	public Acceptor chain(Acceptor... acceptors) {
+		for(Acceptor acc : acceptors)
+			this.acceptors.add(acc);
+		return this;
+	}
 }
