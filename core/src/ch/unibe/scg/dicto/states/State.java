@@ -35,7 +35,7 @@ public class State {
 				context.apply(acceptorResult);
 				return success(env);
 			case SUCCESS:
-				lastSuccess = path.onSuccess(env, acceptorResult);
+				lastSuccess = path.onNext(env, acceptorResult);
 				lastSuccessAcceptor = acceptorResult;
 				break;
 			}
