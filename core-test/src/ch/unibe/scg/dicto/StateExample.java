@@ -1,15 +1,12 @@
 package ch.unibe.scg.dicto;
 
-import static ch.unibe.scg.dicto.parser.Acceptors.RANGE_DIGITS;
-import static ch.unibe.scg.dicto.parser.Acceptors.RANGE_LETTERS;
-import static ch.unibe.scg.dicto.parser.Acceptors.optionalWhitespace;
-import static ch.unibe.scg.dicto.parser.Acceptors.range;
-import static ch.unibe.scg.dicto.parser.Acceptors.string;
+import static ch.unibe.scg.dicto.parser.Acceptors.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.unibe.scg.dicto.model.Environment;
+import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.AcceptorResult;
 import ch.unibe.scg.dicto.states.LangError;
 import ch.unibe.scg.dicto.states.Next;
@@ -47,7 +44,33 @@ public class StateExample {
 				})
 		);
 		
+		State state_1 = new State(new Path(range(RANGE_DIGITS + RANGE_LETTERS + "_").repeat().region("TYPE_NAME").chain(range(RANGE_HOR_WHITESPACE).repeat()),
+				new NextAction() {
+					
+					@Override
+					public StateResult onNext(Environment env, AcceptorResult result) {
+						String type = result.getRegion("TYPE_NAME");
+						if(!env.isTypeDefined(type))
+							return new LangError("Unknown type: " + type);
+						env.writeCache("TYPE_NAME", type);
+						return new Next(2);
+					}
+				},
+				new SuggestAction() {
+					
+					@Override
+					public List<String> suggestions(Environment environment) {
+						List<String> suggestions = new ArrayList<>();
+						for(VariableType type : environment.getVariableTypes()) {
+							suggestions.add(type.getName());
+						}
+						return suggestions;
+					}
+				})
+				);
+		
 		StateMachine stateMachine = new StateMachine(0);
 		stateMachine.addState(0, state_0);
+		stateMachine.addState(1, state_1);
 	}
 }

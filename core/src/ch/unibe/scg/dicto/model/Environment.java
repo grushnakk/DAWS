@@ -23,6 +23,14 @@ public class Environment {
 		return false; //TODO method stub
 	}
 	
+	public boolean isTypeDefined(String typeName) {
+		return true; //TODO method stub
+	}
+	
+	public List<VariableType> getVariableTypes()  {
+		return null; //TODO method stub
+	}
+	
 	public void writeCache(String key, String value) {
 		//TODO method stub
 	}
@@ -32,6 +40,6 @@ public class Environment {
 	}
 	
 	public void resetCache() {
-		//TODO method stub6
+		//TODO method stub
 	}
 }
