@@ -22,6 +22,10 @@ public class StateMachine {
 		this.activeStateID = activeStateID;
 	}
 	
+	public StateMachine(int activeStateID) {
+		this(null, null, activeStateID, new HashMap<Integer, State>());
+	}
+	
 	public StateMachine(Context context, Environment environment, int activeStateID) {
 		this(context, environment, activeStateID, new HashMap<Integer, State>());
 	}

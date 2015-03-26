@@ -11,7 +11,6 @@ import java.util.List;
 
 import ch.unibe.scg.dicto.model.Environment;
 import ch.unibe.scg.dicto.parser.AcceptorResult;
-import ch.unibe.scg.dicto.parser.Context;
 import ch.unibe.scg.dicto.states.LangError;
 import ch.unibe.scg.dicto.states.Next;
 import ch.unibe.scg.dicto.states.NextAction;
@@ -48,7 +47,7 @@ public class StateExample {
 				})
 		);
 		
-		StateMachine stateMachine = new StateMachine(new Context("hallo :"), null, 0);
+		StateMachine stateMachine = new StateMachine(0);
 		stateMachine.addState(0, state_0);
 	}
 }
