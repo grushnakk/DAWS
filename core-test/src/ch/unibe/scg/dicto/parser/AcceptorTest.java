@@ -30,7 +30,7 @@ public class AcceptorTest {
 		strAcc = new StringAcceptor("hello");
 		repeatAcc = new RepeatAcceptor(abcRange);
 	}
-	
+		
 	@Test
 	public void full() {
 		String input = "abcca :";
