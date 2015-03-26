@@ -12,6 +12,8 @@ public class StateMachine {
 	private Map<Integer, State> stateMap;
 	private final Context context;
 	private final Environment environment;
+	private boolean completed;
+	private StateResult result;
 	
 	public StateMachine(Context context, Environment environment, int activeStateID, Map<Integer, State> stateMap) {
 		this.stateMap = new HashMap<Integer, State>(stateMap);
@@ -63,11 +65,26 @@ public class StateMachine {
 		return activeStateID;
 	}
 	
-	public StateResult run() { //TODO better name
+	public void run() { //TODO better name
+		if(isCompleted())
+			throw new IllegalStateException("every StateMachine can only be run once.");
 		StateResult result = null;
 		do {
 			result = resolveStateID(activeStateID).process(context, environment);
 		} while(result.isNext());
+		this.result = result;
+		this.completed = true;
+	}
+	
+	public boolean isCompleted() {
+		return completed;
+	}
+	
+	/**
+	 * null if StateMachine was not run yet.
+	 * @return
+	 */
+	public StateResult getResult() {
 		return result;
 	}
 }
