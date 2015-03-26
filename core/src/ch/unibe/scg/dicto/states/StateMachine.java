@@ -3,6 +3,7 @@ package ch.unibe.scg.dicto.states;
 import java.util.HashMap;
 import java.util.Map;
 
+import ch.unibe.scg.dicto.model.Environment;
 import ch.unibe.scg.dicto.parser.Context;
 
 public class StateMachine {
@@ -21,6 +22,17 @@ public class StateMachine {
 	
 	public StateMachine(Context context, Environment environment, int activeStateID) {
 		this(context, environment, activeStateID, new HashMap<Integer, State>());
+	}
+	
+	private StateMachine(StateMachine sm, Context context, Environment env) {
+		this.activeStateID = sm.activeStateID;
+		this.stateMap = new HashMap<>(sm.stateMap);
+		this.context = context;
+		this.environment = env;
+	}
+	
+	public StateMachine clone(Environment environment, Context context) {
+		return new StateMachine(this, context, environment);
 	}
 	
 	public void setActiveStateID (int stateID) {

@@ -1,11 +1,7 @@
-package ch.unibe.scg.dicto.states;
+package ch.unibe.scg.dicto.model;
 
 import java.util.Collections;
 import java.util.List;
-
-import ch.unibe.scg.dicto.model.Rule;
-import ch.unibe.scg.dicto.model.Variable;
-import ch.unibe.scg.dicto.model.VariableType;
 
 public class Environment {
 
@@ -21,5 +17,21 @@ public class Environment {
 	
 	public Environment copy() {
 		return new Environment(rules, variables, variableTypes);
+	}
+	
+	public boolean isVariableDefined(String varName) {
+		return false; //TODO method stub
+	}
+	
+	public void writeCache(String key, String value) {
+		//TODO method stub
+	}
+	
+	public String readCache(String key) {
+		return ""; //TODO method stub
+	}
+	
+	public void resetCache() {
+		//TODO method stub6
 	}
 }

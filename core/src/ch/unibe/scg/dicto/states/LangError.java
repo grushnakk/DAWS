@@ -2,11 +2,11 @@ package ch.unibe.scg.dicto.states;
 
 import java.util.List;
 
-public class Error extends StateResult {
+public class LangError extends StateResult {
 	
 	private final String errorMessage;
 	
-	public Error(String message) {
+	public LangError(String message) {
 		this.errorMessage = message;
 	}
 
