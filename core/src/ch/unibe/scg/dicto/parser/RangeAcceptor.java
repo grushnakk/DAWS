@@ -12,6 +12,8 @@ public class RangeAcceptor extends Acceptor {
 	
 	@Override
 	public AcceptorResult accept(Context context, AcceptorResult result) {
+		if(result.isFailure()) return result;
+		if(result.end >= context.size()) return result;
 		char c = context.charAt(result.end);
 		for(int i = 0; i < range.length(); i++) {
 			if(range.charAt(i) == c) {
