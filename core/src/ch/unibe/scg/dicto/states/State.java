@@ -55,4 +55,13 @@ public class State {
 	private StateResult error(Context context) {
 		throw new UnsupportedOperationException("not supported yet."); //TODO implement
 	}
+	
+	public List<String> suggestions(Environment env) {
+		List<String> merged = new ArrayList<>();
+		for(Path path : paths) {
+			merged.addAll(path.suggestions(env));
+		}
+		return merged;
+	}
+	
 }

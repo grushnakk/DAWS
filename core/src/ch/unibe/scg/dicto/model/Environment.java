@@ -42,4 +42,8 @@ public class Environment {
 	public void resetCache() {
 		//TODO method stub
 	}
+	
+	public List<Variable> getVariables() {
+		return null; //TODO method stub
+	}
 }

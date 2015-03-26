@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.unibe.scg.dicto.model.Environment;
+import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.AcceptorResult;
 import ch.unibe.scg.dicto.states.LangError;
@@ -21,6 +22,44 @@ public class StateExample {
 
 	public static void main(String[] args) {
 		State state_0 = new State (
+				new Path(string("only"),
+				new NextAction() {
+					
+					@Override
+					public StateResult onNext(Environment env, AcceptorResult result) {
+						return new Next(20);
+					}
+				},
+				new SuggestAction() {
+					
+					@SuppressWarnings("serial")
+					@Override
+					public List<String> suggestions(Environment environment) {
+						return new ArrayList<String>(){{add("only");}};
+					}
+				}),
+				new Path(range(RANGE_LETTERS + RANGE_DIGITS + "_").repeat().region("VAR_NAME").chain(range(RANGE_HOR_WHITESPACE).repeat()),
+				new NextAction() {
+					
+					@Override
+					public StateResult onNext(Environment env, AcceptorResult result) {
+						String varName = result.getRegion("VAR_NAME");
+						if(env.isVariableDefined(varName))
+							return new LangError("Variable already defined: " + varName);
+						env.writeCache("VAR_NAME", varName);
+						return new Next(10);
+					}
+				}, new SuggestAction() {
+					
+					@Override
+					public List<String> suggestions(Environment environment) {
+						List<String> suggestions = new ArrayList<>();
+						for(Variable var : environment.getVariables()) {
+							suggestions.add(var.getName());
+						}
+						return suggestions;
+					}
+				}),
 				new Path(
 				range(RANGE_LETTERS + RANGE_DIGITS + "_").repeat().region("VAR_NAME")
 				.chain(optionalWhitespace(), string(":"), optionalWhitespace()),
@@ -72,5 +111,7 @@ public class StateExample {
 		StateMachine stateMachine = new StateMachine(0);
 		stateMachine.addState(0, state_0);
 		stateMachine.addState(1, state_1);
+		
+		
 	}
 }
