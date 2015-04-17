@@ -49,11 +49,11 @@ public class State {
 	}
 	
 	private StateResult success(Environment env) {
-		throw new UnsupportedOperationException("not supported yet."); //TODO implement
+		return new Success(suggestions(env));
 	}
 	
 	private StateResult error(Context context) {
-		throw new UnsupportedOperationException("not supported yet."); //TODO implement
+		return new LangError("didnt work"); //TODO implement
 	}
 	
 	public List<String> suggestions(Environment env) {

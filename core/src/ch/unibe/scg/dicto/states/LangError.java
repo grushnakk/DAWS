@@ -30,4 +30,8 @@ public class LangError extends StateResult {
 		return errorMessage;
 	}
 
+	@Override
+	public String toString() {
+		return "LangError [errorMessage=" + errorMessage + "]";
+	}
 }

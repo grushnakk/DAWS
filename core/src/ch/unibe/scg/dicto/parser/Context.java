@@ -45,8 +45,6 @@ public class Context {
 	}
 	
 	public void incrementIndex(int amount) {
-		if(amount <= 0)
-			throw new IllegalArgumentException("amount needs to be greater than zero, but was" + amount);
 		index += amount;
 	}
 	

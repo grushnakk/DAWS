@@ -24,7 +24,7 @@ public class RepeatAcceptor extends Acceptor {
 				save = copy;
 				accOnce = true;
 			}
-		} while(!copy.isFailure() && context.size() > save.end);
+		} while(!copy.isFailure() && context.size() > save.end + context.getCurrentIndex());
 		result.set(save);
 		if(!accOnce)
 			result.state = State.FAILURE;

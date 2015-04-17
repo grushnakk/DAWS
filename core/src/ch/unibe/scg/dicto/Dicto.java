@@ -1,0 +1,68 @@
+package ch.unibe.scg.dicto;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ch.unibe.scg.dicto.model.Environment;
+import ch.unibe.scg.dicto.parser.Acceptor;
+import ch.unibe.scg.dicto.parser.AcceptorResult;
+import ch.unibe.scg.dicto.states.Next;
+import ch.unibe.scg.dicto.states.NextAction;
+import ch.unibe.scg.dicto.states.Path;
+import ch.unibe.scg.dicto.states.State;
+import ch.unibe.scg.dicto.states.StateMachine;
+import ch.unibe.scg.dicto.states.StateResult;
+import ch.unibe.scg.dicto.states.SuggestAction;
+import static ch.unibe.scg.dicto.parser.Acceptors.*;
+
+public class Dicto {
+
+	public static final StateMachine DICTO_MACHINE;
+	
+	private static final int ID_START 				= 00;
+	private static final int ID_TYPE 				= 01;
+	private static final int ID_WITH_KEYWORD 		= 02;
+	private static final int ID_RULE 				= 10;
+	private static final int ID_KNOW_ID_AFTER_ONLY 	= 20;
+	
+	private static final String REGION_IDENTIFIER = "ID";
+	
+	private static SuggestAction NO_SUGGESTIONS;
+	private static Acceptor IDENTIFIER_ACCEPTOR;
+	private static Path NEW_ID_PATH;
+	private static Path TYPE_PATH;
+	
+	static {
+		buildParts();
+		//assemble everything
+		DICTO_MACHINE = new StateMachine(ID_START);
+		DICTO_MACHINE.addState(ID_START, new State(NEW_ID_PATH));
+		DICTO_MACHINE.addState(ID_TYPE, new State(TYPE_PATH));
+	}
+	
+	static void buildParts() {
+		IDENTIFIER_ACCEPTOR = range(RANGE_DIGITS + RANGE_LETTERS).repeat().region(REGION_IDENTIFIER);
+		NO_SUGGESTIONS = new SuggestAction() {
+			
+			@Override
+			public List<String> suggestions(Environment environment) {
+				return new ArrayList<>();
+			}
+		};
+		NEW_ID_PATH = new Path(IDENTIFIER_ACCEPTOR.chain(optionalWhitespace(), string("="), optionalWhitespace()), new NextAction() {
+			
+			@Override
+			public StateResult onNext(Environment env, AcceptorResult result) {
+				return new Next(ID_TYPE);
+			}
+		}, NO_SUGGESTIONS);
+		
+		TYPE_PATH = new Path(IDENTIFIER_ACCEPTOR, new NextAction() {
+			
+			@Override
+			public StateResult onNext(Environment env, AcceptorResult result) {
+				return new Next(ID_WITH_KEYWORD);
+			}
+		}, NO_SUGGESTIONS);
+	}
+}
