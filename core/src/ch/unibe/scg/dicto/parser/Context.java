@@ -20,8 +20,8 @@ public class Context {
 		return content.charAt(index);
 	}
 	
-	public char charAt(int offset) {
-		return content.charAt(index + offset);
+	public char charAt(int index) {
+		return content.charAt(index);
 	}
 	
 	public int size() {

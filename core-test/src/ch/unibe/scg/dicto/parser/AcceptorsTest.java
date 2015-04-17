@@ -9,20 +9,22 @@ import static org.junit.Assert.assertEquals;
 
 public class AcceptorsTest {
 
-	private Acceptor acceptor;
-	private Acceptor acceptor2;
+	private Acceptor acceptorABC;
+	private Acceptor acceptorUnknownID;
+	private Acceptor acceptorType;
 	
 	@Before
 	public void setUp() {		
-		acceptor = range("abc").repeat().region("VAR_NAME").chain(optionalWhitespace(), string(":"), optionalWhitespace());
-		acceptor2 = range(RANGE_LETTERS + RANGE_DIGITS + "_").repeat().region("VAR_NAME")
+		acceptorABC = range("abc").repeat().region("VAR_NAME").chain(optionalWhitespace(), string(":"), optionalWhitespace());
+		acceptorUnknownID = range(RANGE_LETTERS + RANGE_DIGITS + "_").repeat().region("VAR_NAME")
 				.chain(optionalWhitespace(), string(":"), optionalWhitespace());
+		acceptorType = range(RANGE_LETTERS + RANGE_DIGITS).repeat().region("TYPE").chain(optionalWhitespace());
 	}
 	
 	@Test
 	public void success() {
 		Context in = new Context("abbac: ");
-		AcceptorResult actual = acceptor.accept(in);
+		AcceptorResult actual = acceptorABC.accept(in);
 		AcceptorResult expected = new AcceptorResult(0, 7, State.SUCCESS);
 		expected.addRegion("VAR_NAME", "abbac");
 		assertEquals(expected, actual);
@@ -31,7 +33,7 @@ public class AcceptorsTest {
 	@Test
 	public void incomplete() {
 		Context in = new Context("abba ");
-		AcceptorResult actual = acceptor.accept(in);
+		AcceptorResult actual = acceptorABC.accept(in);
 		AcceptorResult expected = new AcceptorResult(0, 5, State.INCOMPLETE);
 		expected.addRegion("VAR_NAME", "abba");
 		assertEquals(expected, actual);
@@ -40,7 +42,7 @@ public class AcceptorsTest {
 	@Test
 	public void failure() {
 		Context in = new Context("abbac = ");
-		AcceptorResult actual = acceptor.accept(in);
+		AcceptorResult actual = acceptorABC.accept(in);
 		AcceptorResult expected = new AcceptorResult(0, 6, State.FAILURE);
 		expected.addRegion("VAR_NAME", "abbac");
 		assertEquals(expected, actual);
@@ -49,9 +51,37 @@ public class AcceptorsTest {
 	@Test
 	public void success2() {
 		Context in = new Context("hallo:");
-		AcceptorResult actual = acceptor2.accept(in);
+		AcceptorResult actual = acceptorUnknownID.accept(in);
 		AcceptorResult expected = new AcceptorResult(0, 6, State.SUCCESS);
 		expected.addRegion("VAR_NAME", "hallo");
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void unknownIDcomplete() {
+		Context in = new Context("View : ");
+		AcceptorResult actual = acceptorUnknownID.accept(in);
+		AcceptorResult expected = new AcceptorResult(0, 7, State.SUCCESS);
+		expected.addRegion("VAR_NAME", "View");
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void unknownIDincomplete() {
+		Context in = new Context("");
+		AcceptorResult actual = acceptorUnknownID.accept(in);
+		AcceptorResult expected = new AcceptorResult(0, 0, State.INCOMPLETE);
+		expected.addRegion("VAR_NAME", "");
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void successType() {
+		Context in = new Context("View: Package");
+		in.incrementIndex(6);
+		AcceptorResult actual = acceptorType.accept(in);
+		AcceptorResult expected = new AcceptorResult(6, 13, State.SUCCESS);
+		expected.addRegion("TYPE", "Package");
 		assertEquals(expected, actual);
 	}
 }

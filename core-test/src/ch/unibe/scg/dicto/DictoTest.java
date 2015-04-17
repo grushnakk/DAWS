@@ -32,7 +32,7 @@ public class DictoTest {
 	
 	@Test
 	public void newIdentifierComplete() {
-		StateResult stateResult = setUp("View =");
+		StateResult stateResult = setUp("View = ");
 		assertTrue(stateResult.isSuccess());
 	}
 	

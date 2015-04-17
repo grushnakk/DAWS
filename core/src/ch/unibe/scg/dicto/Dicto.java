@@ -57,7 +57,7 @@ public class Dicto {
 			}
 		}, NO_SUGGESTIONS);
 		
-		TYPE_PATH = new Path(IDENTIFIER_ACCEPTOR, new NextAction() {
+		TYPE_PATH = new Path(IDENTIFIER_ACCEPTOR.chain(optionalWhitespace()), new NextAction() {
 			
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {
