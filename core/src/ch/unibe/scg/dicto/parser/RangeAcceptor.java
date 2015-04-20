@@ -13,16 +13,22 @@ public class RangeAcceptor extends Acceptor {
 	@Override
 	public AcceptorResult accept(Context context, AcceptorResult result) {
 		if(result.isFailure()) return result;
-		if(result.end >= context.size()) {result.state = State.FAILURE; return result;}
+		if(result.end >= context.size()) {result.state = State.INCOMPLETE; return result;}
 		char c = context.charAt(result.end);
-		for(int i = 0; i < range.length(); i++) {
-			if(range.charAt(i) == c) {
-				result.end++;
-				return result;
-			}
+		if(isInRange(c)) {
+			result.end++;
+			return result;
 		}
 		result.state = State.FAILURE;
 		return result;
 	}
 
+	protected boolean isInRange(char c) {
+		for(int i = 0; i < range.length(); i++) {
+			if(range.charAt(i) == c) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

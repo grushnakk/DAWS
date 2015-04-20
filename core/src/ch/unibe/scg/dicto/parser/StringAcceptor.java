@@ -11,7 +11,7 @@ public class StringAcceptor extends Acceptor {
 	}
 	
 	@Override
-	public AcceptorResult accept(Context context, AcceptorResult result) {
+	public AcceptorResult accept(Context context, final AcceptorResult result) {
 		if(result.state == State.FAILURE) return result;
 		int length = Math.min(context.size() - result.end, match.length());
 		String actual = context.substring(result.end, result.end + length);

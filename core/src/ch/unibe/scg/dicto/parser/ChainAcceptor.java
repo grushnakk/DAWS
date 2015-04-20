@@ -26,6 +26,7 @@ public class ChainAcceptor extends Acceptor {
 			acceptor.accept(context, result);
 			if(!result.isSuccess())
 				return result;
+			
 		}
 		return result;
 	}
