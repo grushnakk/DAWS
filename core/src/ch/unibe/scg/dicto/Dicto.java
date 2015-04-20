@@ -48,6 +48,7 @@ public class Dicto {
 		DICTO_MACHINE.addState(ID_KEYWORD_WITH, new State(WITH_PATH));
 		DICTO_MACHINE.addState(ID_ARG_NAME, new State(ARG_NAME_PATH));
 		DICTO_MACHINE.addState(ID_ARG_ASSIGN, new State(ARG_ASSIGN_PATH));
+		DICTO_MACHINE.addState(ID_ARG_VALUE, new State(ARG_STRING_PATH)); //multiple different values possible
 	}
 	
 	static void buildParts() {
@@ -94,7 +95,7 @@ public class Dicto {
 				return new Next(ID_ARG_VALUE);
 			}
 		}, NO_SUGGESTIONS);
-		ARG_NAME_PATH = new Path(string("\"").chain(IDENTIFIER_ACCEPTOR, string("\""), optionalWhitespace()), new NextAction() {
+		ARG_STRING_PATH = new Path(string("\"").chain(IDENTIFIER_ACCEPTOR, string("\""), optionalWhitespace()), new NextAction() {
 			
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {

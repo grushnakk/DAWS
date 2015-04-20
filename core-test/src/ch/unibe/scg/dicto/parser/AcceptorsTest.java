@@ -12,6 +12,7 @@ public class AcceptorsTest {
 	private Acceptor acceptorABC;
 	private Acceptor acceptorUnknownID;
 	private Acceptor acceptorType;
+	private Acceptor acceptorString;
 	
 	@Before
 	public void setUp() {		
@@ -19,6 +20,7 @@ public class AcceptorsTest {
 		acceptorUnknownID = range(RANGE_LETTERS + RANGE_DIGITS + "_").repeat().region("VAR_NAME")
 				.chain(optionalWhitespace(), string(":"), optionalWhitespace());
 		acceptorType = range(RANGE_LETTERS + RANGE_DIGITS).repeat().region("TYPE").chain(optionalWhitespace());
+		acceptorString = string("with").chain(optionalWhitespace());
 	}
 	
 	@Test
@@ -82,6 +84,33 @@ public class AcceptorsTest {
 		AcceptorResult actual = acceptorType.accept(in);
 		AcceptorResult expected = new AcceptorResult(6, 13, State.SUCCESS);
 		expected.addRegion("TYPE", "Package");
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void incompleteString() {
+		Context in = new Context("View: Package wi");
+		in.incrementIndex(14);
+		AcceptorResult actual = acceptorString.accept(in);
+		AcceptorResult expected = new AcceptorResult(14, 16, State.INCOMPLETE);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void completeString() {
+		Context in = new Context("View: Package with");
+		in.incrementIndex(14);
+		AcceptorResult actual = acceptorString.accept(in);
+		AcceptorResult expected = new AcceptorResult(14, 18, State.SUCCESS);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void completeStringWithWhitespace() {
+		Context in = new Context("View: Package with  ");
+		in.incrementIndex(14);
+		AcceptorResult actual = acceptorString.accept(in);
+		AcceptorResult expected = new AcceptorResult(14, 20, State.SUCCESS);
 		assertEquals(expected, actual);
 	}
 }

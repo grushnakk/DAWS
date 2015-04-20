@@ -75,6 +75,9 @@ public class StateMachine {
 		StateResult result = null;
 		do {
 			result = resolveStateID(activeStateID).process(context, environment);
+			if(result.isNext()) {
+				setActiveStateID(result.getNextStateID());
+			}
 		} while(result.isNext());
 		this.result = result;
 		this.completed = true;

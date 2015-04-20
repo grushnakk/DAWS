@@ -50,44 +50,45 @@ public class DictoTest {
 	}
 	
 	@Test
+	public void typeCompleteWithWhitespace() {
+		StateResult stateResult = setUp("View = Package ");
+		System.out.println(stateResult);
+		assertTrue(stateResult.isSuccess());
+	}
+	
+	@Test
 	public void withComplete() {
 		StateResult stateResult = setUp("View = Package with");
-		System.out.println(stateResult);
 		assertTrue(stateResult.isSuccess());
 	}
 	
 	@Test
 	public void withIncomplete() {
 		StateResult stateResult = setUp("View = Package wi");
-		System.out.println(stateResult);
 		assertTrue(stateResult.isSuccess());
 	}
 	
 	@Test
 	public void argNameIncomplete() {
 		StateResult stateResult = setUp("View = Package with na");
-		System.out.println(stateResult);
 		assertTrue(stateResult.isSuccess());
 	}
 	
 	@Test
 	public void argNameComplete() {
 		StateResult stateResult = setUp("View = Package with name");
-		System.out.println(stateResult);
 		assertTrue(stateResult.isSuccess());
 	}
 	
 	@Test
 	public void argComplete() {
 		StateResult stateResult = setUp("View = Package with name=\"org.app.View\"");
-		System.out.println(stateResult);
 		assertTrue(stateResult.isSuccess());
 	}
 	
 	@Test
 	public void argIncomplete() {
 		StateResult stateResult = setUp("View = Package with name=");
-		System.out.println(stateResult);
 		assertTrue(stateResult.isSuccess());
 	}
 }
