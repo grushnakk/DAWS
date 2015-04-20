@@ -95,7 +95,7 @@ public class Dicto {
 				return new Next(ID_ARG_VALUE);
 			}
 		}, NO_SUGGESTIONS);
-		ARG_STRING_PATH = new Path(string("\"").chain(IDENTIFIER_ACCEPTOR, string("\""), optionalWhitespace()), new NextAction() {
+		ARG_STRING_PATH = new Path(string("\"").chain(negRange("\"").repeat(), string("\""), optionalWhitespace()), new NextAction() {
 			
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {

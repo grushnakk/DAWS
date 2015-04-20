@@ -45,14 +45,12 @@ public class DictoTest {
 	@Test
 	public void typeComplete() {
 		StateResult stateResult = setUp("View = Package");
-		System.out.println(stateResult);
 		assertTrue(stateResult.isSuccess());
 	}
 	
 	@Test
 	public void typeCompleteWithWhitespace() {
 		StateResult stateResult = setUp("View = Package ");
-		System.out.println(stateResult);
 		assertTrue(stateResult.isSuccess());
 	}
 	
@@ -82,13 +80,13 @@ public class DictoTest {
 	
 	@Test
 	public void argComplete() {
-		StateResult stateResult = setUp("View = Package with name=\"org.app.View\"");
+		StateResult stateResult = setUp("View = Package with name : \"org.app.View\"");
 		assertTrue(stateResult.isSuccess());
 	}
 	
 	@Test
 	public void argIncomplete() {
-		StateResult stateResult = setUp("View = Package with name=");
+		StateResult stateResult = setUp("View = Package with name : ");
 		assertTrue(stateResult.isSuccess());
 	}
 }

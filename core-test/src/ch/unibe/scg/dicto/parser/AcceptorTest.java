@@ -15,6 +15,7 @@ public class AcceptorTest {
 	private Acceptor strAcc;
 	private Acceptor repeatAcc;
 	private Acceptor regionAcc;
+	private Acceptor negRangeAcc;
 	
 	@Before
 	public void setUp() {
@@ -29,6 +30,7 @@ public class AcceptorTest {
 		abcRange = new RangeAcceptor("abc");
 		strAcc = new StringAcceptor("hello");
 		repeatAcc = new RepeatAcceptor(abcRange);
+		negRangeAcc = new NegativeRangeAcceptor("a");
 	}
 		
 	@Test
@@ -80,6 +82,22 @@ public class AcceptorTest {
 		Context context = new Context("aa");
 		AcceptorResult actual = abcRange.accept(context, new AcceptorResult(0, 1, State.SUCCESS));
 		AcceptorResult expected = new AcceptorResult(0, 2, State.SUCCESS);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void rangeIncomplete1() {
+		Context context = new Context("");
+		AcceptorResult actual = abcRange.accept(context);
+		AcceptorResult expected = new AcceptorResult(0, 0, State.INCOMPLETE);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void rangeIncomplete2() {
+		Context context = new Context("ab");
+		AcceptorResult actual = abcRange.accept(context);
+		AcceptorResult expected = new AcceptorResult(0, 1, State.SUCCESS);
 		assertEquals(expected, actual);
 	}
 	
@@ -156,10 +174,34 @@ public class AcceptorTest {
 	}
 	
 	@Test
-	public void repeatd() {
+	public void negRangeSuccess() {
 		Context context = new Context("d");
-		AcceptorResult actual = repeatAcc.accept(context);
+		AcceptorResult actual = negRangeAcc.accept(context);
+		AcceptorResult expected = new AcceptorResult(0, 1, State.SUCCESS);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void negRangeFailure() {
+		Context context = new Context("a");
+		AcceptorResult actual = negRangeAcc.accept(context);
 		AcceptorResult expected = new AcceptorResult(0, 0, State.FAILURE);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void negRangeIncomplete1() {
+		Context context = new Context("");
+		AcceptorResult actual = negRangeAcc.accept(context);
+		AcceptorResult expected = new AcceptorResult(0, 0, State.INCOMPLETE);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void negRangeIncomplete2() {
+		Context context = new Context("db");
+		AcceptorResult actual = negRangeAcc.accept(context);
+		AcceptorResult expected = new AcceptorResult(0, 1, State.SUCCESS);
 		assertEquals(expected, actual);
 	}
 }

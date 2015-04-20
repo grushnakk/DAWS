@@ -16,6 +16,10 @@ public final class Acceptors {
 		return new RangeAcceptor(range);
 	}
 	
+	public static Acceptor negRange(String range) {
+		return new NegativeRangeAcceptor(range);
+	}
+	
 	public static Acceptor string(String match) {
 		return new StringAcceptor(match);
 	}
