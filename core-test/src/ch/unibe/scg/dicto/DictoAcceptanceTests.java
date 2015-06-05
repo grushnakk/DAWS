@@ -21,6 +21,8 @@ public class DictoAcceptanceTests {
 	public StateResult setUp(String context) {
 		List<VariableType> types = new ArrayList<>();
 		List<Argument> arguments = new ArrayList<>();
+		List<Argument> packageArguments = new ArrayList<>();
+		packageArguments.add(new Argument("name"));
 		types.add(new VariableType("Package", arguments));
 		types.add(new VariableType("Class", arguments));
 		types.add(new VariableType("Website", arguments));
@@ -29,7 +31,7 @@ public class DictoAcceptanceTests {
 		types.add(new VariableType("XMLTag", arguments));
 		types.add(new VariableType("Attribute", arguments));
 		Environment env = new Environment(new ArrayList<Rule>(), new ArrayList<Variable>(), types);
-		StateMachine dicto =  Dicto.DICTO_MACHINE.clone(env, new Context(context));
+		StateMachine dicto = Dicto.DICTO_MACHINE.clone(env, new Context(context));
 		dicto.run();
 		return dicto.getResult();
 	}

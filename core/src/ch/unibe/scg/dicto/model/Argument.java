@@ -1,6 +1,6 @@
 package ch.unibe.scg.dicto.model;
 
-public class Argument {
+public class Argument implements Named{
 
 	private final String name;
 	
@@ -8,6 +8,7 @@ public class Argument {
 		this.name = name;
 	}
 	
+	@Override
 	public String getName() {
 		return name;
 	}

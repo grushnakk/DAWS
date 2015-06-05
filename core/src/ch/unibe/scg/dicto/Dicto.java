@@ -11,6 +11,7 @@ import static ch.unibe.scg.dicto.parser.Acceptors.whitespace;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.unibe.scg.dicto.model.Argument;
 import ch.unibe.scg.dicto.model.Environment;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.Acceptor;
@@ -40,6 +41,7 @@ public class Dicto {
 	private static final String REGION_IDENTIFIER = "ID";
 	private static final String CACHE_VAR_NAME = "VAR_NAME";
 	private static final String CACHE_VAR_TYPE = "VAR_TYPE";
+	private static final String CACHE_ARG_NAME = "ARG_NAME";
 	
 	private static SuggestAction NO_SUGGESTIONS;
 	private static Acceptor IDENTIFIER_ACCEPTOR;
@@ -78,7 +80,7 @@ public class Dicto {
 				env.writeCache(CACHE_VAR_NAME, result.getRegion(REGION_IDENTIFIER));
 				return new Next(ID_TYPE);
 			}
-		}, new KeywordSuggestAction("="));		
+		}, NO_SUGGESTIONS);		
 		TYPE_PATH = new Path(IDENTIFIER_ACCEPTOR.chain(whitespace()), new NextAction() {
 			
 			@Override
@@ -103,16 +105,22 @@ public class Dicto {
 			
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {
+				VariableType type = env.getVariableType(env.readCache(CACHE_VAR_TYPE));
+				String argName = result.getRegion(REGION_IDENTIFIER);
+				if(!type.hasArgument(argName)) {
+					return new LangError("unknown argument for type " + type + ": " + argName);
+				}
+				env.writeCache(CACHE_ARG_NAME, argName);
 				return new Next(ID_ARG_ASSIGN);
 			}
-		}, NO_SUGGESTIONS);
+		}, new ArgNameSuggestAction());
 		ARG_ASSIGN_PATH = new Path(string(":").chain(optionalWhitespace()), new NextAction() {
 			
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {
 				return new Next(ID_ARG_VALUE);
 			}
-		}, new KeywordSuggestAction(":"));
+		}, NO_SUGGESTIONS);
 		ARG_STRING_PATH = new Path(string("\"").chain(negRange("\"").repeat(), string("\""), optionalWhitespace()), new NextAction() {
 			
 			@Override
@@ -145,6 +153,20 @@ public class Dicto {
 		@Override
 		public List<String> suggestions(Environment environment) {
 			return list;
+		}
+	}
+	
+	static class ArgNameSuggestAction implements SuggestAction {
+		
+		@Override
+		public List<String> suggestions(Environment environment) {
+			String typeName = environment.readCache(CACHE_VAR_TYPE);
+			VariableType type = environment.getVariableType(typeName);
+			List<String> names = new ArrayList<>();
+			for(Argument arg : type.getArguments()) {
+				names.add(arg.getName());
+			}
+			return names;
 		}
 	}
 }

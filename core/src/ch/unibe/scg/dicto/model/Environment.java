@@ -56,4 +56,11 @@ public class Environment {
 	public boolean isVariableDefined(String varName) {
 		return false; //TODO method stub
 	}
+	
+	public VariableType getVariableType(String varType) {
+		for(VariableType type : variableTypes)
+			if(type.getName().equals(varType))
+				return type;
+		return null;
+	}
 }
