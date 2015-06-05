@@ -18,12 +18,12 @@ import ch.unibe.scg.dicto.states.StateResult;
 
 public class DictoAcceptanceTests {
 	
-	public StateResult setUp(String context) {
+	public static StateResult setUp(String context) {
 		List<VariableType> types = new ArrayList<>();
 		List<Argument> arguments = new ArrayList<>();
 		List<Argument> packageArguments = new ArrayList<>();
 		packageArguments.add(new Argument("name"));
-		types.add(new VariableType("Package", arguments));
+		types.add(new VariableType("Package", packageArguments));
 		types.add(new VariableType("Class", arguments));
 		types.add(new VariableType("Website", arguments));
 		types.add(new VariableType("File", arguments));
@@ -94,6 +94,12 @@ public class DictoAcceptanceTests {
 	public void argComplete() {
 		StateResult stateResult = setUp("View = Package with name : \"org.app.View\"");
 		assertTrue(stateResult.toString(), stateResult.isSuccess());
+	}
+	
+	@Test
+	public void wrongArg() {
+		StateResult stateResult = setUp("View = Package with stupid :");
+		assertTrue(stateResult.toString(), stateResult.isError());
 	}
 	
 	@Test

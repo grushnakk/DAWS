@@ -8,7 +8,7 @@ import org.junit.Test;
 import ch.unibe.scg.dicto.parser.Acceptor;
 import ch.unibe.scg.dicto.parser.AcceptorResult.State;
 
-public class AcceptorTest {
+public class AcceptorTests {
 
 	private Acceptor complexAcc;
 	private Acceptor abcRange;

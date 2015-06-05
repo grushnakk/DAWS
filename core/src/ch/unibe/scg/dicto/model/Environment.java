@@ -44,6 +44,10 @@ public class Environment {
 		return cache.get(key);
 	}
 	
+	public boolean hasCached(String key) {
+		return cache.containsKey(key);
+	}
+	
 	public void resetCache() {
 		cache = new HashMap<String, String>();
 	}

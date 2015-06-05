@@ -7,7 +7,7 @@ import ch.unibe.scg.dicto.parser.AcceptorResult.State;
 import static ch.unibe.scg.dicto.parser.Acceptors.*;
 import static org.junit.Assert.assertEquals;
 
-public class AcceptorsTest {
+public class AcceptorsTests {
 
 	private Acceptor acceptorABC;
 	private Acceptor acceptorUnknownID;

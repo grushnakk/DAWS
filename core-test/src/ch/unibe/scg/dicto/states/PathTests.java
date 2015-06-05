@@ -20,7 +20,7 @@ import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.AcceptorResult;
 import ch.unibe.scg.dicto.parser.Context;
 
-public class PathTest {
+public class PathTests {
 
 	private Path path;
 	@Before

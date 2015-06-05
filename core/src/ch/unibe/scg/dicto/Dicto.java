@@ -33,12 +33,12 @@ public class Dicto {
 	private static final int ID_TYPE 				= 01;
 	private static final int ID_KEYWORD_WITH 		= 02;
 	private static final int ID_ARG_NAME			= 03;
-	private static final int ID_ARG_ASSIGN			= 04;
 	private static final int ID_ARG_VALUE			= 05;
 //	private static final int ID_RULE 				= 10;
 //	private static final int ID_KNOW_ID_AFTER_ONLY 	= 20;
 	
 	private static final String REGION_IDENTIFIER = "ID";
+	private static final String REGION_STRING_CONTENT = "SC";
 	private static final String CACHE_VAR_NAME = "VAR_NAME";
 	private static final String CACHE_VAR_TYPE = "VAR_TYPE";
 	private static final String CACHE_ARG_NAME = "ARG_NAME";
@@ -49,7 +49,6 @@ public class Dicto {
 	private static Path TYPE_PATH;
 	private static Path WITH_PATH;
 	private static Path ARG_NAME_PATH;
-	private static Path ARG_ASSIGN_PATH;
 	private static Path ARG_STRING_PATH;
 	
 	static {
@@ -60,7 +59,6 @@ public class Dicto {
 		DICTO_MACHINE.addState(ID_TYPE, new State(TYPE_PATH));
 		DICTO_MACHINE.addState(ID_KEYWORD_WITH, new State(WITH_PATH));
 		DICTO_MACHINE.addState(ID_ARG_NAME, new State(ARG_NAME_PATH));
-		DICTO_MACHINE.addState(ID_ARG_ASSIGN, new State(ARG_ASSIGN_PATH));
 		DICTO_MACHINE.addState(ID_ARG_VALUE, new State(ARG_STRING_PATH)); //multiple different values possible
 	}
 	
@@ -101,7 +99,7 @@ public class Dicto {
 				return new Next(ID_ARG_NAME);
 			}
 		}, new KeywordSuggestAction("with"));
-		ARG_NAME_PATH = new Path(IDENTIFIER_ACCEPTOR.chain(optionalWhitespace()), new NextAction() {
+		ARG_NAME_PATH = new Path(IDENTIFIER_ACCEPTOR.chain(optionalWhitespace(), string(":"), optionalWhitespace()), new NextAction() {
 			
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {
@@ -111,20 +109,16 @@ public class Dicto {
 					return new LangError("unknown argument for type " + type + ": " + argName);
 				}
 				env.writeCache(CACHE_ARG_NAME, argName);
-				return new Next(ID_ARG_ASSIGN);
-			}
-		}, new ArgNameSuggestAction());
-		ARG_ASSIGN_PATH = new Path(string(":").chain(optionalWhitespace()), new NextAction() {
-			
-			@Override
-			public StateResult onNext(Environment env, AcceptorResult result) {
 				return new Next(ID_ARG_VALUE);
 			}
-		}, NO_SUGGESTIONS);
-		ARG_STRING_PATH = new Path(string("\"").chain(negRange("\"").repeat(), string("\""), optionalWhitespace()), new NextAction() {
+		}, new ArgNameSuggestAction());
+		ARG_STRING_PATH = new Path(string("\"").chain(negRange("\"").repeat().region(REGION_STRING_CONTENT), string("\""), optionalWhitespace()), new NextAction() {
 			
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {
+				String content = result.getRegion(REGION_STRING_CONTENT);
+				String argName = env.readCache(CACHE_ARG_NAME);
+				env.writeCache(argName, content);
 				return new Next(ID_START);
 			}
 		}, NO_SUGGESTIONS);
