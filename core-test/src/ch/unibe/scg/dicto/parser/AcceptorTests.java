@@ -8,7 +8,7 @@ import org.junit.Test;
 import ch.unibe.scg.dicto.parser.Acceptor;
 import ch.unibe.scg.dicto.parser.AcceptorResult.State;
 
-public class AcceptorTest {
+public class AcceptorTests {
 
 	private Acceptor complexAcc;
 	private Acceptor abcRange;
@@ -170,6 +170,14 @@ public class AcceptorTest {
 		Context context = new Context("cbad");
 		AcceptorResult actual = repeatAcc.accept(context);
 		AcceptorResult expected = new AcceptorResult(0, 3, State.SUCCESS);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void repeat() {
+		Context context = new Context("");
+		AcceptorResult actual = repeatAcc.accept(context);
+		AcceptorResult expected = new AcceptorResult(0, 0, State.INCOMPLETE);
 		assertEquals(expected, actual);
 	}
 	
