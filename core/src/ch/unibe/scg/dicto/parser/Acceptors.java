@@ -25,6 +25,10 @@ public final class Acceptors {
 	}
 	
 	public static Acceptor optionalWhitespace() {
-		return range(RANGE_HOR_WHITESPACE).repeat().optional();
+		return whitespace().optional();
+	}
+	
+	public static Acceptor whitespace() {
+		return range(RANGE_HOR_WHITESPACE).repeat();
 	}
 }

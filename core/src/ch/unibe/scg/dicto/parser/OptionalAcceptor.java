@@ -14,7 +14,7 @@ public class OptionalAcceptor extends Acceptor{
 	public AcceptorResult accept(Context context, AcceptorResult result) {
 		if(result.state == State.FAILURE) return result;
 		baseAcceptor.accept(context, result);
-		if(result.state == State.FAILURE) {
+		if(!result.isSuccess()) {
 			result.state = State.SUCCESS;
 			return result;
 		}

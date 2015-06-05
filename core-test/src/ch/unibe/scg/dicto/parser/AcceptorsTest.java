@@ -20,8 +20,8 @@ public class AcceptorsTest {
 		acceptorABC = range("abc").repeat().region("VAR_NAME").chain(optionalWhitespace(), string(":"), optionalWhitespace());
 		acceptorUnknownID = range(RANGE_LETTERS + RANGE_DIGITS + "_").repeat().region("VAR_NAME")
 				.chain(optionalWhitespace(), string(":"), optionalWhitespace());
-		acceptorType = range(RANGE_LETTERS + RANGE_DIGITS).repeat().region("TYPE").chain(optionalWhitespace());
-		acceptorKeyword = string("with").chain(optionalWhitespace());
+		acceptorType = range(RANGE_LETTERS + RANGE_DIGITS).repeat().region("TYPE").chain(whitespace());
+		acceptorKeyword = string("with").chain(whitespace());
 		acceptorString = string("\"").chain(negRange("\"").repeat(), string("\""), optionalWhitespace());
 	}
 	
@@ -84,8 +84,17 @@ public class AcceptorsTest {
 		Context in = new Context("View: Package");
 		in.incrementIndex(6);
 		AcceptorResult actual = acceptorType.accept(in);
-		AcceptorResult expected = new AcceptorResult(6, 13, State.SUCCESS);
+		AcceptorResult expected = new AcceptorResult(6, 13, State.INCOMPLETE);
 		expected.addRegion("TYPE", "Package");
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void incompleteType() {
+		Context in = new Context("");
+		AcceptorResult actual = acceptorType.accept(in);
+		AcceptorResult expected = new AcceptorResult(0, 0, State.INCOMPLETE);
+		expected.addRegion("TYPE", "");
 		assertEquals(expected, actual);
 	}
 	
@@ -103,7 +112,7 @@ public class AcceptorsTest {
 		Context in = new Context("View: Package with");
 		in.incrementIndex(14);
 		AcceptorResult actual = acceptorKeyword.accept(in);
-		AcceptorResult expected = new AcceptorResult(14, 18, State.SUCCESS);
+		AcceptorResult expected = new AcceptorResult(14, 18, State.INCOMPLETE);
 		assertEquals(expected, actual);
 	}
 	
@@ -121,6 +130,22 @@ public class AcceptorsTest {
 		Context in = new Context("\"blabla\"");
 		AcceptorResult actual = acceptorString.accept(in);
 		AcceptorResult expected = new AcceptorResult(0, 8, State.SUCCESS);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void whitespaceIncomplete() {
+		Context in = new Context("");
+		AcceptorResult actual = Acceptors.whitespace().accept(in);
+		AcceptorResult expected = new AcceptorResult(0, 0, State.INCOMPLETE);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void whitespaceComplete() {
+		Context in = new Context(" ");
+		AcceptorResult actual = Acceptors.whitespace().accept(in);
+		AcceptorResult expected = new AcceptorResult(0, 1, State.SUCCESS);
 		assertEquals(expected, actual);
 	}
 }

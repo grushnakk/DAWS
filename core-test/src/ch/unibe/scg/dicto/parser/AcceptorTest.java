@@ -174,6 +174,14 @@ public class AcceptorTest {
 	}
 	
 	@Test
+	public void repeat() {
+		Context context = new Context("");
+		AcceptorResult actual = repeatAcc.accept(context);
+		AcceptorResult expected = new AcceptorResult(0, 0, State.INCOMPLETE);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void negRangeSuccess() {
 		Context context = new Context("d");
 		AcceptorResult actual = negRangeAcc.accept(context);
