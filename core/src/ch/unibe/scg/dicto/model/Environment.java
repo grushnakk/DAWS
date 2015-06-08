@@ -32,6 +32,14 @@ public class Environment {
 		return false;
 	}
 	
+	public boolean isVariableDefined(String varName) {
+		for(Variable variable : variables) {
+			if(variable.getName().equals(varName))
+				return true;
+		}
+		return false;
+	}
+	
 	public List<VariableType> getVariableTypes()  {
 		return new ArrayList<>(variableTypes);
 	}
@@ -54,11 +62,6 @@ public class Environment {
 	
 	public List<Variable> getVariables() {
 		return null; //TODO method stub
-	}
-	
-	
-	public boolean isVariableDefined(String varName) {
-		return false; //TODO method stub
 	}
 	
 	public VariableType getVariableType(String varType) {

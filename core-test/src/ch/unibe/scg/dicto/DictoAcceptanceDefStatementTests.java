@@ -16,7 +16,7 @@ import ch.unibe.scg.dicto.parser.Context;
 import ch.unibe.scg.dicto.states.StateMachine;
 import ch.unibe.scg.dicto.states.StateResult;
 
-public class DictoAcceptanceTests {
+public class DictoAcceptanceDefStatementTests {
 	
 	public static StateResult setUp(String context) {
 		List<VariableType> types = new ArrayList<>();

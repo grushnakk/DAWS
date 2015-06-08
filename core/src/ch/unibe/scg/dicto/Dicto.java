@@ -34,6 +34,7 @@ public class Dicto {
 	private static final int ID_KEYWORD_WITH 		= 02;
 	private static final int ID_ARG_NAME			= 03;
 	private static final int ID_ARG_VALUE			= 05;
+	private static final int ID_PREDICATE           = 11;
 //	private static final int ID_RULE 				= 10;
 //	private static final int ID_KNOW_ID_AFTER_ONLY 	= 20;
 	
@@ -46,6 +47,7 @@ public class Dicto {
 	private static SuggestAction NO_SUGGESTIONS;
 	private static Acceptor IDENTIFIER_ACCEPTOR;
 	private static Path NEW_ID_PATH;
+	private static Path KNOWN_ID_PATH;
 	private static Path TYPE_PATH;
 	private static Path WITH_PATH;
 	private static Path ARG_NAME_PATH;
@@ -55,7 +57,7 @@ public class Dicto {
 		buildParts();
 		//assemble everything
 		DICTO_MACHINE = new StateMachine(ID_START);
-		DICTO_MACHINE.addState(ID_START, new State(NEW_ID_PATH));
+		DICTO_MACHINE.addState(ID_START, new State(NEW_ID_PATH, KNOWN_ID_PATH));
 		DICTO_MACHINE.addState(ID_TYPE, new State(TYPE_PATH));
 		DICTO_MACHINE.addState(ID_KEYWORD_WITH, new State(WITH_PATH));
 		DICTO_MACHINE.addState(ID_ARG_NAME, new State(ARG_NAME_PATH));
@@ -79,6 +81,18 @@ public class Dicto {
 				return new Next(ID_TYPE);
 			}
 		}, NO_SUGGESTIONS);		
+		KNOWN_ID_PATH = new Path(IDENTIFIER_ACCEPTOR.chain(whitespace()), new NextAction() {
+			
+			@Override
+			public StateResult onNext(Environment env, AcceptorResult result) {
+				String varName = result.getRegion(REGION_IDENTIFIER);
+				if(env.isVariableDefined(varName)) {
+					env.writeCache(CACHE_VAR_NAME, varName);
+					return new Next(ID_PREDICATE);
+				}
+				return new LangError("unknown Variable " + varName);
+			}
+		}, NO_SUGGESTIONS); //TODO replace suggestions
 		TYPE_PATH = new Path(IDENTIFIER_ACCEPTOR.chain(whitespace()), new NextAction() {
 			
 			@Override
