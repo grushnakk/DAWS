@@ -3,6 +3,7 @@ package ch.unibe.scg.dicto.model;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Before;
@@ -23,7 +24,9 @@ public class EnvironmentTests {
 		types.add(new VariableType("Component", arguments));
 		types.add(new VariableType("XMLTag", arguments));
 		types.add(new VariableType("Attribute", arguments));
-		env = new Environment(new ArrayList<Rule>(), new ArrayList<Variable>(), types);
+		List<Variable> variables = new ArrayList<>();
+		variables.add(new Variable("View", types.get(0), new HashMap<String, String>()));
+		env = new Environment(new ArrayList<Rule>(), variables, types);
 	}
 
 	@Test
@@ -34,5 +37,10 @@ public class EnvironmentTests {
 	@Test
 	public void variableTypeDefined() {
 		assertTrue(env.isTypeDefined("Package"));
+	}
+	
+	@Test 
+	public void variableDefined() {
+		assertTrue(env.isVariableDefined("View"));
 	}
 }

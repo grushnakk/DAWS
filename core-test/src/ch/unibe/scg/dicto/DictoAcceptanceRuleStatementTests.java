@@ -31,7 +31,7 @@ public class DictoAcceptanceRuleStatementTests {
 			private static final long serialVersionUID = 1L;
 
 		{put("name", "org.app.view");}}));
-		Environment env = new Environment(new ArrayList<Rule>(), new ArrayList<Variable>(), types);
+		Environment env = new Environment(new ArrayList<Rule>(), variables, types);
 		StateMachine dicto = Dicto.DICTO_MACHINE.clone(env, new Context(context));
 		dicto.run();
 		return dicto.getResult();
