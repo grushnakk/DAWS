@@ -26,7 +26,7 @@ public class EnvironmentTests {
 		types.add(new VariableType("Attribute", arguments));
 		List<Variable> variables = new ArrayList<>();
 		variables.add(new Variable("View", types.get(0), new HashMap<String, String>()));
-		env = new Environment(new ArrayList<Rule>(), variables, types);
+		env = new Environment(variables, types);
 	}
 
 	@Test

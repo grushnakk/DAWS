@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.unibe.scg.dicto.model.Environment;
-import ch.unibe.scg.dicto.model.Rule;
 import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.AcceptorResult;
@@ -52,7 +51,7 @@ public class PathTests {
 	@Test
 	public void nextSucceed() {
 		AcceptorResult accResult = path.accept(new Context("hallo:"));
-		StateResult actual = path.onNext(new Environment(new ArrayList<Rule>(), new ArrayList<Variable>(), new ArrayList<VariableType>()), accResult);
+		StateResult actual = path.onNext(new Environment(new ArrayList<Variable>(), new ArrayList<VariableType>()), accResult);
 		StateResult expected = new Next(1);
 		assertEquals(expected, actual);
 	}

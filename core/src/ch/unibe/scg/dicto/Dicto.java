@@ -45,6 +45,7 @@ public class Dicto {
 	private static final String CACHE_VAR_NAME = "VAR_NAME";
 	private static final String CACHE_VAR_TYPE = "VAR_TYPE";
 	private static final String CACHE_ARG_NAME = "ARG_NAME";
+	private static final String CACHE_PREDICATE = "PREDICATE";
 	
 	private static SuggestAction NO_SUGGESTIONS;
 	private static Acceptor IDENTIFIER_ACCEPTOR;
@@ -55,6 +56,7 @@ public class Dicto {
 	private static Path WITH_PATH;
 	private static Path ARG_NAME_PATH;
 	private static Path ARG_STRING_PATH;
+	private static Path RULE_PATH;
 	
 	static {
 		buildParts();
@@ -66,6 +68,7 @@ public class Dicto {
 		DICTO_MACHINE.addState(ID_ARG_NAME, new State(ARG_NAME_PATH));
 		DICTO_MACHINE.addState(ID_ARG_VALUE, new State(ARG_STRING_PATH)); //multiple different values possible
 		DICTO_MACHINE.addState(ID_PREDICATE, new State(PREDICATE_PATH));
+		DICTO_MACHINE.addState(ID_RULE, new State(RULE_PATH));
 	}
 	
 	static void buildParts() {
@@ -145,7 +148,7 @@ public class Dicto {
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {
 				String predicate = result.getRegion(REGION_PREDICATE);
-				//TODO cache predicate
+				env.writeCache(CACHE_PREDICATE, predicate);
 				return new Next(ID_RULE);
 			}
 		}, NO_SUGGESTIONS); //TODO replace suggestions
