@@ -5,7 +5,7 @@ import static ch.unibe.scg.dicto.parser.Acceptors.RANGE_LETTERS;
 import static ch.unibe.scg.dicto.parser.Acceptors.optionalWhitespace;
 import static ch.unibe.scg.dicto.parser.Acceptors.range;
 import static ch.unibe.scg.dicto.parser.Acceptors.string;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.unibe.scg.dicto.model.Environment;
-import ch.unibe.scg.dicto.model.Rule;
 import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.AcceptorResult;
@@ -22,9 +21,10 @@ import ch.unibe.scg.dicto.parser.Context;
 
 public class PathTests {
 
-	private Path path;
+	private Path path;	
+	
 	@Before
-	public void setUp() {
+	public void setUp() {		
 		path = new Path(
 				range(RANGE_LETTERS + RANGE_DIGITS + "_").repeat().region("VAR_NAME")
 				.chain(optionalWhitespace(), string(":"), optionalWhitespace()),
@@ -51,7 +51,7 @@ public class PathTests {
 	@Test
 	public void nextSucceed() {
 		AcceptorResult accResult = path.accept(new Context("hallo:"));
-		StateResult actual = path.onNext(new Environment(new ArrayList<Rule>(), new ArrayList<Variable>(), new ArrayList<VariableType>()), accResult);
+		StateResult actual = path.onNext(new Environment(new ArrayList<Variable>(), new ArrayList<VariableType>()), accResult);
 		StateResult expected = new Next(1);
 		assertEquals(expected, actual);
 	}

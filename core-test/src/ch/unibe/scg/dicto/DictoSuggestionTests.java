@@ -1,6 +1,6 @@
 package ch.unibe.scg.dicto;
 
-import static ch.unibe.scg.dicto.DictoAcceptanceTests.setUp;
+import static ch.unibe.scg.dicto.DictoAcceptanceDefStatementTests.setUp;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;

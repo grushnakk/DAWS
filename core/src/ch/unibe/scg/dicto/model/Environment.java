@@ -7,28 +7,33 @@ import java.util.List;
 import java.util.Map;
 
 public class Environment {
-
-	private final List<Rule> rules;
 	private final List<Variable> variables;
 	private final List<VariableType> variableTypes;
 	
 	private Map<String, String> cache;
 	
-	public Environment(List<Rule> rules, List<Variable> variables, List<VariableType> variableTypes) {
-		this.rules = Collections.unmodifiableList(rules);
+	public Environment(List<Variable> variables, List<VariableType> variableTypes) {
 		this.variables = Collections.unmodifiableList(variables);
 		this.variableTypes = Collections.unmodifiableList(variableTypes);
 		this.cache = new HashMap<String, String>();
 	}
 	
 	public Environment copy() {
-		return new Environment(rules, variables, variableTypes);
+		return new Environment(variables, variableTypes);
 	}
 	
 	public boolean isTypeDefined(String typeName) {
 		for(VariableType type : variableTypes)
 			if(type.getName().equals(typeName))
 				return true;
+		return false;
+	}
+	
+	public boolean isVariableDefined(String varName) {
+		for(Variable variable : variables) {
+			if(variable.getName().equals(varName))
+				return true;
+		}
 		return false;
 	}
 	
@@ -54,11 +59,6 @@ public class Environment {
 	
 	public List<Variable> getVariables() {
 		return null; //TODO method stub
-	}
-	
-	
-	public boolean isVariableDefined(String varName) {
-		return false; //TODO method stub
 	}
 	
 	public VariableType getVariableType(String varType) {

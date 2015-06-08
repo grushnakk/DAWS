@@ -9,14 +9,13 @@ import org.junit.Test;
 
 import ch.unibe.scg.dicto.model.Argument;
 import ch.unibe.scg.dicto.model.Environment;
-import ch.unibe.scg.dicto.model.Rule;
 import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.Context;
 import ch.unibe.scg.dicto.states.StateMachine;
 import ch.unibe.scg.dicto.states.StateResult;
 
-public class DictoAcceptanceTests {
+public class DictoAcceptanceDefStatementTests {
 	
 	public static StateResult setUp(String context) {
 		List<VariableType> types = new ArrayList<>();
@@ -30,7 +29,7 @@ public class DictoAcceptanceTests {
 		types.add(new VariableType("Component", arguments));
 		types.add(new VariableType("XMLTag", arguments));
 		types.add(new VariableType("Attribute", arguments));
-		Environment env = new Environment(new ArrayList<Rule>(), new ArrayList<Variable>(), types);
+		Environment env = new Environment(new ArrayList<Variable>(), types);
 		StateMachine dicto = Dicto.DICTO_MACHINE.clone(env, new Context(context));
 		dicto.run();
 		return dicto.getResult();

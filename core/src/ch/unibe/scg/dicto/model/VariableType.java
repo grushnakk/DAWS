@@ -10,9 +10,14 @@ public class VariableType implements Named {
 	
 	private final List<Argument> arguments;
 	
-	public VariableType(String name, List<Argument> arguments) {
+	private final List<String> rules;
+	
+	public VariableType(String name, List<Argument> arguments, String... ruleArray) {
 		this.name = name;
 		this.arguments = Collections.unmodifiableList(arguments);
+		this.rules = new ArrayList<>();
+		for(String s : ruleArray)
+			rules.add(s);
 	}
 	
 	@Override
@@ -29,5 +34,9 @@ public class VariableType implements Named {
 			if(arg.getName().equals(argName))
 				return true;
 		return false;
+	}
+	
+	public List<String> getRules() {
+		return new ArrayList<String>(rules);
 	}
 }
