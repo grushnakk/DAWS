@@ -57,13 +57,25 @@ public class StateTests {
 	@Test
 	public void incomplete() {
 		StateResult actual = state.process(new Context("View"), env());
-		assertTrue(actual.isSuccess());
+		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void complete() {
 		StateResult actual = state.process(new Context("View = "), env());
 		assertTrue(actual.toString(), actual.isNext());
+	}
+	
+	@Test
+	public void complete2() {
+		StateResult actual = state.process(new Context("View ="), env());
+		assertTrue(actual.toString(), actual.isNext());
+	}
+	
+	@Test
+	public void incomplete2() {
+		StateResult actual = state.process(new Context("View "), env());
+		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	Environment env() {

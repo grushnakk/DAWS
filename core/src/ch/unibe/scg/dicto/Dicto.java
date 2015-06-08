@@ -16,6 +16,7 @@ import ch.unibe.scg.dicto.model.Environment;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.Acceptor;
 import ch.unibe.scg.dicto.parser.AcceptorResult;
+import ch.unibe.scg.dicto.parser.MultiStringAcceptor;
 import ch.unibe.scg.dicto.states.LangError;
 import ch.unibe.scg.dicto.states.Next;
 import ch.unibe.scg.dicto.states.NextAction;
@@ -30,14 +31,16 @@ public class Dicto {
 	public static final StateMachine DICTO_MACHINE;
 	
 	private static final int ID_START 				= 00;
-	private static final int ID_TYPE 				= 01;
-	private static final int ID_KEYWORD_WITH 		= 02;
-	private static final int ID_ARG_NAME			= 03;
-	private static final int ID_ARG_VALUE			= 05;
-	private static final int ID_PREDICATE           = 11;
+	private static final int ID_TYPE 				= 11;
+	private static final int ID_KEYWORD_WITH 		= 12;
+	private static final int ID_ARG_NAME			= 13;
+	private static final int ID_ARG_VALUE			= 14;
+	private static final int ID_PREDICATE           = 21;
+	private static final int ID_RULE 				= 22;
 	
 	private static final String REGION_IDENTIFIER = "ID";
 	private static final String REGION_STRING_CONTENT = "SC";
+	private static final String REGION_PREDICATE = "P";
 	
 	private static final String CACHE_VAR_NAME = "VAR_NAME";
 	private static final String CACHE_VAR_TYPE = "VAR_TYPE";
@@ -47,6 +50,7 @@ public class Dicto {
 	private static Acceptor IDENTIFIER_ACCEPTOR;
 	private static Path NEW_ID_PATH;
 	private static Path KNOWN_ID_PATH;
+	private static Path PREDICATE_PATH;
 	private static Path TYPE_PATH;
 	private static Path WITH_PATH;
 	private static Path ARG_NAME_PATH;
@@ -61,6 +65,7 @@ public class Dicto {
 		DICTO_MACHINE.addState(ID_KEYWORD_WITH, new State(WITH_PATH));
 		DICTO_MACHINE.addState(ID_ARG_NAME, new State(ARG_NAME_PATH));
 		DICTO_MACHINE.addState(ID_ARG_VALUE, new State(ARG_STRING_PATH)); //multiple different values possible
+		DICTO_MACHINE.addState(ID_PREDICATE, new State(PREDICATE_PATH));
 	}
 	
 	static void buildParts() {
@@ -135,6 +140,15 @@ public class Dicto {
 				return new Next(ID_START);
 			}
 		}, NO_SUGGESTIONS);
+		PREDICATE_PATH = new Path(new MultiStringAcceptor("can only", "cannot", "can", "must").region(REGION_PREDICATE).chain(whitespace()), new NextAction() {
+			
+			@Override
+			public StateResult onNext(Environment env, AcceptorResult result) {
+				String predicate = result.getRegion(REGION_PREDICATE);
+				//TODO cache predicate
+				return new Next(ID_RULE);
+			}
+		}, NO_SUGGESTIONS); //TODO replace suggestions
 	}
 	
 	static class VariableTypesSuggestAction implements SuggestAction {

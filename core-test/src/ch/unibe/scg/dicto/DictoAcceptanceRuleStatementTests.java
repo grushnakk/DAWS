@@ -40,24 +40,24 @@ public class DictoAcceptanceRuleStatementTests {
 	@Test
 	public void viewIncomplete() {
 		StateResult actual = setUp("Vie");
-		assertTrue(actual.isSuccess());
+		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void viewComplete() {
 		StateResult actual = setUp("View ");
-		assertTrue(actual.isSuccess());
+		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void predicateIncomplete() {
 		StateResult actual = setUp("View cann");
-		assertTrue(actual.isSuccess());
+		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void predicateComplete() {
 		StateResult actual = setUp("View cannot");
-		assertTrue(actual.isSuccess());
+		assertTrue(actual.toString(), actual.isSuccess());
 	}
 }
