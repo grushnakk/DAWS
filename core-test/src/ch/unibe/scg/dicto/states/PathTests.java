@@ -5,7 +5,7 @@ import static ch.unibe.scg.dicto.parser.Acceptors.RANGE_LETTERS;
 import static ch.unibe.scg.dicto.parser.Acceptors.optionalWhitespace;
 import static ch.unibe.scg.dicto.parser.Acceptors.range;
 import static ch.unibe.scg.dicto.parser.Acceptors.string;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +22,10 @@ import ch.unibe.scg.dicto.parser.Context;
 
 public class PathTests {
 
-	private Path path;
+	private Path path;	
+	
 	@Before
-	public void setUp() {
+	public void setUp() {		
 		path = new Path(
 				range(RANGE_LETTERS + RANGE_DIGITS + "_").repeat().region("VAR_NAME")
 				.chain(optionalWhitespace(), string(":"), optionalWhitespace()),

@@ -24,8 +24,6 @@ public class State {
 	}
 	
 	public StateResult process(Context context, Environment env) { //TODO better name
-		StateResult lastSuccess = null;
-		AcceptorResult lastSuccessAcceptor = null;
 		AcceptorResult acceptorResult = null;
 		for(Path path : paths) {
 			acceptorResult = path.accept(context);
@@ -36,14 +34,9 @@ public class State {
 				context.apply(acceptorResult);
 				return success(env);
 			case SUCCESS:
-				lastSuccess = path.onNext(env, acceptorResult);
-				lastSuccessAcceptor = acceptorResult;
-				break;
+				context.apply(acceptorResult);
+				return path.onNext(env, acceptorResult);
 			}
-		}
-		if(lastSuccess != null) {
-			context.apply(lastSuccessAcceptor);
-			return lastSuccess;
 		}
 		return error(context);
 	}

@@ -35,11 +35,10 @@ public class Dicto {
 	private static final int ID_ARG_NAME			= 03;
 	private static final int ID_ARG_VALUE			= 05;
 	private static final int ID_PREDICATE           = 11;
-//	private static final int ID_RULE 				= 10;
-//	private static final int ID_KNOW_ID_AFTER_ONLY 	= 20;
 	
 	private static final String REGION_IDENTIFIER = "ID";
 	private static final String REGION_STRING_CONTENT = "SC";
+	
 	private static final String CACHE_VAR_NAME = "VAR_NAME";
 	private static final String CACHE_VAR_TYPE = "VAR_TYPE";
 	private static final String CACHE_ARG_NAME = "ARG_NAME";
