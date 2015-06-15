@@ -73,4 +73,16 @@ public class Environment {
 	public void addVariable(Variable variable) {
 		variables.add(variable);
 	}
+	
+	public List<Rule> getRules() {
+		return new ArrayList<>(rules);
+	}
+	
+	public Variable getVariable(String name) {
+		for(Variable var : variables) {
+			if(var.getName().equals(name))
+				return var;
+		}
+		return null;
+	}
 }

@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import ch.unibe.scg.dicto.model.Argument;
 import ch.unibe.scg.dicto.model.Environment;
+import ch.unibe.scg.dicto.model.Predicate;
 import ch.unibe.scg.dicto.model.Rule;
 import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
@@ -32,6 +33,7 @@ public class DictoAcceptanceRuleStatementTests {
 
 		{put("name", "org.app.view");}}));
 		List<Rule> rules = new ArrayList<>();
+		rules.add(new Rule("depend on", new Rule.Pair(types.get(0), Predicate.MUST)));
 		Environment env = new Environment(variables, types, rules);
 		StateMachine dicto = new DictoBuilder(env).build().clone(env, new Context(context));
 		dicto.run();
@@ -59,6 +61,24 @@ public class DictoAcceptanceRuleStatementTests {
 	@Test
 	public void predicateComplete() {
 		StateResult actual = setUp("View cannot");
+		assertTrue(actual.toString(), actual.isSuccess());
+	}
+	
+	@Test
+	public void ruleIncomplete() {
+		StateResult actual = setUp("View must dep");
+		assertTrue(actual.toString(), actual.isSuccess());
+	}
+	
+	@Test
+	public void ruleIncomplete2() {
+		StateResult actual = setUp("View must depend o");
+		assertTrue(actual.toString(), actual.isSuccess());
+	}
+	
+	@Test
+	public void ruleComplete() {
+		StateResult actual = setUp("View must depend on ");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 }

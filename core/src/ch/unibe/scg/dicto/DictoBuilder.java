@@ -15,6 +15,8 @@ import java.util.Map;
 
 import ch.unibe.scg.dicto.model.Argument;
 import ch.unibe.scg.dicto.model.Environment;
+import ch.unibe.scg.dicto.model.Predicate;
+import ch.unibe.scg.dicto.model.Rule;
 import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.Acceptor;
@@ -34,6 +36,7 @@ public class DictoBuilder {
 	private static final String REGION_IDENTIFIER = "ID";
 	private static final String REGION_STRING_CONTENT = "SC";
 	private static final String REGION_PREDICATE = "P";
+	private static final String REGION_RULE = "R";
 
 	private static final String CACHE_VAR_NAME = "VAR_NAME";
 	private static final String CACHE_VAR_TYPE = "VAR_TYPE";
@@ -48,6 +51,7 @@ public class DictoBuilder {
 	private static final int ID_AFTER_ARG_VALUE = 15;
 	private static final int ID_PREDICATE = 21;
 	private static final int ID_RULE = 22;
+	private static final int ID_RULE_ARG = 23;
 
 	private Environment env;
 	private Acceptor idAcceptor;
@@ -91,7 +95,7 @@ public class DictoBuilder {
 		dictoMachine.addState(ID_ARG_VALUE, new State(ID_ARG_VALUE, buildArgStringPath()));
 		dictoMachine.addState(ID_AFTER_ARG_VALUE, new State(ID_AFTER_ARG_VALUE, buildNextArgPath(), buildNextStatementPath()));
 		dictoMachine.addState(ID_PREDICATE, new State(ID_PREDICATE, buildPredicatePath()));
-		dictoMachine.addState(ID_RULE, new State(ID_RULE)); // TODO rule path
+		dictoMachine.addState(ID_RULE, new State(ID_RULE, buildRulePath()));
 		return dictoMachine;
 	}
 
@@ -194,9 +198,7 @@ public class DictoBuilder {
 	}
 
 	private Path buildPredicatePath() {
-		return new Path(new MultiStringAcceptor("can only", "cannot", "can", // TODO
-																				// magic
-																				// values
+		return new Path(new MultiStringAcceptor("can only", "cannot", "can", // TODO magic values
 				"must").region(REGION_PREDICATE).chain(whitespace()),
 				new NextAction() {
 
@@ -241,6 +243,23 @@ public class DictoBuilder {
 			
 		}, noSuggestAction);
 	}
+	
+	private Acceptor buildRuleAcceptor() {
+		List<String> rules = new ArrayList<>();
+		for(Rule rule : env.getRules())
+			rules.add(rule.getName());
+		System.out.println(rules);
+		return new MultiStringAcceptor(rules).region(REGION_RULE);
+	}
+	
+	private Path buildRulePath() {
+		return new Path(buildRuleAcceptor().chain(optionalWhitespace()), new NextAction() {
+
+			@Override
+			public StateResult onNext(Environment env, AcceptorResult result) {
+				return new Next(ID_RULE_ARG); //TODO do some checking and storing
+			}}, new RuleSuggestAction());
+	}
 
 	static class VariableTypesSuggestAction implements SuggestAction {
 
@@ -280,5 +299,22 @@ public class DictoBuilder {
 			}
 			return names;
 		}
+	}
+	
+	static class RuleSuggestAction implements SuggestAction {
+
+		@Override
+		public List<String> suggestions(Environment env) {
+			String varNameCache = env.readCache(CACHE_VAR_NAME);
+			Variable var = env.getVariable(varNameCache);
+			VariableType varType = var.getVariableType();
+			Predicate predicate = Predicate.byCode(env.readCache(CACHE_PREDICATE));
+			List<String> suggestions = new ArrayList<>();
+			for(Rule rule : env.getRules()) {
+				if(rule.canBeUsed(varType, predicate))
+					suggestions.add(rule.getName());
+			}
+			return suggestions;
+		}	
 	}
 }
