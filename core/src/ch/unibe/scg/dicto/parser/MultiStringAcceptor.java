@@ -1,6 +1,7 @@
 package ch.unibe.scg.dicto.parser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ch.unibe.scg.dicto.parser.AcceptorResult.State;
@@ -13,7 +14,11 @@ public class MultiStringAcceptor extends Acceptor {
 		this.strings = new ArrayList<>();
 		for(String s : strings)
 			this.strings.add(s);
-		}
+	}
+	
+	public MultiStringAcceptor(List<String> strings) {
+		this.strings = Collections.unmodifiableList(strings);
+	}
 
 	@Override
 	public AcceptorResult accept(Context context, final AcceptorResult result) {

@@ -11,12 +11,15 @@ import ch.unibe.scg.dicto.parser.Context;
 public class State {
 
 	private final List<Path> paths;
+	private final int id;
 	
-	public State(List<Path> paths) {
+	public State(int id, List<Path> paths) {
+		this.id = id;
 		this.paths = new ArrayList<>(paths);
 	}
 	
-	public State(Path... paths) {
+	public State(int id, Path... paths) {
+		this.id = id;
 		this.paths = new ArrayList<>();
 		for(Path path : paths) {
 			this.paths.add(path);
@@ -46,7 +49,7 @@ public class State {
 	}
 	
 	private StateResult error(Context context) {
-		return new LangError("didnt work"); //TODO implement
+		return new LangError("failed at state " + id); //TODO implement
 	}
 	
 	public List<String> suggestions(Environment env) {
