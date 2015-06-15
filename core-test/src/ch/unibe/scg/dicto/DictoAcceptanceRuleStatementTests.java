@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import ch.unibe.scg.dicto.model.Argument;
 import ch.unibe.scg.dicto.model.Environment;
+import ch.unibe.scg.dicto.model.Rule;
 import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.Context;
@@ -30,7 +31,8 @@ public class DictoAcceptanceRuleStatementTests {
 			private static final long serialVersionUID = 1L;
 
 		{put("name", "org.app.view");}}));
-		Environment env = new Environment(variables, types);
+		List<Rule> rules = new ArrayList<>();
+		Environment env = new Environment(variables, types, rules);
 		StateMachine dicto = new DictoBuilder(env).build().clone(env, new Context(context));
 		dicto.run();
 		return dicto.getResult();
