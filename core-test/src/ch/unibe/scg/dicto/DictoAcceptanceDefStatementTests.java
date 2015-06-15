@@ -30,7 +30,7 @@ public class DictoAcceptanceDefStatementTests {
 		types.add(new VariableType("XMLTag", arguments));
 		types.add(new VariableType("Attribute", arguments));
 		Environment env = new Environment(new ArrayList<Variable>(), types);
-		StateMachine dicto = Dicto.DICTO_MACHINE.clone(env, new Context(context));
+		StateMachine dicto = new DictoBuilder(env).build().clone(env, new Context(context));
 		dicto.run();
 		return dicto.getResult();
 	}
