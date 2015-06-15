@@ -89,7 +89,7 @@ public class DictoBuilder {
 		dictoMachine.addState(ID_KEYWORD_WITH, new State(buildWithKeywordPath()));
 		dictoMachine.addState(ID_ARG_NAME, new State(buildArgNamePath()));
 		dictoMachine.addState(ID_ARG_VALUE, new State(buildArgStringPath()));
-		dictoMachine.addAtate(ID_AFTER_ARG_VALUE, new State(buildNextArgPath(), buildNextStatementPath()))
+		dictoMachine.addState(ID_AFTER_ARG_VALUE, new State(buildNextArgPath(), buildNextStatementPath()));
 		dictoMachine.addState(ID_PREDICATE, new State(buildPredicatePath()));
 		dictoMachine.addState(ID_RULE, new State()); // TODO rule path
 		return dictoMachine;
