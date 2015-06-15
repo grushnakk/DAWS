@@ -9,10 +9,13 @@ import static ch.unibe.scg.dicto.parser.Acceptors.string;
 import static ch.unibe.scg.dicto.parser.Acceptors.whitespace;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ch.unibe.scg.dicto.model.Argument;
 import ch.unibe.scg.dicto.model.Environment;
+import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.Acceptor;
 import ch.unibe.scg.dicto.parser.AcceptorResult;
@@ -42,6 +45,7 @@ public class DictoBuilder {
 	private static final int ID_KEYWORD_WITH = 12;
 	private static final int ID_ARG_NAME = 13;
 	private static final int ID_ARG_VALUE = 14;
+	private static final int ID_AFTER_ARG_VALUE = 15;
 	private static final int ID_PREDICATE = 21;
 	private static final int ID_RULE = 22;
 
@@ -85,6 +89,7 @@ public class DictoBuilder {
 		dictoMachine.addState(ID_KEYWORD_WITH, new State(buildWithKeywordPath()));
 		dictoMachine.addState(ID_ARG_NAME, new State(buildArgNamePath()));
 		dictoMachine.addState(ID_ARG_VALUE, new State(buildArgStringPath()));
+		dictoMachine.addAtate(ID_AFTER_ARG_VALUE, new State(buildNextArgPath(), buildNextStatementPath()))
 		dictoMachine.addState(ID_PREDICATE, new State(buildPredicatePath()));
 		dictoMachine.addState(ID_RULE, new State()); // TODO rule path
 		return dictoMachine;
@@ -203,6 +208,37 @@ public class DictoBuilder {
 						return new Next(ID_RULE);
 					}
 				}, noSuggestAction); // TODO replace suggestions
+	}
+	
+	private Path buildNextStatementPath() {
+		return new Path(new MultiStringAcceptor("\n", "\r"), new NextAction() {
+			
+			@Override
+			public StateResult onNext(Environment env, AcceptorResult result) {
+				String nameCache = env.readCache(CACHE_VAR_NAME);
+				String typeCache = env.readCache(CACHE_VAR_TYPE);
+				VariableType varType = env.getVariableType(typeCache);
+				Map<String, String> args = new HashMap<>();
+				for(Argument arg : varType.getArguments()) {
+					if(env.hasCached(arg.getName()))
+						args.put(arg.getName(), env.readCache(arg.getName()));
+				}
+				Variable var = new Variable(nameCache, varType, args);
+				env.addVariable(var);
+				return new Next(ID_START);
+			}
+		}, noSuggestAction);
+	}
+	
+	private Path buildNextArgPath() {
+		return new Path(string(",").chain(optionalWhitespace()), new NextAction() {
+
+			@Override
+			public StateResult onNext(Environment env, AcceptorResult result) {
+				return new Next(ID_AFTER_ARG_VALUE);
+			}
+			
+		}, noSuggestAction);
 	}
 
 	static class VariableTypesSuggestAction implements SuggestAction {

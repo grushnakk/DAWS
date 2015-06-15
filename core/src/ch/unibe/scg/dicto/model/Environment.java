@@ -14,7 +14,7 @@ public class Environment {
 	private Map<String, String> cache;
 	
 	public Environment(List<Variable> variables, List<VariableType> variableTypes, List<Rule> rules) {
-		this.variables = Collections.unmodifiableList(variables);
+		this.variables = new ArrayList<>(variables);
 		this.variableTypes = Collections.unmodifiableList(variableTypes);
 		this.rules = Collections.unmodifiableList(rules);
 		this.cache = new HashMap<String, String>();
@@ -60,7 +60,7 @@ public class Environment {
 	}
 	
 	public List<Variable> getVariables() {
-		return null; //TODO method stub
+		return new ArrayList<>(variables);
 	}
 	
 	public VariableType getVariableType(String varType) {
@@ -68,5 +68,9 @@ public class Environment {
 			if(type.getName().equals(varType))
 				return type;
 		return null;
+	}
+	
+	public void addVariable(Variable variable) {
+		variables.add(variable);
 	}
 }
