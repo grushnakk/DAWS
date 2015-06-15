@@ -84,14 +84,14 @@ public class DictoBuilder {
 
 	public StateMachine build() {
 		StateMachine dictoMachine = new StateMachine(ID_START);
-		dictoMachine.addState(ID_START, new State(buildNewIdPath(), buildKnownIdPath()));
-		dictoMachine.addState(ID_TYPE, new State(buildTypePath()));
-		dictoMachine.addState(ID_KEYWORD_WITH, new State(buildWithKeywordPath()));
-		dictoMachine.addState(ID_ARG_NAME, new State(buildArgNamePath()));
-		dictoMachine.addState(ID_ARG_VALUE, new State(buildArgStringPath()));
-		dictoMachine.addState(ID_AFTER_ARG_VALUE, new State(buildNextArgPath(), buildNextStatementPath()));
-		dictoMachine.addState(ID_PREDICATE, new State(buildPredicatePath()));
-		dictoMachine.addState(ID_RULE, new State()); // TODO rule path
+		dictoMachine.addState(ID_START, new State(ID_START, buildNewIdPath(), buildKnownIdPath()));
+		dictoMachine.addState(ID_TYPE, new State(ID_TYPE, buildTypePath()));
+		dictoMachine.addState(ID_KEYWORD_WITH, new State(ID_KEYWORD_WITH, buildWithKeywordPath()));
+		dictoMachine.addState(ID_ARG_NAME, new State(ID_ARG_NAME, buildArgNamePath()));
+		dictoMachine.addState(ID_ARG_VALUE, new State(ID_ARG_VALUE, buildArgStringPath()));
+		dictoMachine.addState(ID_AFTER_ARG_VALUE, new State(ID_AFTER_ARG_VALUE, buildNextArgPath(), buildNextStatementPath()));
+		dictoMachine.addState(ID_PREDICATE, new State(ID_PREDICATE, buildPredicatePath()));
+		dictoMachine.addState(ID_RULE, new State(ID_RULE)); // TODO rule path
 		return dictoMachine;
 	}
 
@@ -188,7 +188,7 @@ public class DictoBuilder {
 				String content = result.getRegion(REGION_STRING_CONTENT);
 				String argName = env.readCache(CACHE_ARG_NAME);
 				env.writeCache(argName, content);
-				return new Next(ID_START);
+				return new Next(ID_AFTER_ARG_VALUE);
 			}
 		}, noSuggestAction);
 	}
@@ -225,6 +225,7 @@ public class DictoBuilder {
 				}
 				Variable var = new Variable(nameCache, varType, args);
 				env.addVariable(var);
+				env.resetCache();
 				return new Next(ID_START);
 			}
 		}, noSuggestAction);
@@ -235,7 +236,7 @@ public class DictoBuilder {
 
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {
-				return new Next(ID_AFTER_ARG_VALUE);
+				return new Next(ID_ARG_NAME);
 			}
 			
 		}, noSuggestAction);

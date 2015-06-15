@@ -108,4 +108,23 @@ public class DictoAcceptanceDefStatementTests {
 		StateResult stateResult = setUp("View = Package with name : ");
 		assertTrue(stateResult.toString(), stateResult.isSuccess());
 	}
+	
+	@Test
+	public void multiArgIncomplete() {
+		StateResult stateResult = setUp("View = Package with name : \"bla\", n");
+		assertTrue(stateResult.toString(), stateResult.isSuccess());	
+	}
+	
+	@Test
+	public void multiArgComplete() {
+		StateResult stateResult = setUp("View = Package with name : \"bla\", name : \"and still bla\"");
+		assertTrue(stateResult.toString(), stateResult.isSuccess());	
+	}
+	
+	@Test
+	public void twoStatements() {
+		StateResult stateResult = setUp("View = Package with name : \"bla\""
+				+ "\nView = Package wi");
+		assertTrue(stateResult.toString(), stateResult.isSuccess());	
+	}
 }

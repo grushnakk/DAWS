@@ -51,7 +51,7 @@ public class StateTests {
 			}
 		}, noSuggestions);
 		
-		state = new State(path1, path2);
+		state = new State(0, path1, path2);
 	}
 	
 	@Test
