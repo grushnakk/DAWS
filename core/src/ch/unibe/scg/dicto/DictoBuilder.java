@@ -36,7 +36,7 @@ public class DictoBuilder {
 	private static final String CACHE_VAR_TYPE = "VAR_TYPE";
 	private static final String CACHE_ARG_NAME = "ARG_NAME";
 	private static final String CACHE_PREDICATE = "PREDICATE";
-	
+
 	private static final int ID_START = 00;
 	private static final int ID_TYPE = 11;
 	private static final int ID_KEYWORD_WITH = 12;
@@ -44,7 +44,6 @@ public class DictoBuilder {
 	private static final int ID_ARG_VALUE = 14;
 	private static final int ID_PREDICATE = 21;
 	private static final int ID_RULE = 22;
-
 
 	private Environment env;
 	private Acceptor idAcceptor;
@@ -92,8 +91,8 @@ public class DictoBuilder {
 	}
 
 	private Path buildNewIdPath() {
-		return new Path(idAcceptor.chain(optionalWhitespace(),
-				string("="), optionalWhitespace()), new NextAction() {
+		return new Path(idAcceptor.chain(optionalWhitespace(), string("="),
+				optionalWhitespace()), new NextAction() {
 
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {
@@ -105,24 +104,29 @@ public class DictoBuilder {
 	}
 
 	private Path buildKnownIdPath() {
-		return new Path(idAcceptor.chain(whitespace()),
-				new NextAction() {
+		return new Path(idAcceptor.chain(whitespace()), new NextAction() {
 
-					@Override
-					public StateResult onNext(Environment env,
-							AcceptorResult result) {
-						String varName = result.getRegion(REGION_IDENTIFIER);
-						if (env.isVariableDefined(varName)) {
-							env.writeCache(CACHE_VAR_NAME, varName);
-							return new Next(ID_PREDICATE);
-						}
-						return new LangError("unknown Variable " + varName);
-					}
-				}, noSuggestAction); // TODO replace suggestions
+			@Override
+			public StateResult onNext(Environment env, AcceptorResult result) {
+				String varName = result.getRegion(REGION_IDENTIFIER);
+				if (env.isVariableDefined(varName)) {
+					env.writeCache(CACHE_VAR_NAME, varName);
+					return new Next(ID_PREDICATE);
+				}
+				return new LangError("unknown Variable " + varName);
+			}
+		}, noSuggestAction); // TODO replace suggestions
+	}
+
+	private Acceptor buildTypeAcceptor() {
+		List<String> types = new ArrayList<>();
+		for (VariableType type : env.getVariableTypes())
+			types.add(type.getName());
+		return new MultiStringAcceptor(types).region(REGION_IDENTIFIER);
 	}
 
 	private Path buildTypePath() {
-		return new Path(idAcceptor.chain(whitespace()),
+		return new Path(buildTypeAcceptor().chain(whitespace()),
 				new NextAction() {
 
 					@Override
@@ -151,8 +155,8 @@ public class DictoBuilder {
 	}
 
 	private Path buildArgNamePath() {
-		return new Path(idAcceptor.chain(optionalWhitespace(),
-				string(":"), optionalWhitespace()), new NextAction() {
+		return new Path(idAcceptor.chain(optionalWhitespace(), string(":"),
+				optionalWhitespace()), new NextAction() {
 
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {
@@ -185,7 +189,9 @@ public class DictoBuilder {
 	}
 
 	private Path buildPredicatePath() {
-		return new Path(new MultiStringAcceptor("can only", "cannot", "can", // TODO magic values
+		return new Path(new MultiStringAcceptor("can only", "cannot", "can", // TODO
+																				// magic
+																				// values
 				"must").region(REGION_PREDICATE).chain(whitespace()),
 				new NextAction() {
 
@@ -198,7 +204,7 @@ public class DictoBuilder {
 					}
 				}, noSuggestAction); // TODO replace suggestions
 	}
-	
+
 	static class VariableTypesSuggestAction implements SuggestAction {
 
 		@Override
