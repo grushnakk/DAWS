@@ -27,10 +27,8 @@ public class PathTests {
 	@Before
 	public void setUp() {		
 		path = new Path(
-				range(RANGE_LETTERS + RANGE_DIGITS + "_").repeat().region("VAR_NAME")
-				.chain(optionalWhitespace(), string(":"), optionalWhitespace()),
-				new NextAction() {
-					
+				range(RANGE_LETTERS + RANGE_DIGITS + "_").repeat().region("VAR_NAME").chain(optionalWhitespace(), string(":"), optionalWhitespace())) {
+
 					@Override
 					public StateResult onNext(Environment env, AcceptorResult result) {
 						String name = result.getRegion("VAR_NAME");
@@ -39,14 +37,13 @@ public class PathTests {
 						env.writeCache("VAR_NAME", name);
 						return new Next(1); //switch to state with id 1
 					}
-				},
-				new SuggestAction() {
-					
+
 					@Override
-					public List<String> suggestions(Environment environment) {
-						return new ArrayList<>(); //do i want to suggest ":"
+					public List<String> suggestions(Environment env) {
+						return new ArrayList<>();
 					}
-				});
+			
+		};
 	}
 	
 	@Test
