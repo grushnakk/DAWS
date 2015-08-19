@@ -7,27 +7,18 @@ import ch.unibe.scg.dicto.parser.Acceptor;
 import ch.unibe.scg.dicto.parser.AcceptorResult;
 import ch.unibe.scg.dicto.parser.Context;
 
-public class Path implements NextAction, SuggestAction {
+public abstract class Path {
 	
 	private final Acceptor acceptor;
-	private final NextAction nextAction;
-	private final SuggestAction suggestAction;
 	
-	public Path(Acceptor acceptor, NextAction nextAction, SuggestAction suggestAction) {
+	public Path(Acceptor acceptor) {
 		this.acceptor = acceptor;
-		this.suggestAction = suggestAction;
-		this.nextAction = nextAction;
 	} 
 	
 	public AcceptorResult accept(Context context) { return acceptor.accept(context); }
 	
-	@Override
-	public StateResult onNext(Environment env, AcceptorResult result) {
-		return nextAction.onNext(env, result);
-	}
+
+	public abstract StateResult onNext(Environment env, AcceptorResult result);
 	
-	@Override
-	public List<String> suggestions(Environment env) {
-		return suggestAction.suggestions(env);
-	}
+	public abstract List<String> suggestions(Environment env);
 }

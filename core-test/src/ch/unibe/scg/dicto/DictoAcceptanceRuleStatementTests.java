@@ -77,7 +77,13 @@ public class DictoAcceptanceRuleStatementTests {
 	}
 	
 	@Test
-	public void ruleComplete() {
+	public void ruleComplete1() {
+		StateResult actual = setUp("View must depend on");
+		assertTrue(actual.toString(), actual.isSuccess());
+	}
+	
+	@Test
+	public void ruleComplete2() {
 		StateResult actual = setUp("View must depend on ");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
