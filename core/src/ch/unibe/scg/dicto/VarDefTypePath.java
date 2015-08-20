@@ -1,5 +1,8 @@
 package ch.unibe.scg.dicto;
 
+
+import static ch.unibe.scg.dicto.parser.Acceptors.optionalWhitespace;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +20,7 @@ import static ch.unibe.scg.dicto.Constants.*;
 public class VarDefTypePath extends Path {
 
 	public VarDefTypePath(Environment env) {
-		super(buildTypeAcceptor(env));
+		super(buildTypeAcceptor(env).chain(optionalWhitespace()));
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package ch.unibe.scg.dicto;
 
+import static ch.unibe.scg.dicto.parser.Acceptors.whitespace;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,7 @@ import static ch.unibe.scg.dicto.Constants.*;
 public class RuleDefPredicatePath extends Path {
 
 	public RuleDefPredicatePath() {
-		super(new MultiStringAcceptor("can only", "cannot", "can", "must")); // TODO magic values
+		super(new MultiStringAcceptor("can only", "cannot", "can", "must").chain(whitespace())); // TODO magic values
 	}
 
 	@Override

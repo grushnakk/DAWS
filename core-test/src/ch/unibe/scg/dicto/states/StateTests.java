@@ -29,27 +29,32 @@ public class StateTests {
 	@Before
 	public void setUp() {
 		Acceptor idAcceptor = range(RANGE_DIGITS + RANGE_LETTERS).repeat();
-		SuggestAction noSuggestions = new SuggestAction() {
-			
-			@Override
-			public List<String> suggestions(Environment environment) {
-				return new ArrayList<>();
-			}
-		};
-		Path path1 = new Path(idAcceptor.chain(optionalWhitespace(), string("="), optionalWhitespace()), new NextAction() {
-			
+		Path path1 = new Path(idAcceptor.chain(optionalWhitespace(), string("="), optionalWhitespace())){
+
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {
 				return new Next(5);
 			}
-		}, noSuggestions);		
-		Path path2 = new Path(idAcceptor.chain(whitespace()), new NextAction() {
+
+			@Override
+			public List<String> suggestions(Environment env) {
+				return new ArrayList<>();
+			}
 			
+		};		
+		Path path2 = new Path(idAcceptor.chain(whitespace())) {
+
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {
 				return new LangError("random Error");
 			}
-		}, noSuggestions);
+
+			@Override
+			public List<String> suggestions(Environment env) {
+				return new ArrayList<>();
+			}
+			
+		};
 		
 		state = new State(0, path1, path2);
 	}
