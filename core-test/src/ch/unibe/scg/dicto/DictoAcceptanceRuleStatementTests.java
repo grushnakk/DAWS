@@ -26,15 +26,16 @@ public class DictoAcceptanceRuleStatementTests {
 		List<VariableType> types = new ArrayList<>();
 		List<Argument> packageArguments = new ArrayList<>();
 		packageArguments.add(new Argument("name"));
-		types.add(new VariableType("Package", packageArguments, new ArrayList<Rule>()));
+		List<Rule> rules = new ArrayList<>();
+		rules.add(new Rule("depend on", new ArrayList<Predicate>(){{add(Predicate.MUST);}}));
+		types.add(new VariableType("Package", packageArguments, rules));
 		List<Variable> variables = new ArrayList<>();
 		variables.add(new Variable("View", types.get(0), new HashMap<String, String>(){
 
 			private static final long serialVersionUID = 1L;
 
 		{put("name", "org.app.view");}}));
-		List<Rule> rules = new ArrayList<>();
-		rules.add(new Rule("depend on", new ArrayList<String>(){{add("must");}}));
+		
 		Environment env = new Environment(variables, types);
 		StateMachine dicto = new DictoBuilder(env).build().clone(env, new Context(context));
 		dicto.run();

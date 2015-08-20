@@ -6,15 +6,15 @@ import java.util.List;
 public class Rule implements Named {
 	
 	private final String name;
-	private List<String> predicates;
+	private List<Predicate> predicates;
 
-	public Rule(final String name, List<String> predicates) {
+	public Rule(final String name, List<Predicate> predicates) {
 		this.name = name;
 		this.predicates = Collections.unmodifiableList(predicates);		
 	} 
 	
 	public boolean canBeUsed(Predicate predicate) {
-		for(String p : predicates) {
+		for(Predicate p : predicates) {
 			if(p.equals(predicate))
 				return true;
 		}
