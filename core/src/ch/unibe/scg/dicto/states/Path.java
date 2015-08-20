@@ -17,7 +17,6 @@ public abstract class Path {
 	
 	public AcceptorResult accept(Context context) { return acceptor.accept(context); }
 	
-
 	public abstract StateResult onNext(Environment env, AcceptorResult result);
 	
 	public abstract List<String> suggestions(Environment env);

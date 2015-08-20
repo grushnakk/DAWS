@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.unibe.scg.dicto.model.Environment;
-import ch.unibe.scg.dicto.model.Rule;
 import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.AcceptorResult;
@@ -27,7 +26,7 @@ public class PathTests {
 	@Before
 	public void setUp() {		
 		path = new Path(
-				range(RANGE_LETTERS + RANGE_DIGITS + "_").repeat().region("VAR_NAME").chain(optionalWhitespace(), string(":"), optionalWhitespace())) {
+				range(RANGE_LETTERS + RANGE_DIGITS + "_").repeat().region("VAR_NAME").chain(optionalWhitespace(), string(":"), optionalWhitespace())){
 
 					@Override
 					public StateResult onNext(Environment env, AcceptorResult result) {
@@ -40,7 +39,7 @@ public class PathTests {
 
 					@Override
 					public List<String> suggestions(Environment env) {
-						return new ArrayList<>();
+						return  new ArrayList<>();
 					}
 			
 		};
@@ -49,7 +48,7 @@ public class PathTests {
 	@Test
 	public void nextSucceed() {
 		AcceptorResult accResult = path.accept(new Context("hallo:"));
-		StateResult actual = path.onNext(new Environment(new ArrayList<Variable>(), new ArrayList<VariableType>(), new ArrayList<Rule>()), accResult);
+		StateResult actual = path.onNext(new Environment(new ArrayList<Variable>(), new ArrayList<VariableType>()), accResult);
 		StateResult expected = new Next(1);
 		assertEquals(expected, actual);
 	}

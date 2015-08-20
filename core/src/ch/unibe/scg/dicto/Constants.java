@@ -22,6 +22,7 @@ class Constants {
 	static final String CACHE_VAR_TYPE = "VAR_TYPE";
 	static final String CACHE_ARG_NAME = "ARG_NAME";
 	static final String CACHE_PREDICATE = "PREDICATE";
+	static final String CACHE_ONLY_CAN = "ONLY_CAN";
 	
 	static final int ID_START = 00;
 	static final int ID_TYPE = 11;
@@ -32,5 +33,8 @@ class Constants {
 	static final int ID_PREDICATE = 21;
 	static final int ID_RULE = 22;
 	static final int ID_RULE_ARG = 23;
+	static final int ID_RULE_AFTER_ARG = 24;
+	static final int ID_RULE_ONLY_VAR = 31;
+	static final int ID_PREDICATE_CAN = 32;
 }
 

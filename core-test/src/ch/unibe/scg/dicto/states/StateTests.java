@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.unibe.scg.dicto.model.Environment;
-import ch.unibe.scg.dicto.model.Rule;
 import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.Acceptor;
@@ -29,7 +28,8 @@ public class StateTests {
 	@Before
 	public void setUp() {
 		Acceptor idAcceptor = range(RANGE_DIGITS + RANGE_LETTERS).repeat();
-		Path path1 = new Path(idAcceptor.chain(optionalWhitespace(), string("="), optionalWhitespace())) {
+		Path path1 = new Path(idAcceptor.chain(optionalWhitespace(), string("="), optionalWhitespace())){
+
 			@Override
 			public StateResult onNext(Environment env, AcceptorResult result) {
 				return new Next(5);
@@ -39,6 +39,7 @@ public class StateTests {
 			public List<String> suggestions(Environment env) {
 				return new ArrayList<>();
 			}
+			
 		};		
 		Path path2 = new Path(idAcceptor.chain(whitespace())) {
 
@@ -82,6 +83,6 @@ public class StateTests {
 	}
 	
 	Environment env() {
-		return new Environment(new ArrayList<Variable>(), new ArrayList<VariableType>(), new ArrayList<Rule>());
+		return new Environment(new ArrayList<Variable>(), new ArrayList<VariableType>());
 	}
 }

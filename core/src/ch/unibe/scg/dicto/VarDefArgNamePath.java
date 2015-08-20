@@ -19,7 +19,7 @@ import ch.unibe.scg.dicto.states.StateResult;
 public class VarDefArgNamePath extends Path {
 
 	public VarDefArgNamePath() {
-		super(ID_ACC.region(REGION_IDENTIFIER).chain(optionalWhitespace(), string(":")));
+		super(ID_ACC.region(REGION_IDENTIFIER).chain(optionalWhitespace(), string(":"), optionalWhitespace()));
 	}
 
 	@Override

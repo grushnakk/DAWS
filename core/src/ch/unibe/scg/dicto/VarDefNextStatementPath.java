@@ -16,9 +16,9 @@ import ch.unibe.scg.dicto.states.Path;
 import ch.unibe.scg.dicto.states.StateResult;
 import static ch.unibe.scg.dicto.Constants.*;
 
-public class NextStatementPath extends Path {
+public class VarDefNextStatementPath extends Path {
 
-	public NextStatementPath() {
+	public VarDefNextStatementPath() {
 		super(new MultiStringAcceptor("\n", "\r"));
 	}
 

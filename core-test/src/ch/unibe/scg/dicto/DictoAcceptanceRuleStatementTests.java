@@ -21,20 +21,22 @@ import ch.unibe.scg.dicto.states.StateResult;
 public class DictoAcceptanceRuleStatementTests {
 
 
+	@SuppressWarnings("serial")
 	public static StateResult setUp(String context) {
 		List<VariableType> types = new ArrayList<>();
 		List<Argument> packageArguments = new ArrayList<>();
 		packageArguments.add(new Argument("name"));
-		types.add(new VariableType("Package", packageArguments));
+		List<Rule> rules = new ArrayList<>();
+		rules.add(new Rule("depend on", new ArrayList<Predicate>(){{add(Predicate.MUST);}}));
+		types.add(new VariableType("Package", packageArguments, rules));
 		List<Variable> variables = new ArrayList<>();
 		variables.add(new Variable("View", types.get(0), new HashMap<String, String>(){
 
 			private static final long serialVersionUID = 1L;
 
 		{put("name", "org.app.view");}}));
-		List<Rule> rules = new ArrayList<>();
-		rules.add(new Rule("depend on", new Rule.Pair(types.get(0), Predicate.MUST)));
-		Environment env = new Environment(variables, types, rules);
+		
+		Environment env = new Environment(variables, types);
 		StateMachine dicto = new DictoBuilder(env).build().clone(env, new Context(context));
 		dicto.run();
 		return dicto.getResult();
@@ -77,14 +79,20 @@ public class DictoAcceptanceRuleStatementTests {
 	}
 	
 	@Test
-	public void ruleComplete1() {
+	public void ruleComplete() {
 		StateResult actual = setUp("View must depend on");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
-	public void ruleComplete2() {
+	public void ruleCompleteWithWhitespace() {
 		StateResult actual = setUp("View must depend on ");
+		assertTrue(actual.toString(), actual.isSuccess());
+	}
+	
+	@Test
+	public void statementComplete() {
+		StateResult actual = setUp("View must depend on Controller");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 }

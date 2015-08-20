@@ -1,9 +1,6 @@
 package ch.unibe.scg.dicto;
 
-import static ch.unibe.scg.dicto.Constants.CACHE_VAR_NAME;
-import static ch.unibe.scg.dicto.Constants.ID_ACC;
-import static ch.unibe.scg.dicto.Constants.ID_PREDICATE;
-import static ch.unibe.scg.dicto.Constants.REGION_IDENTIFIER;
+import static ch.unibe.scg.dicto.Constants.*;
 import static ch.unibe.scg.dicto.parser.Acceptors.whitespace;
 
 import java.util.ArrayList;

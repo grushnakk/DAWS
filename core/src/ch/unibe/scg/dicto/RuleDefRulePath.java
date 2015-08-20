@@ -22,13 +22,7 @@ public class RuleDefRulePath extends Path {
 	public RuleDefRulePath(Environment env) {
 		super(buildRuleAcceptor(env).chain(optionalWhitespace()));
 	}
-	private static Acceptor buildRuleAcceptor(Environment env) {
-		List<String> rules = new ArrayList<>();
-		for(Rule rule : env.getRules())
-			rules.add(rule.getName());
-		System.out.println(rules);
-		return new MultiStringAcceptor(rules).region(REGION_RULE);
-	}
+	
 	@Override
 	public StateResult onNext(Environment env, AcceptorResult result) {
 		return new Next(ID_RULE_ARG); //TODO do some checking and storing
@@ -40,11 +34,18 @@ public class RuleDefRulePath extends Path {
 		VariableType varType = var.getVariableType();
 		Predicate predicate = Predicate.byCode(env.readCache(CACHE_PREDICATE));
 		List<String> suggestions = new ArrayList<>();
-		for(Rule rule : env.getRules()) {
-			if(rule.canBeUsed(varType, predicate))
+		for(Rule rule : varType.getRules()) {
+			if(rule.canBeUsed(predicate))
 				suggestions.add(rule.getName());
 		}
 		return suggestions;
 	}
 
+	private static Acceptor buildRuleAcceptor(Environment env) {
+		List<String> rules = new ArrayList<>();
+		for(VariableType type : env.getVariableTypes())
+			for(Rule rule : type.getRules())
+				rules.add(rule.getName());
+		return new MultiStringAcceptor(rules).region(REGION_RULE);
+	}
 }
