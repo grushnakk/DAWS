@@ -1,7 +1,5 @@
 package ch.unibe.scg.dicto;
 
-import static ch.unibe.scg.dicto.parser.Acceptors.optionalWhitespace;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,21 +8,25 @@ import ch.unibe.scg.dicto.parser.AcceptorResult;
 import ch.unibe.scg.dicto.states.Next;
 import ch.unibe.scg.dicto.states.Path;
 import ch.unibe.scg.dicto.states.StateResult;
-import static ch.unibe.scg.dicto.Constants.*;
+import static ch.unibe.scg.dicto.parser.Acceptors.string;
+import static ch.unibe.scg.dicto.parser.Acceptors.whitespace;;
 
-public class RuleDefArgVariablePath extends Path {
-
-	public RuleDefArgVariablePath() {
-		super(ID_ACC.region(REGION_IDENTIFIER).chain(optionalWhitespace()));
-	}
+public class RuleOnlyPath extends Path {
 	
+	public RuleOnlyPath() {
+		super(string("only").chain(whitespace()));
+	}
+
 	@Override
 	public StateResult onNext(Environment env, AcceptorResult result) {
-		return new Next(Constants.ID_RULE_AFTER_ARG);
+		env.writeCache(Constants.CACHE_ONLY_CAN, "");
+		return new Next(Constants.ID_RULE_ONLY_VAR);
 	}
 
+	@SuppressWarnings("serial")
 	@Override
 	public List<String> suggestions(Environment env) {
-		return new ArrayList<>(); //TODO return possible variables
+		return new ArrayList<String>(){{add("only");}};
 	}
+
 }

@@ -8,21 +8,27 @@ import java.util.List;
 import ch.unibe.scg.dicto.model.Environment;
 import ch.unibe.scg.dicto.parser.AcceptorResult;
 import ch.unibe.scg.dicto.parser.MultiStringAcceptor;
+import ch.unibe.scg.dicto.states.LangError;
 import ch.unibe.scg.dicto.states.Next;
 import ch.unibe.scg.dicto.states.Path;
 import ch.unibe.scg.dicto.states.StateResult;
-
 import static ch.unibe.scg.dicto.Constants.*;
 
 public class RuleDefPredicatePath extends Path {
 
 	public RuleDefPredicatePath() {
-		super(new MultiStringAcceptor("can only", "cannot", "can", "must").chain(whitespace())); // TODO magic values
+		super(new MultiStringAcceptor("can only", "cannot", "can", "must").region(REGION_PREDICATE).chain(whitespace())); // TODO magic values
 	}
 
 	@Override
 	public StateResult onNext(Environment env, AcceptorResult result) {
 		String predicate = result.getRegion(REGION_PREDICATE);
+		if(env.hasCached(CACHE_ONLY_CAN) && predicate.equals("can")) {
+			env.writeCache(CACHE_PREDICATE, "only can");
+			return new Next(ID_RULE);
+		} else if (env.hasCached(CACHE_ONLY_CAN) && !predicate.equals("can")) {
+			return new LangError("expected \"can\"");
+		}
 		env.writeCache(CACHE_PREDICATE, predicate);
 		return new Next(ID_RULE);
 	}

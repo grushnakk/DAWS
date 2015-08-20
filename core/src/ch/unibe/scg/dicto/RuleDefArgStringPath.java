@@ -22,7 +22,6 @@ public class RuleDefArgStringPath extends Path {
 
 	@Override
 	public StateResult onNext(Environment env, AcceptorResult result) {
-		System.out.println(result.getRegion(REGION_STRING_CONTENT));
 		return new Next(Constants.ID_RULE_AFTER_ARG);
 	}
 
