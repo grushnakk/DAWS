@@ -117,7 +117,7 @@ public class DictoDocumentRuleTests {
 	
 	@Test
 	public void dependencies4() {
-		StateResult actual = computeResult("Tests, Model can only depen on Controller");
+		StateResult actual = computeResult("Tests, Model can only depend on Controller");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	

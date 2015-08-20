@@ -40,8 +40,8 @@ public class DictoBuilder {
 		dictoMachine.addState(ID_AFTER_ARG_VALUE, new State(ID_AFTER_ARG_VALUE, new VarDefNextArgPath(), new VarDefNextStatementPath()));
 		dictoMachine.addState(ID_PREDICATE, new State(ID_PREDICATE, new RuleDefPredicatePath()));
 		dictoMachine.addState(ID_RULE, new State(ID_RULE, new RuleDefRulePath(env)));
-		dictoMachine.addState(ID_RULE_ARG, new State(ID_RULE_ARG, new RuleDefArgVariablePath()));
-		dictoMachine.addState(ID_RULE_AFTER_ARG, new State(ID_RULE_AFTER_ARG, new RuleDefNextStatementPath()));
+		dictoMachine.addState(ID_RULE_ARG, new State(ID_RULE_ARG, new RuleDefArgStringPath(), new RuleDefArgVariablePath()));
+		dictoMachine.addState(ID_RULE_AFTER_ARG, new State(ID_RULE_AFTER_ARG, new RuleDefNextArgPath(), new RuleDefNextStatementPath()));
 		return dictoMachine;
 	}
 }
