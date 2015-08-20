@@ -1,23 +1,21 @@
 package ch.unibe.scg.dicto.model;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Rule implements Named {
 	
 	private final String name;
-	private List<Pair> pairs;
+	private List<String> predicates;
 
-	public Rule(final String name, Pair... pairs) {
+	public Rule(final String name, List<String> predicates) {
 		this.name = name;
-		this.pairs = new ArrayList<>();
-		for(Pair pair : pairs)
-			this.pairs.add(pair);
+		this.predicates = Collections.unmodifiableList(predicates);		
 	} 
 	
-	public boolean canBeUsed(VariableType type, Predicate predicate) {
-		for(Pair pair : pairs) {
-			if(pair.match(type, predicate))
+	public boolean canBeUsed(Predicate predicate) {
+		for(String p : predicates) {
+			if(p.equals(predicate))
 				return true;
 		}
 		return false;

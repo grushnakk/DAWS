@@ -9,19 +9,16 @@ import java.util.Map;
 public class Environment {
 	private final List<Variable> variables;
 	private final List<VariableType> variableTypes;
-	private final List<Rule> rules;
-	
 	private Map<String, String> cache;
 	
-	public Environment(List<Variable> variables, List<VariableType> variableTypes, List<Rule> rules) {
+	public Environment(List<Variable> variables, List<VariableType> variableTypes) {
 		this.variables = new ArrayList<>(variables);
 		this.variableTypes = Collections.unmodifiableList(variableTypes);
-		this.rules = Collections.unmodifiableList(rules);
 		this.cache = new HashMap<String, String>();
 	}
 	
 	public Environment copy() {
-		return new Environment(variables, variableTypes, rules);
+		return new Environment(variables, variableTypes);
 	}
 	
 	public boolean isTypeDefined(String typeName) {
@@ -72,10 +69,6 @@ public class Environment {
 	
 	public void addVariable(Variable variable) {
 		variables.add(variable);
-	}
-	
-	public List<Rule> getRules() {
-		return new ArrayList<>(rules);
 	}
 	
 	public Variable getVariable(String name) {

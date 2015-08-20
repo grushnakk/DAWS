@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.unibe.scg.dicto.model.Environment;
-import ch.unibe.scg.dicto.model.Rule;
 import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.Acceptor;
@@ -84,6 +83,6 @@ public class StateTests {
 	}
 	
 	Environment env() {
-		return new Environment(new ArrayList<Variable>(), new ArrayList<VariableType>(), new ArrayList<Rule>());
+		return new Environment(new ArrayList<Variable>(), new ArrayList<VariableType>());
 	}
 }

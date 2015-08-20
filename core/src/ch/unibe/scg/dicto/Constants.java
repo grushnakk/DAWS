@@ -32,5 +32,6 @@ class Constants {
 	static final int ID_PREDICATE = 21;
 	static final int ID_RULE = 22;
 	static final int ID_RULE_ARG = 23;
+	static final int ID_RULE_AFTER_ARG = 24;
 }
 

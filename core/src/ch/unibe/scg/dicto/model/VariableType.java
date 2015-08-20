@@ -10,14 +10,12 @@ public class VariableType implements Named {
 	
 	private final List<Argument> arguments;
 	
-	private final List<String> rules;
+	private final List<Rule> rules;
 	
-	public VariableType(String name, List<Argument> arguments, String... ruleArray) {
+	public VariableType(String name, List<Argument> arguments, List<Rule> rules) {
 		this.name = name;
 		this.arguments = Collections.unmodifiableList(arguments);
-		this.rules = new ArrayList<>();
-		for(String s : ruleArray)
-			rules.add(s);
+		this.rules = Collections.unmodifiableList(rules);
 	}
 	
 	@Override
@@ -36,8 +34,8 @@ public class VariableType implements Named {
 		return false;
 	}
 	
-	public List<String> getRules() {
-		return new ArrayList<String>(rules);
+	public List<Rule> getRules() {
+		return new ArrayList<>(rules);
 	}
 
 	@Override
