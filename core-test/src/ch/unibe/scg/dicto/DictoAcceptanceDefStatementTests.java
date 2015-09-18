@@ -62,8 +62,20 @@ public class DictoAcceptanceDefStatementTests {
 	}
 	
 	@Test
+	public void newIdentifierComplete3() {
+		StateMachineResult StateMachineResult = result("View=");
+		assertTrue(StateMachineResult.toString(), StateMachineResult.isSuccess());
+	}
+	
+	@Test
 	public void typeIncomplete() {
 		StateMachineResult StateMachineResult = result("View = Pack");
+		assertTrue(StateMachineResult.toString(), StateMachineResult.isSuccess());
+	}
+	
+	@Test
+	public void typeIncomplete2() {
+		StateMachineResult StateMachineResult = result("View =Pack");
 		assertTrue(StateMachineResult.toString(), StateMachineResult.isSuccess());
 	}
 	

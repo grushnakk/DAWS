@@ -1,16 +1,21 @@
 package ch.unibe.scg.dicto.states2;
 
 import ch.unibe.scg.dicto.parser.Acceptor;
+import static ch.unibe.scg.dicto.parser.Acceptors.whitespace;
+import static ch.unibe.scg.dicto.parser.Acceptors.optionalWhitespace;;
+
 
 public class PathBuilder {
 	
 	private State destination;
 	private Acceptor acceptor;
+	private Acceptor prefix;
 	private Suggestor suggestor;
 	private final StateBuilder parent;
 
 	PathBuilder(StateBuilder parent) {
 		this.parent = parent;
+		this.prefix = whitespace();
 		this.suggestor = Suggestor.NOTHING;
 	}
 	
@@ -43,7 +48,17 @@ public class PathBuilder {
 		return this;
 	}
 	
+	public PathBuilder startsWithWhitespace() {
+		this.prefix = whitespace();
+		return this;
+	}
+	
+	public PathBuilder startWithOptionalWhitespace() {
+		this.prefix = optionalWhitespace();
+		return this;
+	}
+	
 	public void complete() {
-		parent.addPath(new Path(destination, suggestor, acceptor));
+		parent.addPath(new Path(destination, suggestor, prefix.chain(acceptor)));
 	}
 }

@@ -16,6 +16,7 @@ public class Dicto {
 	private static final String STATE_KEYWORD_WITH = "With";
 	private static final String STATE_RULE = "Rule";
 	private static final String STATE_ARG_NAME = "VarDefArgName";
+	private static final String STATE_ARG_VALUE = "VarDefArgValue";
 	/*
 	 * some other stuff
 	 */
@@ -50,6 +51,12 @@ public class Dicto {
 						.accepts(idAcceptor.chain(optionalWhitespace(), string(":")))
 						//TODO suggest arg names
 						.complete();
+		smBuilder.state(STATE_ARG_NAME)
+						.pathTo(STATE_ARG_VALUE)
+						.accepts(string("\"").chain(negRange("\"").repeat()))
+						.complete();
+								
+		
 		smBuilder.state(STATE_ID_AFTER_ONLY);
 		smBuilder.state(STATE_RULE);
 		return smBuilder.build();
