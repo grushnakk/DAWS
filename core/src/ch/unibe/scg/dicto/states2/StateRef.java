@@ -3,6 +3,7 @@ package ch.unibe.scg.dicto.states2;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.unibe.scg.dicto.model.Environment;
 import ch.unibe.scg.dicto.parser.Context;
 
 public class StateRef implements State {
@@ -29,5 +30,10 @@ public class StateRef implements State {
 	@Override
 	public StateResult accept(Context context) {
 		throw new UnsupportedOperationException("StateRef does not support accept");
+	}
+
+	@Override
+	public List<String> suggestions(Environment env) {
+		throw new UnsupportedOperationException("suggestions not supported by StateRef");
 	}
 }

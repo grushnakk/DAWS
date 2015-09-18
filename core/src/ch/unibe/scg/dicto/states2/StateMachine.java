@@ -18,17 +18,14 @@ public class StateMachine {
 			result = current.accept(context);
 			switch(result.getAcceptorResult().getResultType()) {
 			case FAILURE:
-				//TODO unexpected token
-				return null;
+				return new StateMachineError("unexpected token at: " + context.getCurrentIndex());
 			case INCOMPLETE:
-				//TODO we are done here
-				return null;
+				return new StateMachineSuccess(current.suggestions(env));
 			case SUCCESS:
 				//TODO we want to do something here
 				current = result.getPath().getDestination();
 				break;
 			}
 		} while(true);
-//		return result;
 	}
 }

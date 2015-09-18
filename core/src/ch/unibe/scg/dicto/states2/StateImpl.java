@@ -1,8 +1,10 @@
 package ch.unibe.scg.dicto.states2;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ch.unibe.scg.dicto.model.Environment;
 import ch.unibe.scg.dicto.parser.AcceptorResult;
 import ch.unibe.scg.dicto.parser.Context;
 
@@ -36,6 +38,16 @@ class StateImpl implements State {
 				return new StateResult(false, path, accResult);
 			}
 		}
-		return null;
+		return new StateResult(true, null, null);
+	}
+	
+	@Override
+	public List<String> suggestions(Environment env) {
+		List<String> merged = new ArrayList<String>();
+		for(Path path : paths) {
+			
+			merged.addAll(path.getSuggestor().suggestions(env));
+		}
+		return merged;
 	}
 }

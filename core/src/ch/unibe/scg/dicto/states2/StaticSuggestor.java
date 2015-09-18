@@ -3,6 +3,8 @@ package ch.unibe.scg.dicto.states2;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.unibe.scg.dicto.model.Environment;
+
 public class StaticSuggestor implements Suggestor {
 	
 	private final List<String> suggestions;
@@ -17,7 +19,7 @@ public class StaticSuggestor implements Suggestor {
 	}
 	
 	@Override
-	public List<String> suggestions() {
+	public List<String> suggestions(Environment env) {
 		return new ArrayList<>(suggestions);
 	}
 

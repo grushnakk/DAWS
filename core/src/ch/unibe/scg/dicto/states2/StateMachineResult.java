@@ -9,4 +9,6 @@ public interface StateMachineResult {
 	public Type getType();
 	
 	public List<String> getSuggestions();
+	
+	public String getErrorMessage();
 }
