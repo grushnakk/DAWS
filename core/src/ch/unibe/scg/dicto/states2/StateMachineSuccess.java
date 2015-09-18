@@ -3,7 +3,7 @@ package ch.unibe.scg.dicto.states2;
 import java.util.Collections;
 import java.util.List;
 
-public class StateMachineSuccess implements StateMachineResult {
+public class StateMachineSuccess extends StateMachineResult {
 
 	private final List<String> suggestions;
 	

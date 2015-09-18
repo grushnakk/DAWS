@@ -52,4 +52,8 @@ public class StateMachineBuilder {
 		}
 		return new StateMachine(states.get(startName));
 	}
+	
+	public void startAt(String name) {
+		this.startName = name;
+	}
 }

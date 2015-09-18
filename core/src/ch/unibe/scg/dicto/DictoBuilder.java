@@ -1,39 +1,43 @@
 package ch.unibe.scg.dicto;
 
-import static ch.unibe.scg.dicto.Constants.*;
-import ch.unibe.scg.dicto.model.Environment;
-import ch.unibe.scg.dicto.states.State;
-import ch.unibe.scg.dicto.states.StateMachine;
+import static ch.unibe.scg.dicto.parser.Acceptors.*;
+import ch.unibe.scg.dicto.parser.Acceptor;
+import ch.unibe.scg.dicto.states2.StateMachine;
+import ch.unibe.scg.dicto.states2.StateMachineBuilder;
 
 public class DictoBuilder {
 
-	private Environment env;
-
-	public DictoBuilder(Environment env) {
-		setEnvironment(env);
-	}
-
-	public void setEnvironment(Environment env) {
-		this.env = env;
-	}
-
-	public Environment getEnvironment() {
-		return env;
-	}
-
+	/*
+	 * the names of the states
+	 */
+	private static final String STATE_START = "Start";
+	private static final String STATE_VAR_TYPE = "VarType";
+	private static final String STATE_ID_AFTER_ONLY = "AfterOnly";
+	private static final String STATE_RULE = "Rule";
+	/*
+	 * some other stuff
+	 */
+	private static final Acceptor idAcceptor = range(RANGE_DIGITS + RANGE_LETTERS).repeat();
+	
 	public StateMachine build() {
-		StateMachine dictoMachine = new StateMachine(ID_START);
-		dictoMachine.addState(ID_START, new State(ID_START, new RuleOnlyPath(), new VarDefStartPath(), new RuleDefStartPath()));
-		dictoMachine.addState(ID_TYPE, new State(ID_TYPE, new VarDefTypePath(env)));
-		dictoMachine.addState(ID_KEYWORD_WITH, new State(ID_KEYWORD_WITH, new KeywordPath("with", ID_ARG_NAME)));
-		dictoMachine.addState(ID_ARG_NAME, new State(ID_ARG_NAME, new VarDefArgNamePath()));
-		dictoMachine.addState(ID_ARG_VALUE, new State(ID_ARG_VALUE, new VarDefArgStringPath()));
-		dictoMachine.addState(ID_AFTER_ARG_VALUE, new State(ID_AFTER_ARG_VALUE, new VarDefNextArgPath(), new VarDefNextStatementPath()));
-		dictoMachine.addState(ID_PREDICATE, new State(ID_PREDICATE, new RuleDefPredicatePath()));
-		dictoMachine.addState(ID_RULE, new State(ID_RULE, new RuleDefRulePath(env)));
-		dictoMachine.addState(ID_RULE_ARG, new State(ID_RULE_ARG, new RuleDefArgStringPath(), new RuleDefArgVariablePath()));
-		dictoMachine.addState(ID_RULE_AFTER_ARG, new State(ID_RULE_AFTER_ARG, new RuleDefNextArgPath(), new RuleDefNextStatementPath()));
-		dictoMachine.addState(ID_RULE_ONLY_VAR, new State(ID_RULE_ONLY_VAR, new RuleDefStartPath()));
-		return dictoMachine;
+		StateMachineBuilder smBuilder = new StateMachineBuilder();
+		smBuilder.startAt(STATE_START); // where do we start :D
+
+		smBuilder.state(STATE_START)
+						.pathTo(STATE_VAR_TYPE)
+						.accepts(idAcceptor.chain(optionalWhitespace(), string("=")))
+						.suggestsNothing() // this is the default, so no reason to call actually ;D
+						.complete();
+		smBuilder.state(STATE_START)
+						.pathTo(STATE_ID_AFTER_ONLY)
+						.accepts(string("only"))
+						.suggests("only")
+						.complete();
+		smBuilder.state(STATE_START)
+						.pathTo(STATE_RULE)
+						.accepts(idAcceptor)
+						//TODO suggests all existing variables
+						.complete();
+		return smBuilder.build();
 	}
 }

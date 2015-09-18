@@ -2,7 +2,7 @@ package ch.unibe.scg.dicto.states2;
 
 import java.util.List;
 
-public class StateMachineError implements StateMachineResult {
+public class StateMachineError extends StateMachineResult {
 
 	private final String message;
 	
