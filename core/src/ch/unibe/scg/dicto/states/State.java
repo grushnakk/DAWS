@@ -30,7 +30,7 @@ public class State {
 		AcceptorResult acceptorResult = null;
 		for(Path path : paths) {
 			acceptorResult = path.accept(context);
-			switch(acceptorResult.state) {
+			switch(acceptorResult.resultType) {
 			case FAILURE:
 				break;
 			case INCOMPLETE:

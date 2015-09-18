@@ -1,6 +1,6 @@
 package ch.unibe.scg.dicto.parser;
 
-import ch.unibe.scg.dicto.parser.AcceptorResult.State;
+import ch.unibe.scg.dicto.parser.AcceptorResult.Type;
 
 public class RangeAcceptor extends Acceptor {
 
@@ -13,13 +13,13 @@ public class RangeAcceptor extends Acceptor {
 	@Override
 	public AcceptorResult accept(Context context, AcceptorResult result) {
 		if(result.isFailure()) return result;
-		if(result.end >= context.size()) {result.state = State.INCOMPLETE; return result;}
+		if(result.end >= context.size()) {result.resultType = Type.INCOMPLETE; return result;}
 		char c = context.charAt(result.end);
 		if(isInRange(c)) {
 			result.end++;
 			return result;
 		}
-		result.state = State.FAILURE;
+		result.resultType = Type.FAILURE;
 		return result;
 	}
 

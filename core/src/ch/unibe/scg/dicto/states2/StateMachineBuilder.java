@@ -7,6 +7,7 @@ public class StateMachineBuilder {
 	
 	private final Map<String, State> refs;
 	private final Map<String, StateBuilder> stateBuilders;
+	private String startName;
 	
 	public StateMachineBuilder() {
 		this.refs = new HashMap<String, State>();
@@ -49,7 +50,6 @@ public class StateMachineBuilder {
 				path.setDestination(states.get(path.getDestination().getName()));
 			}
 		}
-		//TODO real StateMachine
-		return null;
+		return new StateMachine(states.get(startName));
 	}
 }
