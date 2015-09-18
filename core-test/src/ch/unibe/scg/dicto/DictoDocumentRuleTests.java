@@ -158,7 +158,7 @@ public class DictoDocumentRuleTests {
 	}
 	
 	StateResult computeResult(String in) {
-		StateMachine dicto = new DictoBuilder(env).build().clone(env, new Context(in));
+		StateMachine dicto = new Dicto(env).build().clone(env, new Context(in));
 		dicto.run();
 		return dicto.getResult();
 	}

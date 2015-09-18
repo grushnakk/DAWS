@@ -37,7 +37,7 @@ public class DictoAcceptanceRuleStatementTests {
 		{put("name", "org.app.view");}}));
 		
 		Environment env = new Environment(variables, types);
-		StateMachine dicto = new DictoBuilder(env).build().clone(env, new Context(context));
+		StateMachine dicto = new Dicto(env).build().clone(env, new Context(context));
 		dicto.run();
 		return dicto.getResult();
 	}

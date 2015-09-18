@@ -5,7 +5,7 @@ import ch.unibe.scg.dicto.parser.Acceptor;
 import ch.unibe.scg.dicto.states2.StateMachine;
 import ch.unibe.scg.dicto.states2.StateMachineBuilder;
 
-public class DictoBuilder {
+public class Dicto {
 
 	/*
 	 * the names of the states
@@ -13,7 +13,9 @@ public class DictoBuilder {
 	private static final String STATE_START = "Start";
 	private static final String STATE_VAR_TYPE = "VarType";
 	private static final String STATE_ID_AFTER_ONLY = "AfterOnly";
+	private static final String STATE_KEYWORD_WITH = "With";
 	private static final String STATE_RULE = "Rule";
+	private static final String STATE_ARG_NAME = "VarDefArgName";
 	/*
 	 * some other stuff
 	 */
@@ -38,6 +40,18 @@ public class DictoBuilder {
 						.accepts(idAcceptor)
 						//TODO suggests all existing variables
 						.complete();
+		smBuilder.state(STATE_VAR_TYPE)
+						.pathTo(STATE_KEYWORD_WITH)
+						.accepts(idAcceptor)
+						//TODO suggests Types
+						.complete();
+		smBuilder.state(STATE_KEYWORD_WITH)
+						.pathTo(STATE_ARG_NAME)
+						.accepts(idAcceptor.chain(optionalWhitespace(), string(":")))
+						//TODO suggest arg names
+						.complete();
+		smBuilder.state(STATE_ID_AFTER_ONLY);
+		smBuilder.state(STATE_RULE);
 		return smBuilder.build();
 	}
 }

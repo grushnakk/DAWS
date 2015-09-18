@@ -36,7 +36,7 @@ public class DictoAcceptanceDefStatementTests {
 		types.add(new VariableType("XMLTag", arguments, new ArrayList<Rule>()));
 		types.add(new VariableType("Attribute", arguments, new ArrayList<Rule>()));
 		env = new Environment(new ArrayList<Variable>(), types);
-		dicto = new DictoBuilder().build();
+		dicto = new Dicto().build();
 	}
 	
 	public StateMachineResult result(String content) {
@@ -52,6 +52,12 @@ public class DictoAcceptanceDefStatementTests {
 	@Test
 	public void newIdentifierComplete() {
 		StateMachineResult StateMachineResult = result("View = ");
+		assertTrue(StateMachineResult.toString(), StateMachineResult.isSuccess());
+	}
+	
+	@Test
+	public void newIdentifierComplete2() {
+		StateMachineResult StateMachineResult = result("View =");
 		assertTrue(StateMachineResult.toString(), StateMachineResult.isSuccess());
 	}
 	

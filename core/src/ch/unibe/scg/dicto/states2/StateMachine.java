@@ -11,14 +11,16 @@ public class StateMachine {
 		this.start = start;
 	}
 	
+	@SuppressWarnings("incomplete-switch")
 	public StateMachineResult run(Context context, Environment env) {
 		State current = start;
 		StateResult result;
 		do {
 			result = current.accept(context);
-			switch(result.getAcceptorResult().getResultType()) {
-			case FAILURE:
+			if(result.isFailure()) {
 				return new StateMachineError("unexpected token at: " + context.getCurrentIndex());
+			}
+			switch(result.getAcceptorResult().getResultType()) {
 			case INCOMPLETE:
 				return new StateMachineSuccess(current.suggestions(env));
 			case SUCCESS:
