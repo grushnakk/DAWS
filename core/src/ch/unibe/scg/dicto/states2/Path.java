@@ -4,7 +4,7 @@ import ch.unibe.scg.dicto.parser.Acceptor;
 
 public class Path {
 	
-	private final State destination;
+	private State destination;
 	private final Suggestor suggestor;
 	private final Acceptor acceptor;
 	
@@ -16,5 +16,17 @@ public class Path {
 
 	public State getDestination() {
 		return destination;
+	}
+	
+	void setDestination(State destination) {
+		this.destination = destination;
+	}
+	
+	public Suggestor getSuggestor() {
+		return suggestor;
+	}
+	
+	public Acceptor getAcceptor() {
+		return acceptor;
 	}
 }

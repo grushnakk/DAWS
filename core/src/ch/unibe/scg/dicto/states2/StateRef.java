@@ -22,5 +22,4 @@ public class StateRef implements State {
 	public List<Path> getPaths() {
 		return EMPTY_LIST;
 	}
-
 }

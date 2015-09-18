@@ -11,15 +11,16 @@ public final class Example {
 	public static void main(String[] args) {
 		Acceptor idAcceptor = range(RANGE_DIGITS + RANGE_LETTERS).repeat();
 		StateMachineBuilder sMachine = new StateMachineBuilder();
-		sMachine.state("Start")
-				.pathTo("Var_Type")
+		sMachine.state("STATE_START")
+				.pathTo("PATH_UNKNOWN_ID")
 				.accepts(idAcceptor)
 				.suggestsNothing()
 				.complete();
-		sMachine.state("Start")
-				.pathTo("Id_After_Only")
+		sMachine.state("STATE_START")
+				.pathTo("PATH_ONLY")
 				.accepts(string("only"))
 				.suggests("only")
 				.complete();
+		StateMachine stateMachine = sMachine.build();
 	}
 }

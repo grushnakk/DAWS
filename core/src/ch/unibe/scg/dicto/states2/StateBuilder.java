@@ -26,7 +26,7 @@ public class StateBuilder {
 		return new PathBuilder(this).to(parent.ref(destinationName));
 	}
 	
-	State complete() {
+	State build() {
 		return new StateImpl(name, paths);
 	}
 }

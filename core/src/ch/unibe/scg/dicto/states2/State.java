@@ -6,5 +6,5 @@ public interface State {
 
 	public String getName();
 	
-	public List<Path> getPaths(); //TODO naming
+	public List<Path> getPaths();
 }
