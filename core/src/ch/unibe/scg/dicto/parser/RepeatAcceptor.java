@@ -38,7 +38,6 @@ public class RepeatAcceptor extends Acceptor {
 			old = neu;
 			neu = baseAcceptor.accept(context, new AcceptorResult(old));
 		}
-		System.out.println(neu + "\n" + old);
 		if(neu.isFailure())
 			return old;
 		return neu;

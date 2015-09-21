@@ -16,7 +16,6 @@ public class RegionAcceptor extends Acceptor {
 		if(result.isFailure()) return result;
 		int temp = result.end;
 		AcceptorResult newResult = baseAcceptor.accept(context, result);
-		System.out.println(newResult);
 		if(!newResult.isFailure())
 			newResult.addRegion(key, context.substring(temp, newResult.end));
 		return newResult;

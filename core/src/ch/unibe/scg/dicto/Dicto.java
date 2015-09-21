@@ -48,12 +48,14 @@ public class Dicto {
 						.pathTo(STATE_VAR_TYPE)
 						.accepts(idAcceptor.region(REGION_ID).chain(optionalWhitespace(), string("=")))
 						.onSuccess(new StoreVarNameAction())
+						.startWithOptionalWhitespace()
 						.complete();
 		smBuilder.state(STATE_VAR_TYPE)
 						.pathTo(STATE_KEYWORD_WITH)
 						.accepts(typeAcceptor(env).region(REGION_TYPE))
 						.suggests(new VarTypeSuggestor())
 						.onSuccess(new TypeCheckerAction())
+						.startWithOptionalWhitespace()
 						.complete();
 		smBuilder.state(STATE_KEYWORD_WITH)
 						.pathTo(STATE_ARG_NAME)
@@ -73,11 +75,13 @@ public class Dicto {
 		smBuilder.state(STATE_AFTER_ARG)
 						.pathTo(STATE_ARG_NAME)
 						.accepts(string(","))
+						.startWithOptionalWhitespace()
 						.complete();
 		smBuilder.state(STATE_AFTER_ARG)
 						.pathTo(STATE_START)
 						.accepts(new MultiStringAcceptor("\n", "\r"))
 						.onSuccess(new NewVariableAction())
+						.startWithOptionalWhitespace()
 						.complete();
 		/*
 		 * ONLY PATH
