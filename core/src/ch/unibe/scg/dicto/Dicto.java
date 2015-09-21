@@ -62,7 +62,7 @@ public class Dicto {
 						.complete();
 		smBuilder.state(STATE_ARG_NAME)
 						.pathTo(STATE_ARG_VALUE)
-						.accepts(idAcceptor.chain(optionalWhitespace(), string(":")))
+						.accepts(idAcceptor.region(REGION_ARG_NAME).chain(optionalWhitespace(), string(":")))
 						.suggests(new ArgNameSuggestor())
 						.onSuccess(new ArgNameCheckerAction())
 						.complete();

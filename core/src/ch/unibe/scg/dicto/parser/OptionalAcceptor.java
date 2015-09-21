@@ -13,7 +13,7 @@ public class OptionalAcceptor extends Acceptor{
 	@Override
 	public AcceptorResult accept(Context context, AcceptorResult result) {
 		if(result.resultType == Type.FAILURE) return result;
-		baseAcceptor.accept(context, result);
+		result = baseAcceptor.accept(context, result);
 		if(!result.isSuccess()) {
 			result.resultType = Type.SUCCESS;
 			return result;

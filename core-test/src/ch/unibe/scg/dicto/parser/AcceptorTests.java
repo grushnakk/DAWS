@@ -182,6 +182,14 @@ public class AcceptorTests {
 	}
 	
 	@Test
+	public void repeatd() {
+		Context context = new Context("d");
+		AcceptorResult actual = repeatAcc.accept(context);
+		AcceptorResult expected = new AcceptorResult(0, 0, Type.FAILURE);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void negRangeSuccess() {
 		Context context = new Context("d");
 		AcceptorResult actual = negRangeAcc.accept(context);

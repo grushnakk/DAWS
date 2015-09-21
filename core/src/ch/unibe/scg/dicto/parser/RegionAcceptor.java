@@ -12,13 +12,14 @@ public class RegionAcceptor extends Acceptor {
 	}
 	
 	@Override
-	public AcceptorResult accept(Context context, AcceptorResult result) {
+	public AcceptorResult accept(Context context, final AcceptorResult result) {
 		if(result.isFailure()) return result;
 		int temp = result.end;
-		baseAcceptor.accept(context, result);
-		if(!result.isFailure())
-			result.addRegion(key, context.substring(temp, result.end));
-		return result;
+		AcceptorResult newResult = baseAcceptor.accept(context, result);
+		System.out.println(newResult);
+		if(!newResult.isFailure())
+			newResult.addRegion(key, context.substring(temp, newResult.end));
+		return newResult;
 	}
 
 }
