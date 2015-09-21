@@ -4,21 +4,24 @@ import java.util.HashMap;
 
 public class AcceptorResult {
 	
-	public static enum State {
+	public static enum Type {
 		FAILURE, SUCCESS, INCOMPLETE;
 	}
 
-	public State state;
+	public Type resultType;
 	private HashMap<String, String> regions;
 	public int begin, end;
 	
-	public AcceptorResult(int begin, int end, State state) {
-		this.state = state;
+	public AcceptorResult(int begin, int end, Type state) {
+		this.resultType = state;
 		this.begin = begin;
 		this.end = end;
 		this.regions = new HashMap<String, String>();
 	}
 	
+	public Type getResultType() {
+		return resultType;
+	}
 
 	public AcceptorResult(AcceptorResult result) {
 		set(result);
@@ -31,7 +34,7 @@ public class AcceptorResult {
 		result = prime * result + begin;
 		result = prime * result + end;
 		result = prime * result + ((regions == null) ? 0 : regions.hashCode());
-		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		result = prime * result + ((resultType == null) ? 0 : resultType.hashCode());
 		return result;
 	}
 
@@ -54,22 +57,22 @@ public class AcceptorResult {
 				return false;
 		} else if (!regions.equals(other.regions))
 			return false;
-		if (state != other.state)
+		if (resultType != other.resultType)
 			return false;
 		return true;
 	}
 
 
 	public boolean isFailure() {
-		return state == State.FAILURE;
+		return resultType == Type.FAILURE;
 	}
 	
 	public boolean isSuccess() {
-		return state == State.SUCCESS;
+		return resultType == Type.SUCCESS;
 	}
 	
 	public boolean isIncomplete() {
-		return state == State.INCOMPLETE;
+		return resultType == Type.INCOMPLETE;
 	}
 	
 	public int size() {
@@ -79,7 +82,7 @@ public class AcceptorResult {
 	
 	@Override
 	public String toString() {
-		return "Result [state=" + state + ", regions=" + regions + ", begin="
+		return "Result [state=" + resultType + ", regions=" + regions + ", begin="
 				+ begin + ", end=" + end + "]";
 	}
 
@@ -87,7 +90,7 @@ public class AcceptorResult {
 	public void set(AcceptorResult result) {
 		begin = result.begin;
 		end = result.end;
-		state = result.state;
+		resultType = result.resultType;
 		regions = new HashMap<String, String>(result.regions);
 	}
 	

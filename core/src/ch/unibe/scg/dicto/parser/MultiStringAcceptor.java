@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ch.unibe.scg.dicto.parser.AcceptorResult.State;
+import ch.unibe.scg.dicto.parser.AcceptorResult.Type;
 
 public class MultiStringAcceptor extends Acceptor {
 
@@ -22,7 +22,7 @@ public class MultiStringAcceptor extends Acceptor {
 
 	@Override
 	public AcceptorResult accept(Context context, final AcceptorResult result) {
-		if(result.state == State.FAILURE) return result;
+		if(result.resultType == Type.FAILURE) return result;
 		int length;
 		String actual;
 		for(String match : strings) {
@@ -31,11 +31,11 @@ public class MultiStringAcceptor extends Acceptor {
 			if(match.startsWith(actual)) {
 				result.end += length;
 				if(length < match.length())
-					result.state = State.INCOMPLETE;
+					result.resultType = Type.INCOMPLETE;
 				return result;
 			}
 		}
-		result.state = State.FAILURE;
+		result.resultType = Type.FAILURE;
 		return result;
 	}
 }

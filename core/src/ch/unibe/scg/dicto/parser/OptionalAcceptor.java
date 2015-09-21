@@ -1,6 +1,6 @@
 package ch.unibe.scg.dicto.parser;
 
-import ch.unibe.scg.dicto.parser.AcceptorResult.State;
+import ch.unibe.scg.dicto.parser.AcceptorResult.Type;
 
 public class OptionalAcceptor extends Acceptor{
 
@@ -12,10 +12,10 @@ public class OptionalAcceptor extends Acceptor{
 	
 	@Override
 	public AcceptorResult accept(Context context, AcceptorResult result) {
-		if(result.state == State.FAILURE) return result;
+		if(result.resultType == Type.FAILURE) return result;
 		baseAcceptor.accept(context, result);
 		if(!result.isSuccess()) {
-			result.state = State.SUCCESS;
+			result.resultType = Type.SUCCESS;
 			return result;
 		}
 		return result;

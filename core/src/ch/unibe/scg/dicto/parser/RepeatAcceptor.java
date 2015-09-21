@@ -1,6 +1,6 @@
 package ch.unibe.scg.dicto.parser;
 
-import ch.unibe.scg.dicto.parser.AcceptorResult.State;
+import ch.unibe.scg.dicto.parser.AcceptorResult.Type;
 
 public class RepeatAcceptor extends Acceptor {
 
@@ -26,7 +26,7 @@ public class RepeatAcceptor extends Acceptor {
 		} while(save.end < context.size() && copy.isSuccess());
 		result.set(save);
 		if(result.isFailure() && accOnce)
-			result.state = State.SUCCESS;
+			result.resultType = Type.SUCCESS;
 		return result;
 	}
 	

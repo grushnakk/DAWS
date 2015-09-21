@@ -1,13 +1,13 @@
 package ch.unibe.scg.dicto.parser;
 
-import ch.unibe.scg.dicto.parser.AcceptorResult.State;
+import ch.unibe.scg.dicto.parser.AcceptorResult.Type;
 
 public abstract class Acceptor {
 
 	public abstract AcceptorResult accept(Context context, AcceptorResult result);
 	
 	public AcceptorResult accept(Context context) {
-		return accept(context, new AcceptorResult(context.getCurrentIndex(), context.getCurrentIndex(), State.SUCCESS));
+		return accept(context, new AcceptorResult(context.getCurrentIndex(), context.getCurrentIndex(), Type.SUCCESS));
 	}
 	
 	public Acceptor repeat() {
