@@ -16,9 +16,9 @@ public class StateMachine {
 		State current = start;
 		StateResult result;
 		do {
-			result = current.accept(context);
-			if(result.isFailure()) {
-				return new StateMachineError("unexpected token at: " + context.getCurrentIndex());
+			result = current.accept(context, env);
+			if(result.isError()) {
+				return new StateMachineError(result.getErrorMessage());
 			}
 			switch(result.getAcceptorResult().getResultType()) {
 			case INCOMPLETE:

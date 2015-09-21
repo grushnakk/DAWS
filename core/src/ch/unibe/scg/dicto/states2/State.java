@@ -11,7 +11,7 @@ public interface State {
 	
 	public List<Path> getPaths();
 	
-	public StateResult accept(Context context);
+	public StateResult accept(Context context, Environment env);
 	
 	public List<String> suggestions(Environment env);
 }

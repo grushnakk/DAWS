@@ -5,6 +5,11 @@ import java.util.List;
 
 public class StateMachineSuccess extends StateMachineResult {
 
+	@Override
+	public String toString() {
+		return "StateMachineSuccess [suggestions=" + suggestions + "]";
+	}
+
 	private final List<String> suggestions;
 	
 	public StateMachineSuccess(List<String> suggestions) {
@@ -25,5 +30,4 @@ public class StateMachineSuccess extends StateMachineResult {
 	public String getErrorMessage() {
 		throw new UnsupportedOperationException("getErrorMessage is not supported in StateMachineSuccess");
 	}
-
 }

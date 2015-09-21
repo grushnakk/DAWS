@@ -36,7 +36,7 @@ public class DictoAcceptanceDefStatementTests {
 		types.add(new VariableType("XMLTag", arguments, new ArrayList<Rule>()));
 		types.add(new VariableType("Attribute", arguments, new ArrayList<Rule>()));
 		env = new Environment(new ArrayList<Variable>(), types);
-		dicto = new Dicto().build();
+		dicto = new Dicto().build(env);
 	}
 	
 	public StateMachineResult result(String content) {
@@ -82,6 +82,12 @@ public class DictoAcceptanceDefStatementTests {
 	@Test
 	public void typeIncomplete2() {
 		StateMachineResult StateMachineResult = result("View =Pack");
+		assertTrue(StateMachineResult.toString(), StateMachineResult.isSuccess());
+	}
+	
+	@Test
+	public void typeIncomplete3() {
+		StateMachineResult StateMachineResult = result("View=Pack");
 		assertTrue(StateMachineResult.toString(), StateMachineResult.isSuccess());
 	}
 	

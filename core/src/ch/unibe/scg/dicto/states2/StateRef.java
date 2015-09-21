@@ -28,7 +28,7 @@ public class StateRef implements State {
 
 	// I'm really dumb :P
 	@Override
-	public StateResult accept(Context context) {
+	public StateResult accept(Context context, Environment env) {
 		throw new UnsupportedOperationException("StateRef does not support accept");
 	}
 

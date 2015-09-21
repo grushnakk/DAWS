@@ -9,14 +9,16 @@ public class PathBuilder {
 	
 	private State destination;
 	private Acceptor acceptor;
-	private Acceptor prefix;
+	private Acceptor whitespacePrefix;
 	private Suggestor suggestor;
+	private AfterSuccessAction afterSuccessAction;
 	private final StateBuilder parent;
 
 	PathBuilder(StateBuilder parent) {
 		this.parent = parent;
-		this.prefix = whitespace();
+		this.whitespacePrefix = whitespace();
 		this.suggestor = Suggestor.NOTHING;
+		this.afterSuccessAction = AfterSuccessAction.NO_ACTION;
 	}
 	
 	public void setDestination(State destination) {
@@ -49,16 +51,21 @@ public class PathBuilder {
 	}
 	
 	public PathBuilder startsWithWhitespace() {
-		this.prefix = whitespace();
+		this.whitespacePrefix = whitespace();
 		return this;
 	}
 	
 	public PathBuilder startWithOptionalWhitespace() {
-		this.prefix = optionalWhitespace();
+		this.whitespacePrefix = optionalWhitespace();
+		return this;
+	}
+	
+	public PathBuilder onSuccess(AfterSuccessAction action) {
+		this.afterSuccessAction = action;
 		return this;
 	}
 	
 	public void complete() {
-		parent.addPath(new Path(destination, suggestor, prefix.chain(acceptor)));
+		parent.addPath(new Path(destination, suggestor, whitespacePrefix.chain(acceptor), afterSuccessAction));
 	}
 }

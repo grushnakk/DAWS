@@ -25,4 +25,8 @@ public class StateMachineError extends StateMachineResult {
 		return message;
 	}
 
+	@Override
+	public String toString() {
+		return "StateMachineError [message=" + message + "]";
+	}
 }

@@ -30,15 +30,21 @@ class StateImpl implements State {
 	}
 
 	@Override
-	public StateResult accept(Context context) {
+	public StateResult accept(Context context, Environment env) {
 		for(Path path : paths) {
 			AcceptorResult accResult = path.getAcceptor().accept(context);
-			if(!accResult.isFailure()) {
+			switch(accResult.getResultType()) {
+			case FAILURE:
+				break;
+			case INCOMPLETE:
 				context.apply(accResult);
-				return new StateResult(false, path, accResult);
+				return new StateResult(path, accResult);
+			case SUCCESS:
+				context.apply(accResult);
+				return path.getAfterSuccessAction().apply(new StateResult(path, accResult), env);
 			}
 		}
-		return new StateResult(true, null, null);
+		return new StateResult(true, null, null, "unexpected token at: " + context.getCurrentIndex());
 	}
 	
 	@Override
