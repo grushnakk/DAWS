@@ -68,6 +68,12 @@ public class DictoAcceptanceDefStatementTests {
 	}
 	
 	@Test
+	public void notEnoughWhitespace() {
+		StateMachineResult actual = result("View=Packagewith");
+		assertFalse(actual.toString(), actual.isSuccess());
+	}
+	
+	@Test
 	public void typeIncomplete() {
 		StateMachineResult StateMachineResult = result("View = Pack");
 		assertTrue(StateMachineResult.toString(), StateMachineResult.isSuccess());

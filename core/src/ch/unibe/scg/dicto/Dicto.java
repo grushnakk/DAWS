@@ -2,6 +2,7 @@ package ch.unibe.scg.dicto;
 
 import static ch.unibe.scg.dicto.parser.Acceptors.*;
 import ch.unibe.scg.dicto.parser.Acceptor;
+import ch.unibe.scg.dicto.parser.MultiStringAcceptor;
 import ch.unibe.scg.dicto.states2.StateMachine;
 import ch.unibe.scg.dicto.states2.StateMachineBuilder;
 
@@ -54,6 +55,15 @@ public class Dicto {
 		smBuilder.state(STATE_ARG_NAME)
 						.pathTo(STATE_ARG_VALUE)
 						.accepts(string("\"").chain(negRange("\"").repeat()))
+						//TODO do some stuff here
+						.complete();
+		smBuilder.state(STATE_ARG_VALUE)
+						.pathTo(STATE_ARG_NAME)
+						.accepts(string(","))
+						.complete();
+		smBuilder.state(STATE_ARG_VALUE)
+						.pathTo(STATE_START)
+						.accepts(new MultiStringAcceptor("\n", "\r"))
 						.complete();
 								
 		
