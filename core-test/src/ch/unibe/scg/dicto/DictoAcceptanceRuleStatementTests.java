@@ -1,98 +1,100 @@
 package ch.unibe.scg.dicto;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import ch.unibe.scg.dicto.model.Argument;
 import ch.unibe.scg.dicto.model.Environment;
-import ch.unibe.scg.dicto.model.Predicate;
 import ch.unibe.scg.dicto.model.Rule;
 import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.Context;
-import ch.unibe.scg.dicto.states.StateMachine;
-import ch.unibe.scg.dicto.states.StateResult;
+import ch.unibe.scg.dicto.states2.StateMachine;
+import ch.unibe.scg.dicto.states2.StateMachineResult;
 
 public class DictoAcceptanceRuleStatementTests {
 
 
-	@SuppressWarnings("serial")
-	public static StateResult setUp(String context) {
+	StateMachine dicto;
+	Environment env;
+
+	@Before
+	public void setUp() {
 		List<VariableType> types = new ArrayList<>();
+		List<Argument> arguments = new ArrayList<>();
 		List<Argument> packageArguments = new ArrayList<>();
 		packageArguments.add(new Argument("name"));
-		List<Rule> rules = new ArrayList<>();
-		rules.add(new Rule("depend on", new ArrayList<Predicate>(){{add(Predicate.MUST);}}));
-		types.add(new VariableType("Package", packageArguments, rules));
-		List<Variable> variables = new ArrayList<>();
-		variables.add(new Variable("View", types.get(0), new HashMap<String, String>(){
-
-			private static final long serialVersionUID = 1L;
-
-		{put("name", "org.app.view");}}));
-		
-		Environment env = new Environment(variables, types);
-		StateMachine dicto = new Dicto(env).build().clone(env, new Context(context));
-		dicto.run();
-		return dicto.getResult();
+		types.add(new VariableType("Package", packageArguments, new ArrayList<Rule>()));
+		types.add(new VariableType("Class", arguments, new ArrayList<Rule>()));
+		types.add(new VariableType("Website", arguments, new ArrayList<Rule>()));
+		types.add(new VariableType("File", arguments, new ArrayList<Rule>()));
+		types.add(new VariableType("Component", arguments, new ArrayList<Rule>()));
+		types.add(new VariableType("XMLTag", arguments, new ArrayList<Rule>()));
+		types.add(new VariableType("Attribute", arguments, new ArrayList<Rule>()));
+		env = new Environment(new ArrayList<Variable>(), types);
+		dicto = new Dicto().build(env);
+	}
+	
+	public StateMachineResult result(String content) {
+		return dicto.run(new Context(content), env);
 	}
 	
 	@Test
 	public void viewIncomplete() {
-		StateResult actual = setUp("Vie");
+		StateMachineResult actual = result("Vie");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void viewComplete() {
-		StateResult actual = setUp("View ");
+		StateMachineResult actual = result("View ");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void predicateIncomplete() {
-		StateResult actual = setUp("View cann");
+		StateMachineResult actual = result("View cann");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void predicateComplete() {
-		StateResult actual = setUp("View cannot");
+		StateMachineResult actual = result("View cannot");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void ruleIncomplete() {
-		StateResult actual = setUp("View must dep");
+		StateMachineResult actual = result("View must dep");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void ruleIncomplete2() {
-		StateResult actual = setUp("View must depend o");
+		StateMachineResult actual = result("View must depend o");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void ruleComplete() {
-		StateResult actual = setUp("View must depend on");
+		StateMachineResult actual = result("View must depend on");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void ruleCompleteWithWhitespace() {
-		StateResult actual = setUp("View must depend on ");
+		StateMachineResult actual = result("View must depend on ");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void statementComplete() {
-		StateResult actual = setUp("View must depend on Controller");
+		StateMachineResult actual = result("View must depend on Controller");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 }

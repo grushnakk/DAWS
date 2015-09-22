@@ -16,12 +16,13 @@ import ch.unibe.scg.dicto.model.Rule;
 import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
 import ch.unibe.scg.dicto.parser.Context;
-import ch.unibe.scg.dicto.states.StateMachine;
-import ch.unibe.scg.dicto.states.StateResult;
+import ch.unibe.scg.dicto.states2.StateMachine;
+import ch.unibe.scg.dicto.states2.StateMachineResult;
 
 public class DictoDocumentRuleTests {
 
 	Environment env;
+	StateMachine dicto;
 	
 	@SuppressWarnings("serial")
 	@Before
@@ -95,71 +96,70 @@ public class DictoDocumentRuleTests {
 		variables.add(yahoo);
 		variables.add(buildFile);
 		env = new Environment(variables, types);
+		dicto = new Dicto().build(env);
+	}
+	
+	StateMachineResult computeResult(String context) {
+		return dicto.run(new Context(context), env);
 	}
 	
 	@Test
 	public void dependencies1() {
-		StateResult actual = computeResult("Controller must depend on Model");
+		StateMachineResult actual = computeResult("Controller must depend on Model");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void dependencies2() {
-		StateResult actual = computeResult("Model cannot depend on View, Controller");
+		StateMachineResult actual = computeResult("Model cannot depend on View, Controller");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void dependencies3() {
-		StateResult actual = computeResult("only Tests can access Model");
+		StateMachineResult actual = computeResult("only Tests can access Model");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void dependencies4() {
-		StateResult actual = computeResult("Tests, Model can only depend on Controller");
+		StateMachineResult actual = computeResult("Tests, Model can only depend on Controller");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void latency1() {
-		StateResult actual = computeResult("Google must have latency < \"1 ms\"");
+		StateMachineResult actual = computeResult("Google must have latency < \"1 ms\"");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void latency3() {
-		StateResult actual = computeResult("only Yahoo can have latency < \"1000 ms\"");
+		StateMachineResult actual = computeResult("only Yahoo can have latency < \"1000 ms\"");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void fileContent1() {
-		StateResult actual = computeResult("BuildFile must contain text \"foobarbaz\"");
+		StateMachineResult actual = computeResult("BuildFile must contain text \"foobarbaz\"");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void fileContent2() {
-		StateResult actual = computeResult("BuildFile cannot contain text \"foobarbaz\"");
+		StateMachineResult actual = computeResult("BuildFile cannot contain text \"foobarbaz\"");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void fileContent3() {
-		StateResult actual = computeResult("BuildFile can only contain text \"foobarbaz\"");
+		StateMachineResult actual = computeResult("BuildFile can only contain text \"foobarbaz\"");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
 	
 	@Test
 	public void fileContent4() {
-		StateResult actual = computeResult("only BuildFile can contain text \"foobarbaz\"");
+		StateMachineResult actual = computeResult("only BuildFile can contain text \"foobarbaz\"");
 		assertTrue(actual.toString(), actual.isSuccess());
-	}
-	
-	StateResult computeResult(String in) {
-		StateMachine dicto = new Dicto(env).build().clone(env, new Context(in));
-		dicto.run();
-		return dicto.getResult();
 	}
 }
