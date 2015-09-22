@@ -23,7 +23,7 @@ public class ChainAcceptor extends Acceptor {
 	@Override
 	public AcceptorResult accept(Context context, AcceptorResult result) {
 		for(Acceptor acceptor : acceptors) {
-			acceptor.accept(context, result);
+			result = acceptor.accept(context, result);
 			if(!result.isSuccess())
 				return result;
 			

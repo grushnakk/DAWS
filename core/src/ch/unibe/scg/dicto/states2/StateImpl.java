@@ -44,7 +44,7 @@ class StateImpl implements State {
 				return path.getAfterSuccessAction().apply(new StateResult(path, accResult), env);
 			}
 		}
-		return new StateResult(true, null, null, "unexpected token at: " + context.getCurrentIndex());
+		return new StateResult(true, null, null, "unexpected token at: " + context.getCurrentIndex()+ " in state " + name);
 	}
 	
 	@Override

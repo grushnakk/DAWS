@@ -160,7 +160,7 @@ public class DictoAcceptanceDefStatementTests {
 	@Test
 	public void twoStatements() {
 		StateMachineResult StateMachineResult = result("View = Package with name : \"bla\""
-				+ "\nView = Package wi");
+				+ "\nView2 = Package wi");
 		assertTrue(StateMachineResult.toString(), StateMachineResult.isSuccess());	
 	}
 }
