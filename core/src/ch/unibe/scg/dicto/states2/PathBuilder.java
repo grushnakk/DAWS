@@ -30,7 +30,7 @@ public class PathBuilder {
 		return this;
 	}
 	
-	public PathBuilder accepts(Acceptor acceptor) {
+	public PathBuilder accept(Acceptor acceptor) {
 		this.acceptor = acceptor;
 		return this;
 	}
@@ -45,7 +45,7 @@ public class PathBuilder {
 		return this;
 	}
 	
-	public PathBuilder suggests(Suggestor suggestor) {
+	public PathBuilder suggest(Suggestor suggestor) {
 		this.suggestor = suggestor;
 		return this;
 	}
