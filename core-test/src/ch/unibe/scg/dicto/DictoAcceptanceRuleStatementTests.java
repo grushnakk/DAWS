@@ -3,6 +3,7 @@ package ch.unibe.scg.dicto;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Before;
@@ -10,6 +11,7 @@ import org.junit.Test;
 
 import ch.unibe.scg.dicto.model.Argument;
 import ch.unibe.scg.dicto.model.Environment;
+import ch.unibe.scg.dicto.model.Predicate;
 import ch.unibe.scg.dicto.model.Rule;
 import ch.unibe.scg.dicto.model.Variable;
 import ch.unibe.scg.dicto.model.VariableType;
@@ -23,13 +25,16 @@ public class DictoAcceptanceRuleStatementTests {
 	StateMachine dicto;
 	Environment env;
 
+	@SuppressWarnings("serial")
 	@Before
 	public void setUp() {
 		List<VariableType> types = new ArrayList<>();
 		List<Argument> arguments = new ArrayList<>();
 		List<Argument> packageArguments = new ArrayList<>();
+		List<Rule> packageRules = new ArrayList<>();
+		packageRules.add(new Rule("depend on", new ArrayList<Predicate>(){{add(Predicate.MUST);add(Predicate.CANNOT);}}));
 		packageArguments.add(new Argument("name"));
-		types.add(new VariableType("Package", packageArguments, new ArrayList<Rule>()));
+		types.add(new VariableType("Package", packageArguments, packageRules));
 		types.add(new VariableType("Class", arguments, new ArrayList<Rule>()));
 		types.add(new VariableType("Website", arguments, new ArrayList<Rule>()));
 		types.add(new VariableType("File", arguments, new ArrayList<Rule>()));
@@ -37,6 +42,8 @@ public class DictoAcceptanceRuleStatementTests {
 		types.add(new VariableType("XMLTag", arguments, new ArrayList<Rule>()));
 		types.add(new VariableType("Attribute", arguments, new ArrayList<Rule>()));
 		env = new Environment(new ArrayList<Variable>(), types);
+		env.addVariable(new Variable("View", env.getVariableType("Package"), new HashMap<String, String>()));
+		env.addVariable(new Variable("Controller", env.getVariableType("Package"), new HashMap<String, String>()));
 		dicto = new Dicto().build(env);
 	}
 	
@@ -55,7 +62,7 @@ public class DictoAcceptanceRuleStatementTests {
 		StateMachineResult actual = result("View ");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
-	
+
 	@Test
 	public void predicateIncomplete() {
 		StateMachineResult actual = result("View cann");
