@@ -84,7 +84,6 @@ public class WebService {
 				String in = request.queryParams("dicto");
 				StateMachineResult result = machine.run(new Context(in), env.copy());
 				arg1.type("text/plain");
-				System.out.println(result);
 				return result.getSuggestions();
 			}
 		});
