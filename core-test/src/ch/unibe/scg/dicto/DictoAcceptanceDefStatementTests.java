@@ -134,6 +134,24 @@ public class DictoAcceptanceDefStatementTests {
 	}
 	
 	@Test
+	public void argComplete1() {
+		StateMachineResult StateMachineResult = result("View = Package with name:\"org.app.View\"");
+		assertTrue(StateMachineResult.toString(), StateMachineResult.isSuccess());
+	}
+	
+	@Test
+	public void argComplete2() {
+		StateMachineResult StateMachineResult = result("View = Package with name: \"org.app.View\"");
+		assertTrue(StateMachineResult.toString(), StateMachineResult.isSuccess());
+	}
+	
+	@Test
+	public void argComplete3() {
+		StateMachineResult StateMachineResult = result("View = Package with name :\"org.app.View\"");
+		assertTrue(StateMachineResult.toString(), StateMachineResult.isSuccess());
+	}
+	
+	@Test
 	public void wrongArg() {
 		StateMachineResult StateMachineResult = result("View = Package with stupid :");
 		assertTrue(StateMachineResult.toString(), StateMachineResult.isSyntaxError());

@@ -83,6 +83,7 @@ public class Dicto {
 		smBuilder.state(STATE_ARG_VALUE)
 						.pathTo(STATE_AFTER_ARG)
 						.accepts(string("\"").chain(negRange("\"").repeat(), string("\"")))
+						.startWithOptionalWhitespace()
 						.complete();
 		smBuilder.state(STATE_AFTER_ARG)
 						.pathTo(STATE_ARG_NAME)
