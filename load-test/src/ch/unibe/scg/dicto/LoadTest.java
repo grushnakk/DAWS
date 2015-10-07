@@ -7,30 +7,51 @@ import java.nio.file.Paths;
 import com.github.kevinsawicki.http.HttpRequest;
 
 public class LoadTest {
+	
+	static final String TEMPLATE_FILE = "testdata/templateData.txt";
+
+	/*
+	 * CONFIG
+	 */
+	
+	static final int[] SIZES = {10, 100, 1000, 10000, 100000}; //how often the template will be concatenated (10 statements in the template
+	static final int ITERATIONS = 1000; //how often each file will be send to the server
+	static final String URL = "http://localhost:4567/autocomplete"; //the service url
 
 	public static void main(String[] args) throws IOException {
-		//config
-		String[] testdata = {
-				new String(Files.readAllBytes(Paths.get("testdata/data10.txt"))), 
-				new String(Files.readAllBytes(Paths.get("testdata/data100.txt"))), 
-				new String(Files.readAllBytes(Paths.get("testdata/data1000.txt")))
-		};
-		int iterations = 1000;
-		String url = "http://localhost:4567/autocomplete";
-		
-		// run tests
-		System.out.println("load testing: " + url);
-		for(String data : testdata) {
-			System.out.print("data size: " + data.length() + " characters -> ");
-			long timesum = 0;
-			for(int i = 0; i < iterations; i++) {
-				long stampA = System.currentTimeMillis();
-				HttpRequest.get(url, true, "dicto", data).code(); //executes request
-				timesum += (System.currentTimeMillis() - stampA);
-			} 
-			System.out.println(timesum + "ms");
-		}		
+		String[] data = generateData();
+		long[] time = new long[data.length];
+		long start;
+		System.out.println("starting...");
+		for(int i = 0; i < data.length; i++) {
+			for(int j = 0; j < ITERATIONS; j++) {
+				start = System.currentTimeMillis();
+				HttpRequest.post(URL).send(data[i]).ok(); //wait until response availabe
+				time[i] += System.currentTimeMillis() - start;
+			}
+			System.out.println("done!");
+		}
+		//create result
+		StringBuilder builder = new StringBuilder();
+		for(int i = 0; i < data.length; i++) {
+			builder.append("SIZE: " + SIZES[i]).append(" -> ").append(time[i]);
+			builder.append("\n");
+		}
+		System.out.println(builder.toString());
 	}
 	
-
+	static String[] generateData() throws IOException {
+		String template = new String(Files.readAllBytes(Paths.get(TEMPLATE_FILE)));
+		String[] data = new String[SIZES.length];
+		StringBuilder builder = null;
+		for(int i = 0; i < data.length; i++) {
+			builder = new StringBuilder();
+			for(int j = 0; j < SIZES[i]; j++) {
+				builder.append(template.replaceAll("X", "" + j));
+			}
+			data[i] = builder.toString();
+		}
+		return data;
+	}
+	
 }

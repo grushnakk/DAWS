@@ -77,11 +77,11 @@ public class WebService {
 		/*
 		 * the server part
 		 */
-		get(new Route("/autocomplete") {
+		post(new Route("/autocomplete") {
 			
 			@Override
 			public Object handle(Request request, Response arg1) {
-				String in = request.queryParams("dicto");
+				String in = request.body();
 				StateMachineResult result = machine.run(new Context(in), env.copy());
 				arg1.type("text/plain");
 				return result.getSuggestions();
