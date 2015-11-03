@@ -14,7 +14,7 @@ public class LoadTest {
 	 * CONFIG
 	 */
 	
-	static final int[] SIZES = {10, 100, 1000, 10000, 100000}; //how often the template will be concatenated (10 statements in the template
+	static final int[] SIZES = {10, 100, 1000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000}; //how often the template will be concatenated (10 statements in the template
 	static final int ITERATIONS = 1000; //how often each file will be send to the server
 	static final String URL = "http://localhost:4567/autocomplete"; //the service url
 
