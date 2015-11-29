@@ -2,7 +2,7 @@ package ch.unibe.scg.dicto.model;
 
 public enum Predicate {
 	//REMINDER ORDER IS IMPORTANT
-	MUST("must"), CAN_ONLY("can only"), CANNOT("cannot"), CAN("can"), ONLY_CAN("only can");
+	MUST("must"), CAN_ONLY("can only"), CANNOT("cannot"), ONLY_CAN("only can");
 	
 	private final String code;
 	

@@ -104,4 +104,10 @@ public class DictoAcceptanceRuleStatementTests {
 		StateMachineResult actual = result("View must depend on Controller");
 		assertTrue(actual.toString(), actual.isSuccess());
 	}
+	
+	@Test
+	public void statementComplete2() {
+		StateMachineResult actual = result("View can depend on Controller");
+		assertTrue(actual.toString(), actual.isSyntaxError());
+	}
 }

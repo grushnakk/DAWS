@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import com.github.kevinsawicki.http.HttpRequest;
+import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 
 public class LoadTest {
 	
@@ -14,7 +15,7 @@ public class LoadTest {
 	 * CONFIG
 	 */
 	
-	static final int[] SIZES = {10, 100, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000}; //how often the template will be concatenated (10 statements in the template
+	static final int[] SIZES = {10, 100, 1000, 2000, 3000, 4000, 5000}; //how often the template will be concatenated (10 statements in the template
 	static final int ITERATIONS = 1000; //how often each file will be send to the server
 	static final String URL = "http://192.168.192.46:4567/autocomplete"; //the service url
 
@@ -25,12 +26,14 @@ public class LoadTest {
 		System.out.println("starting...");
 		for(int i = 0; i < data.length; i++) {
 			for(int j = 0; j < ITERATIONS; j++) {
-				start = System.currentTimeMillis();
-				HttpRequest.post(URL).send(data[i]).ok(); //wait until response availabe
-				time[i] += System.currentTimeMillis() - start;
 				try {
-					Thread.sleep(100);
-				} catch(InterruptedException ex) {}
+					start = System.currentTimeMillis();
+					HttpRequest.post(URL).send(data[i]).ok(); //wait until response availabe
+					time[i] += System.currentTimeMillis() - start;
+				} catch(HttpRequestException ex) {
+					j--;
+					ex.printStackTrace();
+				}
 			}
 			System.out.println("done!");
 		}
