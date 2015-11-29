@@ -5,6 +5,9 @@ import static spark.Spark.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonArray;
+
 import ch.unibe.scg.dicto.Dicto;
 import ch.unibe.scg.dicto.model.Argument;
 import ch.unibe.scg.dicto.model.Environment;
@@ -85,8 +88,9 @@ public class WebService {
 			public Object handle(Request request, Response arg1) {
 				String in = request.body();
 				StateMachineResult result = machine.run(new Context(in), env.copy());
-				arg1.type("text/plain");
-				return result.getSuggestions();
+				arg1.type("text/json");
+				JsonArray ja = Json.array(result.getSuggestions().toArray(new String[0]));
+				return ja.toString();
 			}
 		});
 	}

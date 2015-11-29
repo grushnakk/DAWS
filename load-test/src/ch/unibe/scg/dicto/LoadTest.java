@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import com.github.kevinsawicki.http.HttpRequest;
+import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 
 public class LoadTest {
 	
@@ -25,12 +26,14 @@ public class LoadTest {
 		System.out.println("starting...");
 		for(int i = 0; i < data.length; i++) {
 			for(int j = 0; j < ITERATIONS; j++) {
-				start = System.currentTimeMillis();
-				HttpRequest.post(URL).send(data[i]).ok(); //wait until response availabe
-				time[i] += System.currentTimeMillis() - start;
-//				try {
-//					Thread.sleep(100);
-//				} catch(InterruptedException ex) {}
+				try {
+					start = System.currentTimeMillis();
+					HttpRequest.post(URL).send(data[i]).ok(); //wait until response availabe
+					time[i] += System.currentTimeMillis() - start;
+				} catch(HttpRequestException ex) {
+					j--;
+					ex.printStackTrace();
+				}
 			}
 			System.out.println("done!");
 		}
