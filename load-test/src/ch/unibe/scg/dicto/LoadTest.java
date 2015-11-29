@@ -14,9 +14,9 @@ public class LoadTest {
 	 * CONFIG
 	 */
 	
-	static final int[] SIZES = {10, 100, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000}; //how often the template will be concatenated (10 statements in the template
+	static final int[] SIZES = {10, 100, 1000, 2000, 3000, 4000, 5000}; //how often the template will be concatenated (10 statements in the template
 	static final int ITERATIONS = 1000; //how often each file will be send to the server
-	static final String URL = "http://192.168.192.46:4567/autocomplete"; //the service url
+	static final String URL = "http://localhost:4567/autocomplete"; //the service url
 
 	public static void main(String[] args) throws IOException {
 		String[] data = generateData();
@@ -28,9 +28,9 @@ public class LoadTest {
 				start = System.currentTimeMillis();
 				HttpRequest.post(URL).send(data[i]).ok(); //wait until response availabe
 				time[i] += System.currentTimeMillis() - start;
-				try {
-					Thread.sleep(100);
-				} catch(InterruptedException ex) {}
+//				try {
+//					Thread.sleep(100);
+//				} catch(InterruptedException ex) {}
 			}
 			System.out.println("done!");
 		}
@@ -51,6 +51,7 @@ public class LoadTest {
 			builder = new StringBuilder();
 			for(int j = 0; j < SIZES[i]; j++) {
 				builder.append(template.replaceAll("X", "" + j));
+				builder.append(template.replaceAll("U", "" + j));
 			}
 			data[i] = builder.toString();
 		}

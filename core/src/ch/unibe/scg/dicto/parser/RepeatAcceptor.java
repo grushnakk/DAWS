@@ -10,24 +10,7 @@ public class RepeatAcceptor extends Acceptor {
 	
 	@Override
 	public AcceptorResult accept(Context context, final AcceptorResult result) {
-//		if(!result.isSuccess()) return result;
-//		AcceptorResult copy = null;
-//		AcceptorResult save = new AcceptorResult(result);
-//		boolean accOnce = false;
-//		do {
-//			copy = new AcceptorResult(save);
-//			baseAcceptor.accept(context, copy);
-//			if(!copy.isFailure()) {
-//				save = copy;
-//				accOnce = true;
-//			}
-//		} while(save.end < context.size() && copy.isSuccess());
-//		result.set(save);
-//		if(!result.isSuccess() && accOnce)
-//			result.resultType = Type.SUCCESS;
-//		return result;
 		if(!result.isSuccess()) return result;
-		//accept the first time
 		AcceptorResult copy = new AcceptorResult(result);
 		copy = baseAcceptor.accept(context, copy);
 		if(!copy.isSuccess())

@@ -1,10 +1,10 @@
-ControllerX = Package with name: "org.app.controller"
-ModelX = Package with name: "org.app.model"
+ControllerX = PackageU with name: "org.app.controller"
+ModelX = PackageU with name: "org.app.model"
 ModelX cannot depend on ViewX
-ViewX = Package with name: "org.app.view"
+ViewX = PackageU with name: "org.app.view"
 ModelX cannot depend on ViewX
-TestsX = Package with name: "org.app.test"
+TestsX = PackageU with name: "org.app.test"
 TestsX, ModelX can only depend on ControllerX
-only TestsX can access ModelX
+only TestsX can accessU ModelX
 GoogleX= Website with url: "http://www.google.com"
 GoogleX must have latency < "1 ms"
